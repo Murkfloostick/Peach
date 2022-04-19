@@ -2,6 +2,9 @@ package nl.windesheim.ictm2o.peach;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class StartPage extends JPanel {
 
@@ -32,11 +35,19 @@ public class StartPage extends JPanel {
         }
     }
 
+    private final PeachWindow m_parent;
+    private final Button m_monitorServicesButton = new Button("Monitor Services");
+    private final Button m_newDesignButton = new Button("Nieuw Ontwerp");
+    private final Button m_openDesignButton = new Button("Open Ontwerp");
+
     public StartPage(PeachWindow parent) {
+        m_parent = parent;
+
         JPanel buttonContainer = new JPanel();
-        buttonContainer.add(new Button("Monitor Services"));
-        buttonContainer.add(new Button("Nieuw Ontwerp"));
-        buttonContainer.add(new Button("Open Ontwerp"));
+        buttonContainer.add(m_monitorServicesButton);
+        buttonContainer.add(m_newDesignButton);
+        buttonContainer.add(m_openDesignButton);
+
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         add(Box.createVerticalGlue());
@@ -44,6 +55,36 @@ public class StartPage extends JPanel {
         add(Box.createVerticalGlue());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        installMouseListeners();
+    }
+
+    private void installMouseListeners() {
+        StartPage startPage = this;
+
+        m_monitorServicesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                m_parent.openPage(startPage, "Dienstmonitor", new MonitorPage());
+                e.consume();
+            }
+        });
+
+        m_newDesignButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                m_parent.openPage(startPage, "Ontwerper", new DesignerPage());
+                e.consume();
+            }
+        });
+
+        m_openDesignButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                m_parent.openPage(startPage, "Ontwerper", new DesignerPage());
+                e.consume();
+            }
+        });
     }
 
 }
