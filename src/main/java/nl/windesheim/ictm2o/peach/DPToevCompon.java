@@ -6,6 +6,6 @@ import java.awt.*;
 public class DPToevCompon extends JPanel {
     public DPToevCompon(){
         setBackground(Color.red);
-        setPreferredSize(new Dimension(100, 200));
+        setPreferredSize(new Dimension(200, 550));
     }
 }

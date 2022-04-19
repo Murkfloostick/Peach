@@ -6,6 +6,6 @@ import java.awt.*;
 public class DPComponPanel extends JPanel {
     public DPComponPanel(){
         setBackground(Color.blue);
-        setPreferredSize(new Dimension(100, 200));
+        setPreferredSize(new Dimension(200, 550));
     }
 }

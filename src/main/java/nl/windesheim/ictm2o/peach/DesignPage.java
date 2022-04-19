@@ -18,7 +18,7 @@ public class DesignPage extends JFrame implements ActionListener {
     setTitle("Ontwerp");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new FlowLayout());
-    setSize(750, 300);
+    setSize(950, 600);
 
     add(componPanel);
     add(workPanel);
