@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class DPWorkPanel extends JPanel {
     public DPWorkPanel(){
-        setBackground(Color.pink);
+        setBackground(Color.lightGray);
         setPreferredSize(new Dimension(500, 550));
     }
 }
