@@ -25,6 +25,7 @@ public class PeachWindow extends JFrame {
         setSize(1280, 720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setMenuBar();
 
         add(new StartPage(this));
     }
