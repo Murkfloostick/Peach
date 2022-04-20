@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
 
 public class DPToevDialog extends JDialog implements ActionListener {
     //Options moet worden opgehaald uit iconenlijst?
-    private String[] optionsToChoose = {"Apple", "Orange", "Banana", "Pineapple", "None of the listed"};
+    private String[] optionsToChoose;
 
-    private JComboBox options = new JComboBox(optionsToChoose);
+    private JComboBox options;
     private JTextField naam = new JTextField(5);
     private JTextField prijs = new JTextField(5);
     private JButton toevoegen = new JButton("Toevoegen");
@@ -27,9 +27,17 @@ public class DPToevDialog extends JDialog implements ActionListener {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Toevoegen component");
 
-        //Hardcoded icoontjes of ophalen?
-
+        //Haal icoontjes op
+        optionsToChoose = new String[ComponentIcon.values().length];
+        int counter = 0;
+        for (ComponentIcon IC:ComponentIcon.values()
+             ) {
+            optionsToChoose[counter] = IC.name();
+            counter += 1;
+        }
+        options = new JComboBox(optionsToChoose);
         add(options);
+
         add(naam);
         add(prijs);
         add(toevoegen);
@@ -45,7 +53,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
             //Voeg component toe aan lijst en refresh JPanel
             //Eerst componentregistry hier helemaal naartoe halen en dan nieuw component toevoegen
 
-            //RegisteredComponent newComponent = new RegisteredComponent(, naam.getText(), ComponentIcon.GENERIC, prijs.getText());
+            //RegisteredComponent newComponent = new RegisteredComponent(, naam.getText(), options.getSelectedItem(), prijs.getText());
             //CR.getRegisteredComponents().add(newComponent);
             dispose();
         }
