@@ -18,6 +18,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //DPToevDialog dialoog = new DPToevDialog(this, true);
+        //Anders werkt hij niet, dialoog moet op parent frame worden attached
         Window parentWindow = SwingUtilities.windowForComponent(this);
         JFrame parentFrame = null;
         if (parentWindow instanceof Frame) {
