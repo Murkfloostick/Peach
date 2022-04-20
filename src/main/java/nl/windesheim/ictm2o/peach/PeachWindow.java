@@ -16,7 +16,11 @@ public class PeachWindow extends JFrame {
         super("Windesheim Peach");
 
         setThemeToSystem();
-        setAppleIcon();
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            setAppleIcon();
+        } else {
+            setIcon();
+        }
 
         setSize(1280, 720);
         setLocationRelativeTo(null);
@@ -41,6 +45,13 @@ public class PeachWindow extends JFrame {
 
     private void setThemeToSystem() {
         try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if (info.getClassName().equals("com.sun.java.swing.plaf.gtk.GTKLookAndFeel")) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    return;
+                }
+            }
+
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  UnsupportedLookAndFeelException ex) {
@@ -48,7 +59,7 @@ public class PeachWindow extends JFrame {
             System.exit(1);
         }
     }
-/*
+
     private void setIcon() {
         try {
             setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Peach.png"))).getImage());
@@ -56,10 +67,32 @@ public class PeachWindow extends JFrame {
             e.printStackTrace();
         }
     }
-*/
+
     private void setAppleIcon() {
         final Taskbar taskbar = Taskbar.getTaskbar();
         taskbar.setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
         setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
+    }
+
+    private void setMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu file = new JMenu("Bestand");
+        JMenuItem item = new JMenuItem("Nieuw Model");
+        JMenuItem item1 = new JMenuItem("Opslaan");
+        JMenuItem item2 = new JMenuItem("Opslaan Als");
+        JMenuItem item3 = new JMenuItem("Dienstmonitoring");
+        JMenuItem afsluiten = new JMenuItem("Afsluiten");
+        afsluiten.addActionListener(e -> {
+            // TODO check of het ontwerp is opgeslagen.
+            System.exit(0);
+        });
+
+        file.add(item);
+        file.add(item1);
+        file.add(item2);
+        file.add(item3);
+        file.add(afsluiten);
+        menuBar.add(file);
+        setJMenuBar(menuBar);
     }
 }
