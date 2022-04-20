@@ -18,6 +18,7 @@ public class DPComponPanel extends JPanel {
         setLayout(new GridLayout(GLrows, 2));
 
         registryComponents = new ComponentRegistry();
+        //Functie callen die lijst leeghaald en populate met componenten die dan op jpanel komen
     }
 
 
