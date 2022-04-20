@@ -11,29 +11,30 @@ static JLabel labelCenter;
 static JLabel labelRechts;
 
     private static class Button extends JPanel {
+
         private static class Icon extends JComponent{
             public void Icons(){
                 setPreferredSize(new Dimension(250, 250));
                 setSize(new Dimension(250,250));
             }
 
-            public void labelLinks(){
+            static void labelLinks(){
                 labelLinks = new JLabel();
-                labelLinks.setIcon(new ImageIcon("resources/Icons/plus-circle.png"));
+                labelLinks.setIcon(new ImageIcon("resources/Icons/card-list.png"));
                 labelLinks.setSize(150, 150);
                 labelLinks.setHorizontalAlignment(SwingConstants.CENTER);
             }
 
             public void labelCenter(){
                 labelCenter = new JLabel();
-                labelCenter.setIcon(new ImageIcon("resources/Icons/plus-circle.png"));
+                labelCenter.setIcon(new ImageIcon("resources/Icons/plus-circle.ico"));
                 labelCenter.setSize(150, 150);
                 labelCenter.setHorizontalAlignment(SwingConstants.CENTER);
             }
 
             public void labelRechts(){
                 labelRechts = new JLabel();
-                labelRechts.setIcon(new ImageIcon("resources/Icons/plus-circle.png"));
+                labelRechts.setIcon(new ImageIcon("resources/Icons/card-list.png"));
                 labelRechts.setSize(150, 150);
                 labelRechts.setHorizontalAlignment(SwingConstants.CENTER);
             }
@@ -56,20 +57,10 @@ static JLabel labelRechts;
             }
         }
 
-
-//        public JComponent label1(){
-//            label1 = new JLabel();
-//            label1.setIcon(new ImageIcon("resources/Icons/plus-circle.png"));
-//            label1.setSize(150, 150);
-//            label1.setHorizontalAlignment(SwingConstants.CENTER);
-//            return label1;
-//        }
-
         public Button(String title) {
             //add(new Image());
 
-
-            //add(new labelLinks());
+            add(new Icon());
             JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
             add(titleLabel);
             setPreferredSize(new Dimension(250, 250));
@@ -85,9 +76,22 @@ static JLabel labelRechts;
         m_parent = parent;
 
         JPanel buttonContainer = new JPanel();
+
+        labelLinks = new JLabel();
+        labelLinks.setIcon(new ImageIcon("src/main/resources/Icons/card-list.png"));
+        labelLinks.setSize(150, 150);
+        labelLinks.setHorizontalAlignment(SwingConstants.CENTER);
+
+        add(labelLinks);
+        add(labelLinks);
+        add(labelLinks);
+
+
         buttonContainer.add(m_monitorServicesButton);
         buttonContainer.add(m_newDesignButton);
         buttonContainer.add(m_openDesignButton);
+
+        buttonContainer.add(labelLinks);
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
