@@ -14,6 +14,8 @@ public class DesignPage extends JFrame implements ActionListener {
     componPanel = new DPComponPanel();
     workPanel = new DPWorkPanel();
     toevCompon = new DPToevCompon();
+    JScrollPane scroller = new JScrollPane(componPanel);
+    this.getContentPane().add(scroller);
 
     setTitle("Ontwerp");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
