@@ -78,20 +78,17 @@ static JLabel labelRechts;
         JPanel buttonContainer = new JPanel();
 
         labelLinks = new JLabel();
-        labelLinks.setIcon(new ImageIcon("src/main/resources/Icons/card-list.png"));
+        labelLinks.setIcon(new ImageIcon("src/main/resources/Peach.png"));
         labelLinks.setSize(150, 150);
         labelLinks.setHorizontalAlignment(SwingConstants.CENTER);
 
-        add(labelLinks);
-        add(labelLinks);
-        add(labelLinks);
+        //add(labelLinks);
 
+        //buttonContainer.add(labelLinks);
 
         buttonContainer.add(m_monitorServicesButton);
         buttonContainer.add(m_newDesignButton);
         buttonContainer.add(m_openDesignButton);
-
-        buttonContainer.add(labelLinks);
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
