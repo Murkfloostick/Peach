@@ -1,9 +1,11 @@
 package nl.windesheim.ictm2o.peach.components;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ComponentRegistry {
 
@@ -22,4 +24,13 @@ public class ComponentRegistry {
     public List<RegisteredComponent> getRegisteredComponents() {
         return registeredComponents;
     }
+
+    @Nullable
+    public RegisteredComponent findByID(@NotNull UUID uuid) {
+        for (RegisteredComponent registeredComponent : this.registeredComponents)
+            if (registeredComponent.getID().equals(uuid))
+                return registeredComponent;
+        return null;
+    }
+
 }
