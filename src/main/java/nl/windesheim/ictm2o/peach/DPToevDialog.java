@@ -1,5 +1,9 @@
 package nl.windesheim.ictm2o.peach;
 
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
+import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +18,8 @@ public class DPToevDialog extends JDialog implements ActionListener {
     private JButton toevoegen = new JButton("Toevoegen");
     private JButton cancel = new JButton("Annuleren");
 
-    public DPToevDialog(JFrame frame, boolean modal){
+    private ComponentRegistry CR;
+    public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR){
         super(frame, modal);
         setSize(200,100);
         setLayout(new FlowLayout());
@@ -34,6 +39,10 @@ public class DPToevDialog extends JDialog implements ActionListener {
         if(e.getSource() == toevoegen){
             //Voeg component toe aan lijst en refresh JPanel
             //Eerst componentregistry hier helemaal naartoe halen en dan nieuw component toevoegen
+
+            //RegisteredComponent newComponent = new RegisteredComponent(, naam.getText(), ComponentIcon.GENERIC, 200);
+            //CR.getRegisteredComponents().add(newComponent);
+            //REFRESH DPComponPanel
         }
         if(e.getSource() == cancel){
             dispose();
