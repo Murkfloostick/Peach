@@ -18,11 +18,13 @@ public class DPToevDialog extends JDialog implements ActionListener {
     private JTextField prijs = new JTextField(5);
     private JButton toevoegen = new JButton("Toevoegen");
     private JButton cancel = new JButton("Annuleren");
+    private JLabel labelNaam = new JLabel("Naam");
+    private JLabel labelPrijs = new JLabel("Prijs");
 
     private ComponentRegistry CR;
     public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR){
         super(frame, modal);
-        setSize(300,110);
+        setSize(350,110);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Toevoegen component");
@@ -38,7 +40,9 @@ public class DPToevDialog extends JDialog implements ActionListener {
         options = new JComboBox(optionsToChoose);
         add(options);
 
+        add(labelNaam);
         add(naam);
+        add(labelPrijs);
         add(prijs);
         add(toevoegen);
         toevoegen.addActionListener(this);
