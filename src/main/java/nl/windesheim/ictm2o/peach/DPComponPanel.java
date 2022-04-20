@@ -21,8 +21,9 @@ public class DPComponPanel extends JPanel {
         refreshPanel();
     }
 
-    //Dit static maken???
     public void refreshPanel(){
+        removeAll();
+        updateUI();
         for (RegisteredComponent RC:CR.getRegisteredComponents()
              ) {
             Button(RC);

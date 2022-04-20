@@ -23,8 +23,12 @@ public class DPToevDialog extends JDialog implements ActionListener {
     private JLabel labelPrijs = new JLabel("Prijs");
 
     private ComponentRegistry CR;
-    public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR){
+    private DesignPage mainFrame;
+
+    public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR, DesignPage mainFrame){
         super(frame, modal);
+        this.CR = CR;
+        this.mainFrame = mainFrame;
         setSize(350,110);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -55,12 +59,18 @@ public class DPToevDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == toevoegen){
-            //Voeg component toe aan lijst en refresh JPanel
-            //Eerst componentregistry hier helemaal naartoe halen en dan nieuw component toevoegen
-
             UUID uuid=UUID.randomUUID();
-            //RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), ComponentIcon.GENERIC, prijs.getText());
-            //CR.getRegisteredComponents().add(newComponent);
+            ComponentIcon CI = ComponentIcon.GENERIC;
+            for (ComponentIcon IC:ComponentIcon.values()
+            ) {
+                if(IC.name().equals(options.getSelectedItem())){
+                    CI = IC;
+                    break;
+                }
+            }
+            RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), CI, Float.parseFloat(prijs.getText()));
+            CR.getRegisteredComponents().add(newComponent);
+            mainFrame.getComponPanel().refreshPanel();
             dispose();
         }
         if(e.getSource() == cancel){

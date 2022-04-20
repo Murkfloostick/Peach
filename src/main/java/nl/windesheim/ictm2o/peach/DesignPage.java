@@ -23,7 +23,7 @@ public class DesignPage extends JFrame implements ActionListener {
     public DesignPage(){
     componPanel = new DPComponPanel(CR);
     workPanel = new DPWorkPanel();
-    toevCompon = new DPToevCompon(CR);
+    toevCompon = new DPToevCompon(CR, this);
     JScrollPane scroller = new JScrollPane(componPanel);
     this.getContentPane().add(scroller);
 
@@ -122,5 +122,9 @@ public class DesignPage extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    public DPComponPanel getComponPanel() {
+        return componPanel;
     }
 }
