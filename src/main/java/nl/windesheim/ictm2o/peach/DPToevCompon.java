@@ -17,6 +17,6 @@ public class DPToevCompon extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        //DPToevDialog dialoog = new DPToevDialog(this, true);
     }
 }
