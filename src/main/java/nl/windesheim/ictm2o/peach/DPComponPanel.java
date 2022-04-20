@@ -12,18 +12,6 @@ public class DPComponPanel extends JPanel {
         setMinimumSize(new Dimension(200, 550));
         setLayout(new GridLayout(GLrows, 2));
 
-        Button("item1");
-        Button("item3");
-        Button("item4");
-        Button("item5");
-        Button("item5");
-        Button("item5");
-        Button("item5");
-        Button("item5");
-        Button("item5");
-        Button("item5");
-        Button("item5");
-
     }
 
     private static class Image extends JComponent {
