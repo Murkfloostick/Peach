@@ -4,11 +4,41 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class StartPage extends JPanel {
+static JLabel labelLinks;
+static JLabel labelCenter;
+static JLabel labelRechts;
 
     private static class Button extends JPanel {
+        private static class Icon extends JComponent{
+            public void Icons(){
+                setPreferredSize(new Dimension(250, 250));
+                setSize(new Dimension(250,250));
+            }
+
+            public void labelLinks(){
+                labelLinks = new JLabel();
+                labelLinks.setIcon(new ImageIcon("resources/Icons/plus-circle.png"));
+                labelLinks.setSize(150, 150);
+                labelLinks.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+
+            public void labelCenter(){
+                labelCenter = new JLabel();
+                labelCenter.setIcon(new ImageIcon("resources/Icons/plus-circle.png"));
+                labelCenter.setSize(150, 150);
+                labelCenter.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+
+            public void labelRechts(){
+                labelRechts = new JLabel();
+                labelRechts.setIcon(new ImageIcon("resources/Icons/plus-circle.png"));
+                labelRechts.setSize(150, 150);
+                labelRechts.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+        }
+
         private static class Image extends JComponent {
             public Image() {
                 setPreferredSize(new Dimension(200, 200));
@@ -26,9 +56,20 @@ public class StartPage extends JPanel {
             }
         }
 
-        public Button(String title) {
-            add(new Image());
 
+//        public JComponent label1(){
+//            label1 = new JLabel();
+//            label1.setIcon(new ImageIcon("resources/Icons/plus-circle.png"));
+//            label1.setSize(150, 150);
+//            label1.setHorizontalAlignment(SwingConstants.CENTER);
+//            return label1;
+//        }
+
+        public Button(String title) {
+            //add(new Image());
+
+
+            //add(new labelLinks());
             JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
             add(titleLabel);
             setPreferredSize(new Dimension(250, 250));
