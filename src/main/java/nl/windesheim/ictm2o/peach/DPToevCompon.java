@@ -18,5 +18,11 @@ public class DPToevCompon extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //DPToevDialog dialoog = new DPToevDialog(this, true);
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        JFrame parentFrame = null;
+        if (parentWindow instanceof Frame) {
+            parentFrame = (JFrame)parentWindow;
+        }
+        DPToevDialog dialoog = new DPToevDialog(parentFrame, true);;
     }
 }
