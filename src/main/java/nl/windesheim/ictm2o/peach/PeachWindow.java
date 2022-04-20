@@ -1,8 +1,14 @@
 package nl.windesheim.ictm2o.peach;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Objects;
 
 public class PeachWindow extends JFrame {
 
@@ -10,6 +16,7 @@ public class PeachWindow extends JFrame {
         super("Windesheim Peach");
 
         setThemeToSystem();
+        setIcon();
 
         setSize(1280, 720);
         setLocationRelativeTo(null);
@@ -38,6 +45,14 @@ public class PeachWindow extends JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.exit(1);
+        }
+    }
+
+    private void setIcon() {
+        try {
+            setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Peach.png"))).getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
