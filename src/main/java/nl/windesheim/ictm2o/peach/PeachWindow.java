@@ -57,10 +57,9 @@ public class PeachWindow extends JFrame {
         }
     }
 */
-    private static void setAppleIcon() {
-        final JFrame jFrame = new JFrame();
+    private void setAppleIcon() {
         final Taskbar taskbar = Taskbar.getTaskbar();
         taskbar.setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
-        jFrame.setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
+        setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
     }
 }
