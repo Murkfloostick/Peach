@@ -9,23 +9,27 @@ import java.util.ArrayList;
 
 public class DPComponPanel extends JPanel {
     private int GLrows = 0;
-    private ComponentRegistry registryComponents;
+    private ComponentRegistry CR;
 
-    public DPComponPanel(){
+    public DPComponPanel(ComponentRegistry CR){
+        this.CR = CR;
         setBackground(Color.gray);
         setPreferredSize(new Dimension(200, 550));
         setMinimumSize(new Dimension(200, 550));
         setLayout(new GridLayout(GLrows, 2));
 
-        registryComponents = new ComponentRegistry();
-        //Functie callen die lijst leeghaald en populate met componenten die dan op jpanel komen
-
-        //Als er wordt gedubbelklikt, wordt component toegevoegd aan de JPanel?
+        refreshPanel();
     }
 
+    public void refreshPanel(){
+        for (RegisteredComponent RC:CR.getRegisteredComponents()
+             ) {
+            Button(RC);
+        }
+    }
 
     private static class Image extends JComponent {
-        public Image() {
+        public Image(RegisteredComponent RC) {
             //setPreferredSize(new Dimension(10, 10));
             //setSize(new Dimension(10, 10));
             setBackground(Color.BLUE);
@@ -41,10 +45,10 @@ public class DPComponPanel extends JPanel {
         }
     }
 
-    public void Button(String title) {
-        add(new Image());
+    public void Button(RegisteredComponent RC) {
+        add(new Image(RC));
 
-        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel(RC.getName(), SwingConstants.CENTER);
         add(titleLabel);
         //setPreferredSize(new Dimension(50, 50));
         GLrows += 1;
