@@ -16,7 +16,7 @@ public class PeachWindow extends JFrame {
         super("Windesheim Peach");
 
         setThemeToSystem();
-        setIcon();
+        setAppleIcon();
 
         setSize(1280, 720);
         setLocationRelativeTo(null);
@@ -42,12 +42,13 @@ public class PeachWindow extends JFrame {
     private void setThemeToSystem() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.exit(1);
         }
     }
-
+/*
     private void setIcon() {
         try {
             setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Peach.png"))).getImage());
@@ -55,5 +56,11 @@ public class PeachWindow extends JFrame {
             e.printStackTrace();
         }
     }
-
+*/
+    private static void setAppleIcon() {
+        final JFrame jFrame = new JFrame();
+        final Taskbar taskbar = Taskbar.getTaskbar();
+        taskbar.setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
+        jFrame.setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
+    }
 }
