@@ -1,6 +1,8 @@
 package nl.windesheim.ictm2o.peach;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PeachWindow extends JFrame {
 

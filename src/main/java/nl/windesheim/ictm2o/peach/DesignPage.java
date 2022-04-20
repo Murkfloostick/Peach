@@ -17,12 +17,19 @@ public class DesignPage extends JFrame implements ActionListener {
 
     setTitle("Ontwerp");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setLayout(new FlowLayout());
+    setLayout(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
     setSize(950, 600);
 
-    add(componPanel);
-    add(workPanel);
-    add(toevCompon);
+    c.fill = GridBagConstraints.VERTICAL;
+    c.gridx = 0;
+    c.gridy = 0;
+
+    add(componPanel, c);
+    c.gridx = 1;
+    add(workPanel, c);
+    c.gridx = 2;
+    add(toevCompon, c);
 
     setVisible(true);
     }
