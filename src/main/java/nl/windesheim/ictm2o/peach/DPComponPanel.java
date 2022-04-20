@@ -11,8 +11,14 @@ public class DPComponPanel extends JPanel {
         setPreferredSize(new Dimension(200, 550));
         setMinimumSize(new Dimension(200, 550));
         setLayout(new GridLayout(GLrows, 2));
+//        JScrollPane scrollFrame = new JScrollPane(this);
+//        setAutoscrolls(true);
+//        scrollFrame.setPreferredSize(new Dimension( 800,300));
+//        this.add(scrollFrame);
+
 
     }
+
 
     private static class Image extends JComponent {
         public Image() {
