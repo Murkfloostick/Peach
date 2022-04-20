@@ -33,6 +33,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == toevoegen){
             //Voeg component toe aan lijst en refresh JPanel
+            //Eerst componentregistry hier helemaal naartoe halen en dan nieuw component toevoegen
         }
         if(e.getSource() == cancel){
             dispose();

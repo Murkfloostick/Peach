@@ -19,6 +19,8 @@ public class DPComponPanel extends JPanel {
 
         registryComponents = new ComponentRegistry();
         //Functie callen die lijst leeghaald en populate met componenten die dan op jpanel komen
+
+        //Als er wordt gedubbelklikt, wordt component toegevoegd aan de JPanel?
     }
 
 
