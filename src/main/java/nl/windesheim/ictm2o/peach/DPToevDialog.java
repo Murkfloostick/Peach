@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.UUID;
 
 public class DPToevDialog extends JDialog implements ActionListener {
     //Options moet worden opgehaald uit iconenlijst?
@@ -57,7 +58,8 @@ public class DPToevDialog extends JDialog implements ActionListener {
             //Voeg component toe aan lijst en refresh JPanel
             //Eerst componentregistry hier helemaal naartoe halen en dan nieuw component toevoegen
 
-            //RegisteredComponent newComponent = new RegisteredComponent(, naam.getText(), options.getSelectedItem(), prijs.getText());
+            UUID uuid=UUID.randomUUID();
+            //RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), ComponentIcon.GENERIC, prijs.getText());
             //CR.getRegisteredComponents().add(newComponent);
             dispose();
         }
