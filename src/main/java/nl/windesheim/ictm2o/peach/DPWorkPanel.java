@@ -7,10 +7,10 @@ public class DPWorkPanel extends JPanel {
     public DPWorkPanel(){
         setBackground(Color.lightGray);
         setPreferredSize(new Dimension(500, 550));
-        DPWorkPanel.setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
     }
 
-    private static void setLocationRelativeTo(Object o) {
+    static void setLocationRelativeTo(Object o) {
 
     }
 }
