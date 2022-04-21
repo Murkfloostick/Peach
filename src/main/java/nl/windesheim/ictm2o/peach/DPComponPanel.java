@@ -22,7 +22,18 @@ public class DPComponPanel extends JPanel {
         public void mousePressed(MouseEvent me){
             if(me.getClickCount() == 2)//double-click
             {
-                System.out.println("Klik!");
+                //Dit betekent nu dat meerdere componenten niet dezelfde naam kunnen hebben
+                //Oplossing kan zijn kijken naar UUID, maar dan moet je ook kijken hoe je die gaat pakken
+                JLabel jl = (JLabel) me.getSource();
+                RegisteredComponent RC = null;
+                for (RegisteredComponent RCfind:CR.getRegisteredComponents()
+                ) {
+                    if(jl.getText().equals(RCfind.getName())){
+                        RC = RCfind;
+                        break;
+                    }
+                }
+                System.out.println(RC.getName());
             }
         }
     };
