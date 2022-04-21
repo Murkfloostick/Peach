@@ -1,13 +1,13 @@
 package nl.windesheim.ictm2o.peach;
 
-        import javax.imageio.ImageIO;
-        import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.MouseAdapter;
-        import java.awt.event.MouseEvent;
-        import java.awt.image.BufferedImage;
-        import java.io.File;
-        import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class StartPage extends JPanel {
     JPanel buttonContainer1 = new JPanel();
@@ -23,17 +23,18 @@ public class StartPage extends JPanel {
     private JButton button2;
     private JButton button3;
 
-    private static JLabel labelLinks;
-    private static JLabel labelCenter;
-    private static JLabel labelRechts;
+    private JLabel labelLinks;
+    private JLabel labelCenter;
+    private JLabel labelRechts;
 
     private static class Button extends JPanel {
         public Button(String title) throws IOException {
             try {
                 JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
                 add(titleLabel);
+                titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
                 setPreferredSize(new Dimension(550, 550));
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Error ~37");
             }
         }
@@ -45,12 +46,12 @@ public class StartPage extends JPanel {
         //Font aanpassen
         Font nieuwFont = new Font("Arial", Font.BOLD, 20);
 
-//        JLabel labelLinks = new JLabel("Monitor Services");
-//        labelLinks.setFont(nieuwFont);
-//        JLabel labelCenter = new JLabel("Nieuw Ontwerp");
-//        labelCenter.setFont(nieuwFont);
-//        JLabel labelRechts = new JLabel("Open Ontwerp");
-//        labelRechts.setFont(nieuwFont);
+        JLabel labelLinks = new JLabel("Monitor Services");
+        labelLinks.setFont(nieuwFont);
+        JLabel labelCenter = new JLabel("Nieuw Ontwerp");
+        labelCenter.setFont(nieuwFont);
+        JLabel labelRechts = new JLabel("Open Ontwerp");
+        labelRechts.setFont(nieuwFont);
 
         m_monitorServicesButton = new Button("Monitor Services");
         m_newDesignButton = new Button("Nieuw Ontwerp");
@@ -62,6 +63,7 @@ public class StartPage extends JPanel {
         button1.setBorder(BorderFactory.createEmptyBorder());
         button1.setContentAreaFilled(false);
         button1 = new JButton(new ImageIcon(buttonIcon1));
+        button1.setFont(new Font("Arial", Font.BOLD, 30));
         add(button1);
 
         BufferedImage buttonIcon2 = ImageIO.read(new File("src/main/resources/IconPack/Monitor.png"));
@@ -70,6 +72,7 @@ public class StartPage extends JPanel {
         button2.setBorder(BorderFactory.createEmptyBorder());
         button2.setContentAreaFilled(false);
         button2 = new JButton(new ImageIcon(buttonIcon2));
+        button2.setFont(new Font("Arial", Font.BOLD, 30));
         add(button2);
 
         BufferedImage buttonIcon3 = ImageIO.read(new File("src/main/resources/IconPack/OpenIcon.png"));
@@ -78,7 +81,14 @@ public class StartPage extends JPanel {
         button3.setBorder(BorderFactory.createEmptyBorder());
         button3.setContentAreaFilled(false);
         button3 = new JButton(new ImageIcon(buttonIcon3));
+        button3.setFont(new Font("Arial", Font.BOLD, 30));
         add(button3);
+
+
+        //m_monitorServicesButton
+        //m_newDesignButton
+        //m_openDesignButton
+
 
         buttonContainer1.add(m_monitorServicesButton, button1);
 
