@@ -12,5 +12,6 @@ public class DPWorkPanel extends JPanel {
     }
 
     private void setLocationRelativeTo(Object o) {
+
     }
 }

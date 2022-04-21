@@ -6,13 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
 public class PeachWindow extends JFrame {
 
-    public PeachWindow() {
+    public PeachWindow() throws IOException {
         super("Windesheim Peach");
 
         setThemeToSystem();
@@ -24,7 +25,7 @@ public class PeachWindow extends JFrame {
 
         setSize(1280, 720);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         add(new StartPage(this));
     }
