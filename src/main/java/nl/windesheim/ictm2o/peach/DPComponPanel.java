@@ -3,8 +3,12 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DPComponPanel extends JPanel {
@@ -32,10 +36,13 @@ public class DPComponPanel extends JPanel {
     }
 
     private static class Image extends JComponent {
+        private BufferedImage image;
         public Image(RegisteredComponent RC) {
-            //setPreferredSize(new Dimension(10, 10));
-            //setSize(new Dimension(10, 10));
-            setBackground(Color.BLUE);
+            try {
+                image = ImageIO.read(new File("src/main/resources/Peach.png"));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "InfoBox: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
+            }
         }
 
         @Override
@@ -43,8 +50,9 @@ public class DPComponPanel extends JPanel {
             super.paintComponent(g);
 
             Graphics2D g2 = (Graphics2D) g;
-            g2.setColor(getBackground());
-            g2.fillRect(getWidth()/2, getHeight()/2, 20, 20);
+//            g2.setColor(getBackground());
+//            g2.fillRect(getWidth()/2, getHeight()/2, 20, 20);
+              g2.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
         }
     }
 
