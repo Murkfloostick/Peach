@@ -1,5 +1,7 @@
 package nl.windesheim.ictm2o.peach;
 
+import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,7 +9,12 @@ import java.awt.event.ActionListener;
 
 public class DPToevCompon extends JPanel implements ActionListener {
     private JButton toevoegen;
-    public DPToevCompon(){
+    private ComponentRegistry CR;
+    private DesignPage mainFrame;
+
+    public DPToevCompon(ComponentRegistry CR, DesignPage mainFrame){
+        this.CR = CR;
+        this.mainFrame = mainFrame;
         setBackground(Color.gray);
         setPreferredSize(new Dimension(200, 550));
         toevoegen = new JButton("Component toevoegen");
@@ -24,6 +31,6 @@ public class DPToevCompon extends JPanel implements ActionListener {
         if (parentWindow instanceof Frame) {
             parentFrame = (JFrame)parentWindow;
         }
-        DPToevDialog dialoog = new DPToevDialog(parentFrame, true);;
+        DPToevDialog dialoog = new DPToevDialog(parentFrame, true, CR, mainFrame);
     }
 }
