@@ -32,5 +32,6 @@ public class DPToevCompon extends JPanel implements ActionListener {
             parentFrame = (JFrame)parentWindow;
         }
         DPToevDialog dialoog = new DPToevDialog(parentFrame, true, CR, mainFrame);
+        dialoog.setLocationRelativeTo(null);
     }
 }

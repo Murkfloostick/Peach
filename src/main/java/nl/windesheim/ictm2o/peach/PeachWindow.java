@@ -38,7 +38,7 @@ public class PeachWindow extends JFrame {
 
     public void openPage(JPanel origin, String title, JPanel panel) {
         setTitle("Windesheim Peach - " + title);
-
+        setFont(new Font("Arial", Font.BOLD, 35));
         remove(origin);
         add(panel);
         invalidate();

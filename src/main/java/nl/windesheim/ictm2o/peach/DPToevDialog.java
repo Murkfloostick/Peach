@@ -53,6 +53,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
         toevoegen.addActionListener(this);
         add(cancel);
         cancel.addActionListener(this);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
