@@ -24,6 +24,7 @@ public class DPComponPanel extends JPanel {
     public void refreshPanel(){
         removeAll();
         updateUI();
+        GLrows = 0;
         for (RegisteredComponent RC:CR.getRegisteredComponents()
              ) {
             Button(RC);
@@ -48,12 +49,14 @@ public class DPComponPanel extends JPanel {
     }
 
     public void Button(RegisteredComponent RC) {
-        add(new Image(RC));
+        //Vergroot plek
+        GLrows += 1;
+        setLayout(new GridLayout(GLrows, 2));
 
+        add(new Image(RC));
         JLabel titleLabel = new JLabel(RC.getName(), SwingConstants.CENTER);
         add(titleLabel);
         //setPreferredSize(new Dimension(50, 50));
-        GLrows += 1;
-        setLayout(new GridLayout(GLrows, 2));
+
     }
 }
