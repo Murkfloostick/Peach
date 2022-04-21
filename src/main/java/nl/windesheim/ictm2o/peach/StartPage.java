@@ -66,7 +66,7 @@ public class StartPage extends JPanel {
         button1.setFont(new Font("Arial", Font.BOLD, 30));
         add(button1);
 
-        BufferedImage buttonIcon2 = ImageIO.read(new File("src/main/resources/IconPack/Monitor.png"));
+        BufferedImage buttonIcon2 = ImageIO.read(new File("src/main/resources/IconPack/OpenIcon.png"));
         button2 = new JButton();
         button2.setPreferredSize(new Dimension(150, 150));
         button2.setBorder(BorderFactory.createEmptyBorder());
@@ -75,7 +75,7 @@ public class StartPage extends JPanel {
         button2.setFont(new Font("Arial", Font.BOLD, 30));
         add(button2);
 
-        BufferedImage buttonIcon3 = ImageIO.read(new File("src/main/resources/IconPack/OpenIcon.png"));
+        BufferedImage buttonIcon3 = ImageIO.read(new File("src/main/resources/IconPack/Monitor.png"));
         button3 = new JButton();
         button3.setPreferredSize(new Dimension(150, 150));
         button3.setBorder(BorderFactory.createEmptyBorder());

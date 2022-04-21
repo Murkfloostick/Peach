@@ -2,10 +2,12 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
-
+import static nl.windesheim.ictm2o.peach.DPWorkPanel.setLocationRelativeTo;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+
+
 
 public class DPComponPanel extends JPanel {
     private int GLrows = 0;
@@ -15,6 +17,7 @@ public class DPComponPanel extends JPanel {
         this.CR = CR;
         setBackground(Color.gray);
         setPreferredSize(new Dimension(200, 550));
+        setLocationRelativeTo(null);
         setMinimumSize(new Dimension(200, 550));
         setLayout(new GridLayout(GLrows, 2));
 

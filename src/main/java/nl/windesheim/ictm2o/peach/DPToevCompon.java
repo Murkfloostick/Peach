@@ -15,6 +15,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     public DPToevCompon(ComponentRegistry CR, DesignPage mainFrame){
         this.CR = CR;
         this.mainFrame = mainFrame;
+        this.setVisible(true);
         setBackground(Color.gray);
         setPreferredSize(new Dimension(200, 550));
         toevoegen = new JButton("Component toevoegen");
