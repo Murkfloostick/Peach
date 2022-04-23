@@ -1,6 +1,7 @@
 package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
+import nl.windesheim.ictm2o.peach.components.Design;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +20,10 @@ public class DesignPage extends JFrame implements ActionListener {
     private JCheckBoxMenuItem cbMenuItem;
 
     private ComponentRegistry CR = new ComponentRegistry();
+    private Design D = new Design(null); //Voor nu null
 
     public DesignPage(){
-    componPanel = new DPComponPanel(CR);
+    componPanel = new DPComponPanel(CR, D);
     workPanel = new DPWorkPanel();
     toevCompon = new DPToevCompon(CR, this);
     JScrollPane scroller = new JScrollPane(componPanel);

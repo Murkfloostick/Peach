@@ -1,7 +1,6 @@
 package nl.windesheim.ictm2o.peach;
 
-import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
-import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
+import nl.windesheim.ictm2o.peach.components.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,6 +15,7 @@ import java.io.IOException;
 public class DPComponPanel extends JPanel {
     private int GLrows = 0;
     private ComponentRegistry CR;
+    private Design D;
 
     //Dubbelklik om component toe te voegen aan sleeppaneel?
     MouseListener ml = new MouseAdapter(){
@@ -33,13 +33,17 @@ public class DPComponPanel extends JPanel {
                         break;
                     }
                 }
-                System.out.println(RC.getName());
+                //Maak placed component en zet het in design?, Eerst design doorvoeren naar componentspanel
+                Position pos = new Position(0,0);
+                PlacedComponent PC = new PlacedComponent(RC, RC.getName(), pos);
+                D.getPlacedComponents().add(PC);
             }
         }
     };
 
-    public DPComponPanel(ComponentRegistry CR){
+    public DPComponPanel(ComponentRegistry CR, Design D){
         this.CR = CR;
+        this.D = D;
         setBackground(Color.gray);
         setPreferredSize(new Dimension(200, 550));
         setMinimumSize(new Dimension(200, 550));
