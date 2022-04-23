@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import java.awt.Component;
@@ -20,7 +19,6 @@ import javax.swing.JLabel;
 
 public class DPWorkPanel extends JPanel{
     private Design D;
-    Rectangle area; //Dit is het gedeelte waar je dingen kan slepen
     ArrayList<JLabel> labels = new ArrayList<>(); //Dit wordt afbeeldingen
     private Dimension dim = new Dimension(500, 550);//Workplace
 
@@ -47,6 +45,7 @@ public class DPWorkPanel extends JPanel{
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            //Haal positie op van component en zet het vast
             JLabel label = new JLabel(PC.getName(), JLabel.CENTER);
             labels.add(label);
             add(label);
@@ -103,6 +102,7 @@ public class DPWorkPanel extends JPanel{
          */
         @Override
         public void mouseReleased(MouseEvent e) {
+            //Opslaan hier, Eerst label vinden via eerder code en string. Dan positie ophalen en opslaan.
             target = null;
         }
     }
