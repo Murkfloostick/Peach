@@ -16,6 +16,7 @@ public class DPComponPanel extends JPanel {
     private int GLrows = 0;
     private ComponentRegistry CR;
     private Design D;
+    private DPWorkPanel DPWP;
 
     //Dubbelklik om component toe te voegen aan sleeppaneel?
     MouseListener ml = new MouseAdapter(){
@@ -33,17 +34,18 @@ public class DPComponPanel extends JPanel {
                         break;
                     }
                 }
-                //Maak placed component en zet het in design?, Eerst design doorvoeren naar componentspanel
                 Position pos = new Position(0,0);
                 PlacedComponent PC = new PlacedComponent(RC, RC.getName(), pos);
                 D.getPlacedComponents().add(PC);
+                DPWP.refreshWP();
             }
         }
     };
 
-    public DPComponPanel(ComponentRegistry CR, Design D){
+    public DPComponPanel(ComponentRegistry CR, Design D, DPWorkPanel DPWP){
         this.CR = CR;
         this.D = D;
+        this.DPWP = DPWP;
         setBackground(Color.gray);
         setPreferredSize(new Dimension(200, 550));
         setMinimumSize(new Dimension(200, 550));
