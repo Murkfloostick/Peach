@@ -2,6 +2,8 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
+import nl.windesheim.ictm2o.peach.components.Position;
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 
 
 import java.awt.*;
@@ -22,13 +24,17 @@ public class DPWorkPanel extends JPanel{
     ArrayList<JLabel> labels = new ArrayList<>(); //Dit wordt afbeeldingen
     private Dimension dim = new Dimension(500, 550);//Workplace
 
+    private static Insets insets = null;
+    private static Dimension size = null;
+
     public DPWorkPanel(Design D) {
         this.D = D;
         setBackground(Color.lightGray);
-        setPreferredSize(dim);
         ComponentDragger dragger = new ComponentDragger();
         addMouseListener(dragger);
         addMouseMotionListener(dragger);
+        setLayout(null);
+        setPreferredSize(dim);
         refreshWP();
         setVisible(true);
     }
@@ -45,10 +51,13 @@ public class DPWorkPanel extends JPanel{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //Haal positie op van component en zet het vast
             JLabel label = new JLabel(PC.getName(), JLabel.CENTER);
             labels.add(label);
+            int x = Math.toIntExact(PC.getPosition().getX());
+            int y = Math.toIntExact(PC.getPosition().getY());
+            label.setBounds(x, y, label.getWidth(), label.getHeight());
             add(label);
+
         }
         setVisible(false);
         setVisible(true);
@@ -102,7 +111,18 @@ public class DPWorkPanel extends JPanel{
          */
         @Override
         public void mouseReleased(MouseEvent e) {
-            //Opslaan hier, Eerst label vinden via eerder code en string. Dan positie ophalen en opslaan.
+            JLabel jl = (JLabel) target;
+            PlacedComponent PC = null;
+            for (PlacedComponent PCfind:D.getPlacedComponents()
+            ) {
+                if(jl.getText().equals(PCfind.getName())){
+                    PC = PCfind;
+                    break;
+                }
+            }
+            //Memory leak?
+            Position pos = new Position(jl.getX(), jl.getY());
+            PC.setPosition(pos);
             target = null;
         }
     }

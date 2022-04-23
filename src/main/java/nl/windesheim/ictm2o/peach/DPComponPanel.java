@@ -35,7 +35,6 @@ public class DPComponPanel extends JPanel {
                     }
                 }
                 Position pos = new Position(0,0);
-                Rectangle rect = new Rectangle(0, 0, 100, 100);
                 PlacedComponent PC = new PlacedComponent(RC, RC.getName(), pos);
                 D.getPlacedComponents().add(PC);
                 DPWP.refreshWP();
