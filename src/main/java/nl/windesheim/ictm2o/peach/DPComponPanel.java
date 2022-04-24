@@ -34,7 +34,7 @@ public class DPComponPanel extends JPanel {
                         break;
                     }
                 }
-                Position pos = new Position(0,0);
+                Position pos = new Position(250,250);
                 PlacedComponent PC = new PlacedComponent(RC, RC.getName(), pos);
                 D.getPlacedComponents().add(PC);
                 DPWP.refreshWP();
@@ -85,6 +85,8 @@ public class DPComponPanel extends JPanel {
 
         }
     }
+
+
 
     public void Button(RegisteredComponent RC) {
         //Vergroot plek

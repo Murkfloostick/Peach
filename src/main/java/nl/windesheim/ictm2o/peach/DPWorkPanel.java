@@ -16,12 +16,16 @@ import javax.swing.JPanel;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class DPWorkPanel extends JPanel{
     private Design D;
-    ArrayList<JLabel> labels = new ArrayList<>(); //Dit wordt afbeeldingen
+    private ArrayList<JLabel> labels = new ArrayList<>(); //Dit wordt afbeeldingen
+    private Map<JLabel, PlacedComponent> map = new HashMap<>();
     private Dimension dim = new Dimension(500, 550);//Workplace
 
     private static Insets insets = null;
@@ -40,9 +44,12 @@ public class DPWorkPanel extends JPanel{
     }
 
     public void refreshWP(){
+        //Alles leeghalen
         removeAll();
         updateUI();
         labels.clear();
+        map.clear();
+
         for (PlacedComponent PC:D.getPlacedComponents()
              ) {
             ImageIcon icon = null;
@@ -53,11 +60,11 @@ public class DPWorkPanel extends JPanel{
             }
             JLabel label = new JLabel(PC.getName(), JLabel.CENTER);
             labels.add(label);
-            int x = Math.toIntExact(PC.getPosition().getX());
-            int y = Math.toIntExact(PC.getPosition().getY());
-            label.setBounds(x, y, label.getWidth(), label.getHeight());
+            map.put(label, PC);
             add(label);
-
+            //Breedte en hoogte moet vast staan
+            //Wilt niet ophalen als het niet gerenderd wordt
+            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 50, 50);
         }
         setVisible(false);
         setVisible(true);
@@ -113,13 +120,17 @@ public class DPWorkPanel extends JPanel{
         public void mouseReleased(MouseEvent e) {
             JLabel jl = (JLabel) target;
             PlacedComponent PC = null;
-            for (PlacedComponent PCfind:D.getPlacedComponents()
-            ) {
-                if(jl.getText().equals(PCfind.getName())){
-                    PC = PCfind;
-                    break;
-                }
-            }
+            //Werkt niet met meerdere labels met dezelfde naam
+//            for (PlacedComponent PCfind:D.getPlacedComponents()
+//            ) {
+//                if(jl.getText().equals(PCfind.getName())){
+//                    PC = PCfind;
+//                    break;
+//                }
+//            }
+
+            PC = map.get(target);
+
             //Memory leak?
             Position pos = new Position(jl.getX(), jl.getY());
             PC.setPosition(pos);
