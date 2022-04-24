@@ -25,9 +25,7 @@ public class PeachWindow extends JFrame {
 
         setSize(1280, 720);
         setLocationRelativeTo(null);
-
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setMenuBar();
 
         add(new StartPage(this));
     }
@@ -38,7 +36,7 @@ public class PeachWindow extends JFrame {
 
     public void openPage(JPanel origin, String title, JPanel panel) {
         setTitle("Windesheim Peach - " + title);
-        setFont(new Font("Arial", Font.BOLD, 35));
+
         remove(origin);
         add(panel);
         invalidate();

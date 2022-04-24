@@ -2,8 +2,6 @@ package nl.windesheim.ictm2o.peach;
 
 import javax.swing.*;
 
-import static nl.windesheim.ictm2o.peach.DPWorkPanel.setLocationRelativeTo;
-
 public class DesignerPage extends JPanel {
 
     public DesignerPage() {
