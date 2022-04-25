@@ -74,9 +74,9 @@ public class DPComponPanel extends JPanel {
         this.DPWP = DPWP;
         setBackground(Color.gray);
         //setPreferredSize(dim);
-        setMinimumSize(dim);
+        //setMinimumSize(dim);
         setLayout(new GridLayout(GLrows, 2));
-        setAutoscrolls(true);
+        //setAutoscrolls(true);
         refreshPanel();
     }
 
