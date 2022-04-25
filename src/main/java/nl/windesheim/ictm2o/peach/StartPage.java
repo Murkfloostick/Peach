@@ -1,13 +1,13 @@
 package nl.windesheim.ictm2o.peach;
 
-        import javax.imageio.ImageIO;
-        import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.MouseAdapter;
-        import java.awt.event.MouseEvent;
-        import java.awt.image.BufferedImage;
-        import java.io.File;
-        import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class StartPage extends JPanel {
     JPanel buttonContainer1 = new JPanel();
@@ -28,29 +28,17 @@ public class StartPage extends JPanel {
     private static JLabel labelRechts;
 
     private static class Button extends JPanel {
-        public Button(String title) throws IOException {
-            try {
-                JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
-                add(titleLabel);
-                setPreferredSize(new Dimension(550, 550));
-            }catch (Exception e){
-                System.out.println("Error ~37");
-            }
+
+        public Button(String title) {
+            JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+            add(titleLabel);
+            setPreferredSize(new Dimension(550, 550));
         }
+
     }
 
     public StartPage(PeachWindow parent) throws IOException {
         m_parent = parent;
-
-        //Font aanpassen
-        Font nieuwFont = new Font("Arial", Font.BOLD, 20);
-
-//        JLabel labelLinks = new JLabel("Monitor Services");
-//        labelLinks.setFont(nieuwFont);
-//        JLabel labelCenter = new JLabel("Nieuw Ontwerp");
-//        labelCenter.setFont(nieuwFont);
-//        JLabel labelRechts = new JLabel("Open Ontwerp");
-//        labelRechts.setFont(nieuwFont);
 
         m_monitorServicesButton = new Button("Monitor Services");
         m_newDesignButton = new Button("Nieuw Ontwerp");
@@ -81,18 +69,10 @@ public class StartPage extends JPanel {
         add(button3);
 
         buttonContainer1.add(m_monitorServicesButton, button1);
-
         buttonContainer2.add(m_newDesignButton, button2);
-
         buttonContainer3.add(m_openDesignButton, button3);
 
-
         setLayout(new FlowLayout());
-
-//        add(Box.createVerticalGlue());
-//        add(Box.createVerticalGlue());
-//        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-//        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         add(buttonContainer1);
         add(buttonContainer2);

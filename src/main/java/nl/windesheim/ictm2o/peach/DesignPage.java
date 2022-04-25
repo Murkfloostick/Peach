@@ -9,11 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-public class DesignPage extends JFrame implements ActionListener {
-    private final DPComponPanel componPanel;
-    private final DPWorkPanel workPanel;
-    private final DPToevCompon toevCompon;
-    private final JMenuBar menuBar;
+public class DesignPage extends JPanel implements ActionListener {
+    private DPComponPanel componPanel;
+    private DPWorkPanel workPanel;
+    private DPToevCompon toevCompon;
+    private JMenuBar menuBar;
     private JMenu menu, submenu;
     private JMenuItem menuItem;
     private JRadioButtonMenuItem rbMenuItem;
