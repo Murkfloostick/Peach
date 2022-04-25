@@ -9,14 +9,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class DPWorkPanel extends JPanel{
     private final Design D;
@@ -44,17 +42,20 @@ public class DPWorkPanel extends JPanel{
         for (PlacedComponent PC : D.getPlacedComponents()
              ) {
             ImageIcon icon = null;
-            try{
-                icon = new ImageIcon("src/main/resources/Peach.png");//Wordt icon van dinges later
-            } catch (Exception e) {
-                e.printStackTrace();
+            try {
+                String iconnaam = PC.getRegisteredComponent().getIcon().name();
+                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
+                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
             }
             JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);
             map.put(label, PC);
             add(label);
+
             //Breedte en hoogte moet vast staan
-            //Wilt niet ophalen als het niet gerenderd wordt
-            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 50, 50);
+            //Wilt niet plaatsen als het niet gerenderd wordt
+            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 90, 50);
         }
         setVisible(false);
         setVisible(true);
