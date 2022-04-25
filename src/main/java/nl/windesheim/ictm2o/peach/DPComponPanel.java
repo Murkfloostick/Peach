@@ -1,6 +1,8 @@
 package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,29 +15,44 @@ import java.io.File;
 import java.io.IOException;
 
 public class DPComponPanel extends JPanel {
+
+    class Button extends JLabel {
+
+        @NotNull
+        public RegisteredComponent registeredComponent;
+
+        public Button(@NotNull RegisteredComponent registeredComponent) {
+            super(registeredComponent.getName(), SwingConstants.CENTER);
+            this.registeredComponent = registeredComponent;
+
+
+        }
+
+        @NotNull
+        public RegisteredComponent getRegisteredComponent() {
+            return registeredComponent;
+        }
+    }
+
     private int GLrows = 0;
     private ComponentRegistry CR;
     private Design D;
     private DPWorkPanel DPWP;
 
+    private final DPComponPanel thisReference = this;
+
     //Dubbelklik om component toe te voegen aan sleeppaneel?
     MouseListener ml = new MouseAdapter(){
         public void mousePressed(MouseEvent me){
-            if(me.getClickCount() == 2)//double-click
-            {
-                //Dit betekent nu dat meerdere componenten niet dezelfde naam kunnen hebben
-                //Oplossing kan zijn kijken naar UUID, maar dan moet je ook kijken hoe je die gaat pakken
-                JLabel jl = (JLabel) me.getSource();
-                RegisteredComponent RC = null;
-                for (RegisteredComponent RCfind:CR.getRegisteredComponents()
-                ) {
-                    if(jl.getText().equals(RCfind.getName())){
-                        RC = RCfind;
-                        break;
-                    }
+            if (me.getClickCount() == 2) {//double-click
+                if (!(me.getSource() instanceof Button button)) {
+                    JOptionPane.showMessageDialog(thisReference, "Een interne fout is opgetreden");
+                    return;
                 }
+
                 Position pos = new Position(250,250);
-                PlacedComponent PC = new PlacedComponent(RC, RC.getName(), pos);
+                PlacedComponent PC = new PlacedComponent(button.getRegisteredComponent(),
+                        button.getRegisteredComponent().getName(), pos);
                 D.getPlacedComponents().add(PC);
                 DPWP.refreshWP();
             }
@@ -57,9 +74,8 @@ public class DPComponPanel extends JPanel {
         removeAll();
         updateUI();
         GLrows = 0;
-        for (RegisteredComponent RC:CR.getRegisteredComponents()
-             ) {
-            Button(RC);
+        for (RegisteredComponent RC : CR.getRegisteredComponents()) {
+            addButton(RC);
         }
     }
 
@@ -86,15 +102,13 @@ public class DPComponPanel extends JPanel {
         }
     }
 
-
-
-    public void Button(RegisteredComponent RC) {
+    public void addButton(RegisteredComponent RC) {
         //Vergroot plek
         GLrows += 1;
         setLayout(new GridLayout(GLrows, 2));
         add(new Image(RC));
-        JLabel titleLabel = new JLabel(RC.getName(), SwingConstants.CENTER);
-        titleLabel.addMouseListener(ml);
-        add(titleLabel);
+        Button button = new Button(RC);
+        button.addMouseListener(ml);
+        add(button);
     }
 }
