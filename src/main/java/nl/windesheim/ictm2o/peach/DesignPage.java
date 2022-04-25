@@ -19,18 +19,16 @@ public class DesignPage extends JFrame implements ActionListener {
     private JRadioButtonMenuItem rbMenuItem;
     private JCheckBoxMenuItem cbMenuItem;
 
-    private final ComponentRegistry CR = new ComponentRegistry();
-    private final Design D = new Design(null); //Voor nu null
+    private ComponentRegistry CR = new ComponentRegistry();
+    private Design D = new Design(null); //Voor nu null
 
-    public DesignPage(){
+    public DesignPage(PeachWindow peachWindow){
     workPanel = new DPWorkPanel(D);
     componPanel = new DPComponPanel(CR, D, workPanel);
     toevCompon = new DPToevCompon(CR, this);
     JScrollPane scroller = new JScrollPane(componPanel);
     this.getContentPane().add(scroller);
 
-    setTitle("Ontwerp");
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     setSize(950, 650);
@@ -116,7 +114,7 @@ public class DesignPage extends JFrame implements ActionListener {
                 "This menu does nothing");
         menuBar.add(menu);
 
-        setJMenuBar(menuBar);
+        peachWindow.setJMenuBar(menuBar);
 
         setVisible(true);
     }
