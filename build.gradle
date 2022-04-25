@@ -14,6 +14,9 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation 'org.jetbrains:annotations:16.0.2'
     implementation 'org.json:json:20220320'
+
+    // https://mavenlibs.com/maven/dependency/com.miglayout/miglayout
+    implementation 'com.miglayout:miglayout:3.7.4'
 }
 
 test {
