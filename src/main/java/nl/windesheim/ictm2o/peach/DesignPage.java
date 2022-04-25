@@ -10,17 +10,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class DesignPage extends JFrame implements ActionListener {
-    private DPComponPanel componPanel;
-    private DPWorkPanel workPanel;
-    private DPToevCompon toevCompon;
-    private JMenuBar menuBar;
+    private final DPComponPanel componPanel;
+    private final DPWorkPanel workPanel;
+    private final DPToevCompon toevCompon;
+    private final JMenuBar menuBar;
     private JMenu menu, submenu;
     private JMenuItem menuItem;
     private JRadioButtonMenuItem rbMenuItem;
     private JCheckBoxMenuItem cbMenuItem;
 
-    private ComponentRegistry CR = new ComponentRegistry();
-    private Design D = new Design(null); //Voor nu null
+    private final ComponentRegistry CR = new ComponentRegistry();
+    private final Design D = new Design(null); //Voor nu null
 
     public DesignPage(){
     workPanel = new DPWorkPanel(D);
