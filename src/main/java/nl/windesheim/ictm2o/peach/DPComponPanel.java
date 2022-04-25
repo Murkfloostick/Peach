@@ -26,12 +26,11 @@ public class DPComponPanel extends JPanel {
             super(registeredComponent.getName(), SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
             try {
-                //Uncommenten zodra wij icons hebben
-                //String iconnaam = registeredComponent.getIcon().name();
-                //image = ImageIO.read(new File("src/main/resources/Icons/" + iconnaam + ".png"));
-                image = new ImageIcon("src/main/resources/Peach.png");
+                String iconnaam = registeredComponent.getIcon().name();
+                image = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
+                image = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
             }
             this.setIcon(image);
         }
@@ -74,9 +73,9 @@ public class DPComponPanel extends JPanel {
         this.DPWP = DPWP;
         setBackground(Color.gray);
         //setPreferredSize(dim);
-        setMinimumSize(dim);
+        //setMinimumSize(dim);
         setLayout(new GridLayout(GLrows, 2));
-        setAutoscrolls(true);
+        //setAutoscrolls(true);
         refreshPanel();
     }
 
