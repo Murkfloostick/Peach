@@ -18,6 +18,7 @@ public class DPComponPanel extends JPanel {
 
     class Button extends JLabel {
         private ImageIcon image;
+
         @NotNull
         public RegisteredComponent registeredComponent;
 
@@ -46,6 +47,8 @@ public class DPComponPanel extends JPanel {
     private Design D;
     private DPWorkPanel DPWP;
     private Dimension dim = new Dimension(200, 550);
+
+    private final DPComponPanel thisReference = this;
 
     private final DPComponPanel thisReference = this;
 

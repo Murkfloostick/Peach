@@ -27,6 +27,7 @@ public class DesignPage extends JPanel implements ActionListener {
     componPanel = new DPComponPanel(CR, D, workPanel);
     toevCompon = new DPToevCompon(CR, this);
     JScrollPane scroller = new JScrollPane(componPanel);
+
     scroller.setPreferredSize(componPanel.getDim());
     //peachWindow.getContentPane().add(scroller);
 
