@@ -14,7 +14,7 @@ public class ComponentRegistry {
 
     public ComponentRegistry() {
         this.registeredComponents = new ArrayList<>();
-        registeredComponents.add(new RegisteredComponent(UUID.randomUUID(), "Test", ComponentIcon.ROUTER, 100.0f));
+        //registeredComponents.add(new RegisteredComponent(UUID.randomUUID(), "Test", ComponentIcon.ROUTER, 100.0f));
     }
 
     public ComponentRegistry(@NotNull ArrayList<RegisteredComponent> registeredComponents) {
