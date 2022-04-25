@@ -27,7 +27,8 @@ public class DesignPage extends JFrame implements ActionListener {
     componPanel = new DPComponPanel(CR, D, workPanel);
     toevCompon = new DPToevCompon(CR, this);
     JScrollPane scroller = new JScrollPane(componPanel);
-    this.getContentPane().add(scroller);
+    scroller.setPreferredSize(componPanel.getDim());
+    //peachWindow.getContentPane().add(scroller);
 
     setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
@@ -37,7 +38,9 @@ public class DesignPage extends JFrame implements ActionListener {
     c.gridx = 0;
     c.gridy = 0;
 
-    add(componPanel, c);
+    add(scroller, c);
+    //peachWindow.getContentPane().add(scroller);
+        //add(componPanel, c);
     c.gridx = 1;
     add(workPanel, c);
     c.gridx = 2;
