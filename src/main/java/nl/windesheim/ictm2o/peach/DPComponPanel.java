@@ -36,6 +36,7 @@ public class DPComponPanel extends JPanel {
     private ComponentRegistry CR;
     private Design D;
     private DPWorkPanel DPWP;
+    private Dimension dim = new Dimension(200, 550);
 
     private final DPComponPanel thisReference = this;
 
@@ -62,9 +63,13 @@ public class DPComponPanel extends JPanel {
         this.D = D;
         this.DPWP = DPWP;
         setBackground(Color.gray);
-        setPreferredSize(new Dimension(200, 550));
-        setMinimumSize(new Dimension(200, 550));
-        setLayout(new GridLayout(GLrows, 2));
+        //setPreferredSize(dim);
+        //setMinimumSize(dim);
+        //setLayout(new GridLayout(GLrows, 2));
+        JScrollPane jsp = new JScrollPane();
+        add(jsp);
+        //setLayout(new FlowLayout());
+        //setAutoscrolls(true);
         refreshPanel();
     }
 
@@ -108,5 +113,9 @@ public class DPComponPanel extends JPanel {
         Button button = new Button(RC);
         button.addMouseListener(ml);
         add(button);
+    }
+
+    public Dimension getDim() {
+        return dim;
     }
 }

@@ -49,7 +49,7 @@ public class DPWorkPanel extends JPanel{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            JLabel label = new JLabel(PC.getName(), JLabel.CENTER);
+            JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);
             map.put(label, PC);
             add(label);
             //Breedte en hoogte moet vast staan
