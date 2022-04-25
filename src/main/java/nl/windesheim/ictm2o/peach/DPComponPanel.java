@@ -50,8 +50,6 @@ public class DPComponPanel extends JPanel {
 
     private final DPComponPanel thisReference = this;
 
-    private final DPComponPanel thisReference = this;
-
     //Dubbelklik om component toe te voegen aan sleeppaneel?
     MouseListener ml = new MouseAdapter(){
         public void mousePressed(MouseEvent me){
