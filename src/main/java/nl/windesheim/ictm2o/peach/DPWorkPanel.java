@@ -58,6 +58,9 @@ public class DPWorkPanel extends JPanel{
         }
         setVisible(false);
         setVisible(true);
+
+        invalidate();
+        validate();
         repaint();
     }
 
