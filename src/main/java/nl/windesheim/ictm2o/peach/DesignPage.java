@@ -19,23 +19,27 @@ public class DesignPage extends JPanel implements ActionListener {
     private JRadioButtonMenuItem rbMenuItem;
     private JCheckBoxMenuItem cbMenuItem;
 
+    private PeachWindow m_parent;
+
     private ComponentRegistry CR = new ComponentRegistry();
     private Design D = new Design(null); //Voor nu null
 
-    public DesignPage(PeachWindow peachWindow){
-    workPanel = new DPWorkPanel(D);
-    componPanel = new DPComponPanel(CR, D, workPanel);
-    toevCompon = new DPToevCompon(CR, this);
-    JScrollPane scroller = new JScrollPane(componPanel);
+    public DesignPage(PeachWindow peachWindow, PeachWindow m_parent) {
+        this.m_parent = m_parent;
+        workPanel = new DPWorkPanel(D);
+        componPanel = new DPComponPanel(CR, D, workPanel);
 
-    scroller.setPreferredSize(componPanel.getDim());
-    //peachWindow.getContentPane().add(scroller);
+        toevCompon = new DPToevCompon(CR, this, this.m_parent);
+        JScrollPane scroller = new JScrollPane(componPanel);
 
-    setLayout(new GridBagLayout());
-    GridBagConstraints c = new GridBagConstraints();
-    setSize(950, 650);
+        scroller.setPreferredSize(componPanel.getDim());
+        //peachWindow.getContentPane().add(scroller);
 
-    c.fill = GridBagConstraints.VERTICAL;
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        setSize(950, 650);
+
+        c.fill = GridBagConstraints.VERTICAL;
     c.gridx = 0;
     c.gridy = 0;
 

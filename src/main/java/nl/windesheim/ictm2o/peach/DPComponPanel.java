@@ -45,13 +45,14 @@ public class DPComponPanel extends JPanel {
     private ComponentRegistry CR;
     private Design D;
     private DPWorkPanel DPWP;
-    private Dimension dim = new Dimension(200, 550);
+    //Vergroten zodat icoons meer ruimte hebben? - OG: 200-550
+    private Dimension dim = new Dimension(600, 550);
 
     private final DPComponPanel thisReference = this;
 
     //Dubbelklik om component toe te voegen aan sleeppaneel?
-    MouseListener ml = new MouseAdapter(){
-        public void mousePressed(MouseEvent me){
+    MouseListener ml = new MouseAdapter() {
+        public void mousePressed(MouseEvent me) {
             if (me.getClickCount() == 2) {//double-click
                 if (!(me.getSource() instanceof Button button)) {
                     JOptionPane.showMessageDialog(thisReference, "Een interne fout is opgetreden");

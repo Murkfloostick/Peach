@@ -47,8 +47,9 @@ public class DPWorkPanel extends JPanel{
                 icon = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
-                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
+                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/Generic.png");
             }
+
             JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);
             map.put(label, PC);
             add(label);
