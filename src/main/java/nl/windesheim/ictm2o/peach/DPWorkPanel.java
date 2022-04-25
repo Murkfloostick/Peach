@@ -50,7 +50,7 @@ public class DPWorkPanel extends JPanel{
         labels.clear();
         map.clear();
 
-        for (PlacedComponent PC:D.getPlacedComponents()
+        for (PlacedComponent PC : D.getPlacedComponents()
              ) {
             ImageIcon icon = null;
             try{

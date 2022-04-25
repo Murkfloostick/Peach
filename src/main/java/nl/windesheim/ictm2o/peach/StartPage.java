@@ -117,7 +117,7 @@ public class StartPage extends JPanel {
         button2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                m_parent.openPage(startPage, "Ontwerper", new DesignerPage());
+                m_parent.openPage(startPage, "Ontwerper", new DesignPage(m_parent));
                 e.consume();
             }
         });
@@ -126,7 +126,7 @@ public class StartPage extends JPanel {
         button3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                m_parent.openPage(startPage, "Ontwerper", new DesignerPage());
+                m_parent.openPage(startPage, "Ontwerper", new DesignPage(m_parent));
                 e.consume();
             }
         });
