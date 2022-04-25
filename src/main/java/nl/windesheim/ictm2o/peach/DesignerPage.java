@@ -11,7 +11,7 @@ public class DesignerPage extends JPanel {
         //Misschien een goed idee? Bij new DesignerPage gelijk fullscreen:
         DP.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //Deze alleen voor zonder borders: (nu false)
-        DP.setUndecorated(false);
+        //DP.setUndecorated(false); werkt niet
         DP.setVisible(true);
     }
 
