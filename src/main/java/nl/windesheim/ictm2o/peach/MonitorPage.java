@@ -7,14 +7,19 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Random;
 
-public class MonitorPage extends JPanel {
+public class MonitorPage extends JPanel implements ActionListener {
 
-    private Graph cpuGraph = new Graph(20, Color.green);
-    private Graph memoryGraph = new Graph(20, Color.red);
+    private final Graph cpuGraph = new Graph(20, Color.green);
+    private final Graph memoryGraph = new Graph(20, Color.red);
+    private final PeachWindow m_parent;
+    private final JButton terugKnop;
 
-    public MonitorPage() {
+
+    public MonitorPage(PeachWindow m_parent) {
+        this.m_parent = m_parent;
         cpuGraph.setPreferredSize(new Dimension(550, 200));
         memoryGraph.setPreferredSize(new Dimension(550, 200));
 
@@ -28,6 +33,11 @@ public class MonitorPage extends JPanel {
 
         addCPUGraph();
         addMemoryGraph();
+
+        terugKnop = new JButton("Terug");
+        terugKnop.setFont(new Font("Inter", Font.BOLD, 20));
+        terugKnop.addActionListener(this);
+        add(terugKnop);
 
         Random random = new Random();
 
@@ -60,4 +70,19 @@ public class MonitorPage extends JPanel {
         add(memoryGraph, "wrap");
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == terugKnop) {
+            try {
+                m_parent.dispose();
+                PeachWindow peachWindow = new PeachWindow();
+                peachWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                peachWindow.setUndecorated(false);
+                peachWindow.setVisible(true);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.exit(0);
+            }
+        }
+    }
 }

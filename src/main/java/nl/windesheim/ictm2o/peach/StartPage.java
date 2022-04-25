@@ -31,6 +31,7 @@ public class StartPage extends JPanel {
 
         public Button(String title) {
             JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 25));
             add(titleLabel);
             setPreferredSize(new Dimension(550, 550));
         }
@@ -88,7 +89,7 @@ public class StartPage extends JPanel {
         button1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                m_parent.openPage(startPage, "Dienstmonitor", new MonitorPage());
+                m_parent.openPage(startPage, "Dienstmonitor", new MonitorPage(m_parent));
                 e.consume();
             }
         });
