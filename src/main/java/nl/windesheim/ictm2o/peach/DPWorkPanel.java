@@ -3,33 +3,25 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
-import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
-
 
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class DPWorkPanel extends JPanel{
-    private Design D;
-    private ArrayList<JLabel> labels = new ArrayList<>(); //Dit wordt afbeeldingen
-    private Map<JLabel, PlacedComponent> map = new HashMap<>();
-    private Dimension dim = new Dimension(500, 550);//Workplace
-
-    private static Insets insets = null;
-    private static Dimension size = null;
+    private final Design D;
+    private final Map<JLabel, PlacedComponent> map = new HashMap<>();
+    private final Dimension dim = new Dimension(500, 550);//Workplace
 
     public DPWorkPanel(Design D) {
         this.D = D;
@@ -47,7 +39,6 @@ public class DPWorkPanel extends JPanel{
         //Alles leeghalen
         removeAll();
         updateUI();
-        labels.clear();
         map.clear();
 
         for (PlacedComponent PC:D.getPlacedComponents()
@@ -59,7 +50,6 @@ public class DPWorkPanel extends JPanel{
                 e.printStackTrace();
             }
             JLabel label = new JLabel(PC.getName(), JLabel.CENTER);
-            labels.add(label);
             map.put(label, PC);
             add(label);
             //Breedte en hoogte moet vast staan
@@ -119,7 +109,7 @@ public class DPWorkPanel extends JPanel{
         @Override
         public void mouseReleased(MouseEvent e) {
             JLabel jl = (JLabel) target;
-            PlacedComponent PC = null;
+            PlacedComponent PC;
             //Werkt niet met meerdere labels met dezelfde naam
 //            for (PlacedComponent PCfind:D.getPlacedComponents()
 //            ) {
