@@ -24,8 +24,6 @@ public class DPComponPanel extends JPanel {
         public Button(@NotNull RegisteredComponent registeredComponent) {
             super(registeredComponent.getName(), SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
-
-
         }
 
         @NotNull
