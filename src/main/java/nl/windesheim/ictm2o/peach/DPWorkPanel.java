@@ -22,6 +22,7 @@ public class DPWorkPanel extends JPanel{
     private final Dimension dim = new Dimension(500, 550);//Workplace
 
     public DPWorkPanel(Design D) {
+        //TODO Dynamic dim instellen
         this.D = D;
         setBackground(Color.lightGray);
         ComponentDragger dragger = new ComponentDragger();

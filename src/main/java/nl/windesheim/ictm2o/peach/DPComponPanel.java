@@ -41,6 +41,31 @@ public class DPComponPanel extends JPanel {
         }
     }
 
+    class PopUp extends JPopupMenu {
+        JMenuItem anItem;
+        public PopUp() {
+            anItem = new JMenuItem("Verwijder!");
+            add(anItem);
+        }
+    }
+
+    class PopClickListener extends MouseAdapter {
+        public void mousePressed(MouseEvent e) {
+            if (e.isPopupTrigger())
+                doPop(e);
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            if (e.isPopupTrigger())
+                doPop(e);
+        }
+
+        private void doPop(MouseEvent e) {
+            PopUp menu = new PopUp();
+            menu.show(e.getComponent(), e.getX(), e.getY());
+        }
+    }
+
     private int GLrows = 0;
     private ComponentRegistry CR;
     private Design D;
@@ -49,7 +74,8 @@ public class DPComponPanel extends JPanel {
     private Dimension dim = new Dimension(600, 550);
 
     private final DPComponPanel thisReference = this;
-
+    //TODO Slepen om toe te voegen
+    //TODO rechte knop menu om te verwijderen
     //Dubbelklik om component toe te voegen aan sleeppaneel?
     MouseListener ml = new MouseAdapter() {
         public void mousePressed(MouseEvent me) {
@@ -120,6 +146,7 @@ public class DPComponPanel extends JPanel {
         //add(new Image(RC));
         Button button = new Button(RC);
         button.addMouseListener(ml);
+        button.addMouseListener(new PopClickListener());
         add(button);
     }
 
