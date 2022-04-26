@@ -17,7 +17,6 @@ public class MonitorPage extends JPanel implements ActionListener {
     private final PeachWindow m_parent;
     private final JButton terugKnop;
 
-
     public MonitorPage(PeachWindow m_parent) {
         this.m_parent = m_parent;
         cpuGraph.setPreferredSize(new Dimension(550, 200));

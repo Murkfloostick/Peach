@@ -3,6 +3,7 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.Color;
@@ -21,8 +22,12 @@ public class DPWorkPanel extends JPanel{
     private final Map<JLabel, PlacedComponent> map = new HashMap<>();
     private final Dimension dim = new Dimension(500, 550);//Workplace
 
-    public DPWorkPanel(Design D) {
+    @NotNull
+    private final DesignPage designPage;
+
+    public DPWorkPanel(Design D, @NotNull DesignPage designPage) {
         this.D = D;
+        this.designPage = designPage;
         setBackground(Color.lightGray);
         ComponentDragger dragger = new ComponentDragger();
         addMouseListener(dragger);
@@ -39,8 +44,7 @@ public class DPWorkPanel extends JPanel{
         updateUI();
         map.clear();
 
-        for (PlacedComponent PC : D.getPlacedComponents()
-             ) {
+        for (PlacedComponent PC : D.getPlacedComponents()) {
             ImageIcon icon = null;
             try {
                 String iconnaam = PC.getRegisteredComponent().getIcon().name();
@@ -105,6 +109,7 @@ public class DPWorkPanel extends JPanel{
             if (target != null) {
                 target.setBounds(e.getX(), e.getY(), target.getWidth(), target.getHeight());
                 e.getComponent().repaint();
+                designPage.setDesignModified();
             }
         }
 
@@ -130,6 +135,7 @@ public class DPWorkPanel extends JPanel{
             Position pos = new Position(jl.getX(), jl.getY());
             PC.setPosition(pos);
             target = null;
+            designPage.setDesignModified();
         }
     }
 }

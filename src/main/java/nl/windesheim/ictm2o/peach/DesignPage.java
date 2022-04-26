@@ -2,12 +2,16 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.Design;
+import nl.windesheim.ictm2o.peach.storage.DesignFile;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class DesignPage extends JPanel implements ActionListener {
     private DPComponPanel componPanel;
@@ -26,8 +30,8 @@ public class DesignPage extends JPanel implements ActionListener {
 
     public DesignPage(PeachWindow peachWindow, PeachWindow m_parent) {
         this.m_parent = m_parent;
-        workPanel = new DPWorkPanel(D);
-        componPanel = new DPComponPanel(CR, D, workPanel);
+        workPanel = new DPWorkPanel(D, this);
+        componPanel = new DPComponPanel(CR, D, workPanel, this);
 
         toevCompon = new DPToevCompon(CR, this, this.m_parent);
         JScrollPane scroller = new JScrollPane(componPanel);
@@ -52,26 +56,27 @@ public class DesignPage extends JPanel implements ActionListener {
     add(toevCompon, c);
 
     menuBar = new JMenuBar();
-        //Build the first menu.
-        menu = new JMenu("A Menu");
-        menu.setMnemonic(KeyEvent.VK_A);
-        menu.getAccessibleContext().setAccessibleDescription(
-                "The only menu in this program that has menu items");
-        menuBar.add(menu);
+
+    menu = new JMenu("Bestand");
+//    menu.setMnemonic(KeyEvent.VK_S);
+    menu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
+    menuBar.add(menu);
 
 //a group of JMenuItems
-        menuItem = new JMenuItem("A text-only menu item",
-                KeyEvent.VK_T);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_1, ActionEvent.ALT_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription(
-                "This doesn't really do anything");
-        menu.add(menuItem);
+    menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+//    menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
+    menuItem.addActionListener(ev -> {
+        saveDesign(false);
+    });
+    menu.add(menuItem);
 
-        menuItem = new JMenuItem("Both text and icon",
-                new ImageIcon("images/middle.gif"));
-        menuItem.setMnemonic(KeyEvent.VK_B);
-        menu.add(menuItem);
+    menuItem = new JMenuItem("Opslaan Als", KeyEvent.VK_T);
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
+    menuItem.addActionListener(ev -> {
+        saveDesign(true);
+    });
+    menu.add(menuItem);
 
         menuItem = new JMenuItem(new ImageIcon("images/middle.gif"));
         menuItem.setMnemonic(KeyEvent.VK_D);
@@ -130,6 +135,36 @@ public class DesignPage extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    public void setDesignModified() {
+        D.setModified();
+        if (D.getFilePath() == null)
+            m_parent.setTitle("Peach - Nieuw Ontwerp*");
+        else
+            m_parent.setTitle("Peach - " + D.getFilePath() + "*");
+    }
+
+    public void saveDesign(boolean forceFileDialog) {
+        DesignFile designFile;
+
+        if (forceFileDialog || D.getFilePath() == null) {
+            var fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Ontwerp opslaan als");
+            fileChooser.setFileFilter(new FileNameExtensionFilter("NerdyGadgets Infrastructuur Ontwerpen (*.ngio)", "ngio"));
+
+            final var selection = fileChooser.showSaveDialog(m_parent);
+            if (selection != JFileChooser.APPROVE_OPTION)
+                return;
+
+            D.setFilePath(fileChooser.getSelectedFile().getAbsolutePath());
+            designFile = new DesignFile(fileChooser.getSelectedFile());
+        } else {
+            designFile = new DesignFile(new File(D.getFilePath()));
+        }
+
+        designFile.save(D);
+        m_parent.setTitle("Peach - " + D.getFilePath());
     }
 
     public DPComponPanel getComponPanel() {

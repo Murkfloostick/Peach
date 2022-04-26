@@ -50,6 +50,9 @@ public class DPComponPanel extends JPanel {
 
     private final DPComponPanel thisReference = this;
 
+    @NotNull
+    private DesignPage designPage;
+
     //Dubbelklik om component toe te voegen aan sleeppaneel?
     MouseListener ml = new MouseAdapter() {
         public void mousePressed(MouseEvent me) {
@@ -64,14 +67,16 @@ public class DPComponPanel extends JPanel {
                         button.getRegisteredComponent().getName(), pos);
                 D.getPlacedComponents().add(PC);
                 DPWP.refreshWP();
+                designPage.setDesignModified();
             }
         }
     };
 
-    public DPComponPanel(ComponentRegistry CR, Design D, DPWorkPanel DPWP){
+    public DPComponPanel(ComponentRegistry CR, Design D, DPWorkPanel DPWP, @NotNull DesignPage designPage){
         this.CR = CR;
         this.D = D;
         this.DPWP = DPWP;
+        this.designPage = designPage;
         setBackground(Color.gray);
         //setPreferredSize(dim);
         //setMinimumSize(dim);

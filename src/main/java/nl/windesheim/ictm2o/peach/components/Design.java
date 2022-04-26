@@ -16,6 +16,8 @@ public class Design {
     @NotNull
     private final List<PlacedComponent> placedComponents = new ArrayList<>();
 
+    private boolean isDesignSavedToFile = false;
+
     public Design(@Nullable String filePath) {
         this.filePath = filePath;
     }
@@ -27,6 +29,10 @@ public class Design {
     @Nullable
     public String getFilePath() {
         return filePath;
+    }
+
+    public void setFilePath(String path) {
+        this.filePath = path;
     }
 
     public float getTargetAvailability() {
@@ -53,5 +59,17 @@ public class Design {
         this.totalCost = 0;
         for (PlacedComponent placedComponent : placedComponents)
             this.totalCost += placedComponent.getRegisteredComponent().getCost();
+    }
+
+    public boolean isDesignSavedToFile() {
+        return isDesignSavedToFile;
+    }
+
+    public void setSavedToFile() {
+        this.isDesignSavedToFile = true;
+    }
+
+    public void setModified() {
+        this.isDesignSavedToFile = false;
     }
 }
