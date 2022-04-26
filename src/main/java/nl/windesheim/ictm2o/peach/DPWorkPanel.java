@@ -40,15 +40,14 @@ public class DPWorkPanel extends JPanel{
         updateUI();
         map.clear();
 
-        for (PlacedComponent PC : D.getPlacedComponents()
-             ) {
+        for (PlacedComponent PC : D.getPlacedComponents()) {
             ImageIcon icon = null;
             try {
                 String iconnaam = PC.getRegisteredComponent().getIcon().name();
                 icon = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
-                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/Generic.png");
+                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
             }
 
             JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);

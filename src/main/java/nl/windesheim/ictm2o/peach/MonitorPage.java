@@ -42,7 +42,7 @@ public class MonitorPage extends JPanel implements ActionListener {
         afsluiten = new JButton("Afsluiten");
         afsluiten.setFont(new Font("Inter", Font.BOLD, 20));
         afsluiten.addActionListener(this);
-        //add(afsluiten);
+        add(afsluiten);
 
         Random random = new Random();
 
