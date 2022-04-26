@@ -73,7 +73,10 @@ public class StartPage extends JPanel {
         buttonContainer2.add(m_newDesignButton, button2);
         buttonContainer3.add(m_openDesignButton, button3);
 
+        //Layout voor windows
         setLayout(new FlowLayout());
+        //Layout voor mac
+        setLayout(new GridLayout(2,3));
 
         add(buttonContainer1);
         add(buttonContainer2);

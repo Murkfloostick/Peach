@@ -14,7 +14,10 @@ public class DesignPage extends JPanel implements ActionListener {
     private DPWorkPanel workPanel;
     private DPToevCompon toevCompon;
     private JMenuBar menuBar;
+
     private JMenu menu, submenu;
+    private JMenuItem menu1;
+
     private JMenuItem menuItem;
     private JRadioButtonMenuItem rbMenuItem;
     private JCheckBoxMenuItem cbMenuItem;
@@ -40,36 +43,31 @@ public class DesignPage extends JPanel implements ActionListener {
         setSize(950, 650);
 
         c.fill = GridBagConstraints.VERTICAL;
-    c.gridx = 0;
-    c.gridy = 0;
+        c.gridx = 0;
+        c.gridy = 0;
 
-    add(scroller, c);
-    //peachWindow.getContentPane().add(scroller);
-        //add(componPanel, c);
-    c.gridx = 1;
-    add(workPanel, c);
-    c.gridx = 2;
-    add(toevCompon, c);
+        add(scroller, c);
+        //peachWindow.getContentPane().add(scroller);
+        // add(componPanel, c);
+        c.gridx = 1;
+        add(workPanel, c);
+        c.gridx = 2;
+        add(toevCompon, c);
 
-    menuBar = new JMenuBar();
+        menuBar = new JMenuBar();
         //Build the first menu.
         menu = new JMenu("A Menu");
         menu.setMnemonic(KeyEvent.VK_A);
-        menu.getAccessibleContext().setAccessibleDescription(
-                "The only menu in this program that has menu items");
+        menu.getAccessibleContext().setAccessibleDescription("The only menu in this program that has menu items");
         menuBar.add(menu);
 
-//a group of JMenuItems
-        menuItem = new JMenuItem("A text-only menu item",
-                KeyEvent.VK_T);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_1, ActionEvent.ALT_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription(
-                "This doesn't really do anything");
+        //a group of JMenuItems
+        menuItem = new JMenuItem("A text-only menu item", KeyEvent.VK_T);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Both text and icon",
-                new ImageIcon("images/middle.gif"));
+        menuItem = new JMenuItem("Both text and icon", new ImageIcon("images/middle.gif"));
         menuItem.setMnemonic(KeyEvent.VK_B);
         menu.add(menuItem);
 
@@ -77,7 +75,7 @@ public class DesignPage extends JPanel implements ActionListener {
         menuItem.setMnemonic(KeyEvent.VK_D);
         menu.add(menuItem);
 
-//a group of radio button menu items
+        //a group of radio button menu items
         menu.addSeparator();
         ButtonGroup group = new ButtonGroup();
         rbMenuItem = new JRadioButtonMenuItem("A radio button menu item");
@@ -91,7 +89,7 @@ public class DesignPage extends JPanel implements ActionListener {
         group.add(rbMenuItem);
         menu.add(rbMenuItem);
 
-//a group of check box menu items
+        //a group of check box menu items
         menu.addSeparator();
         cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
         cbMenuItem.setMnemonic(KeyEvent.VK_C);
@@ -101,34 +99,45 @@ public class DesignPage extends JPanel implements ActionListener {
         cbMenuItem.setMnemonic(KeyEvent.VK_H);
         menu.add(cbMenuItem);
 
-//a submenu
+        //a submenu
         menu.addSeparator();
         submenu = new JMenu("A submenu");
         submenu.setMnemonic(KeyEvent.VK_S);
 
         menuItem = new JMenuItem("An item in the submenu");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_2, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
         submenu.add(menuItem);
 
         menuItem = new JMenuItem("Another item");
         submenu.add(menuItem);
         menu.add(submenu);
 
-//Build second menu in the menu bar.
+        //Build second menu in the menu bar.
         menu = new JMenu("Another Menu");
         menu.setMnemonic(KeyEvent.VK_N);
-        menu.getAccessibleContext().setAccessibleDescription(
-                "This menu does nothing");
+        menu.getAccessibleContext().setAccessibleDescription("This menu does nothing");
         menuBar.add(menu);
 
-        peachWindow.setJMenuBar(menuBar);
+        menu1 = new JMenuItem("Terug");
+        menuBar.add(menu1);
+        menu1.addActionListener(this);
 
+        menu1.addActionListener(e -> System.exit(0));
+
+        peachWindow.setJMenuBar(menuBar);
         setVisible(true);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent ev) {
+        if (ev.getActionCommand().equals("Terug")) {
+            System.exit(0);
+        }
+
+        menu1.addActionListener(e -> {
+            System.exit(0);
+            setVisible(false);
+        });
 
     }
 
