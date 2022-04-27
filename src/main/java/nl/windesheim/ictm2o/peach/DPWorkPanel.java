@@ -14,10 +14,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.*;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +59,6 @@ public class DPWorkPanel extends JPanel{
             JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);
             map.put(label, PC);
             add(label);
-            //label.addMouseListener(new DPWorkPanel.PopClickListener());
 
             //Breedte en hoogte moet vast staan
             //Label wordt niet geplaatst omdat breedte en hoogte 0 is als het nog niet gerenderd is
@@ -105,7 +101,6 @@ public class DPWorkPanel extends JPanel{
                     break;
                 }
             }
-
             if (e.isPopupTrigger())
                 doPop(e);
         }
@@ -143,14 +138,27 @@ public class DPWorkPanel extends JPanel{
         }
 
         private void doPop(MouseEvent e) {
-            DPWorkPanel.PopUp menu = new DPWorkPanel.PopUp();
+            //TODO functie van maken
+            //Haal Jlabel op die is geklikt
+            Container container = (Container) e.getComponent();
+            for (Component c : container.getComponents()) {
+                if (c.getBounds().contains(e.getPoint())) {
+                    target = c;
+                    break;
+                }
+            }
+
+            PopUp menu = new PopUp(target);
             menu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 
     class PopUp extends JPopupMenu implements ActionListener {
         JMenuItem anItem;
-        public PopUp() {
+        JLabel target;
+
+        public PopUp(Component target) {
+            this.target = (JLabel) target;
             anItem = new JMenuItem("Verwijder");
             add(anItem);
             anItem.addActionListener(this);
@@ -160,12 +168,12 @@ public class DPWorkPanel extends JPanel{
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == anItem);{
                 //Haal component op die verwijdert wilt worden
-                Component invoker = getInvoker();
                 PlacedComponent PC;
-                PC = map.get(invoker);
+                PC = map.get(target);
 
                 //En dat component verwijderen
-                //TODO Verwijder functie maken
+                D.delPlacComponent(PC);
+                refreshWP();
             }
         }
     }

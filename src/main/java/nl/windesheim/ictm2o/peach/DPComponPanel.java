@@ -64,14 +64,13 @@ public class DPComponPanel extends JPanel {
                      ) {
                     if(PC.getRegisteredComponent().getID() == RC.getID()){
                         JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
-                        refreshPanel();
-                        break;
+                        return;
                     }
                 }
                 //En anders verwijden van de ComponentRegistry
-                //TODO Aanmaken
-                //CR.delComponent(RC.getID());
+                CR.delComponent(RC);
             }
+            refreshPanel();
         }
     }
 
