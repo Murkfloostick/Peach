@@ -3,6 +3,7 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -12,6 +13,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.*;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -58,6 +61,7 @@ public class DPWorkPanel extends JPanel{
             JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);
             map.put(label, PC);
             add(label);
+            label.addMouseListener(new DPWorkPanel.PopClickListener());
 
             //Breedte en hoogte moet vast staan
             //Wilt niet plaatsen als het niet gerenderd wordt
@@ -121,14 +125,6 @@ public class DPWorkPanel extends JPanel{
         public void mouseReleased(MouseEvent e) {
             JLabel jl = (JLabel) target;
             PlacedComponent PC;
-            //Werkt niet met meerdere labels met dezelfde naam
-//            for (PlacedComponent PCfind:D.getPlacedComponents()
-//            ) {
-//                if(jl.getText().equals(PCfind.getName())){
-//                    PC = PCfind;
-//                    break;
-//                }
-//            }
 
             PC = map.get(target);
 
@@ -137,6 +133,46 @@ public class DPWorkPanel extends JPanel{
             PC.setPosition(pos);
             target = null;
             designPage.setDesignModified();
+        }
+    }
+
+    class PopUp extends JPopupMenu implements ActionListener {
+        JMenuItem anItem;
+        public PopUp() {
+            anItem = new JMenuItem("Verwijder");
+            add(anItem);
+            anItem.addActionListener(this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == anItem);{
+                //Haal component op die verwijdert wilt worden
+                Component invoker = getInvoker();
+                PlacedComponent PC;
+                PC = map.get(invoker);
+
+                //En dat component verwijderen
+                //TODO Verwijder functie maken
+            }
+        }
+    }
+
+    class PopClickListener extends MouseAdapter {
+        //Popmenu
+        public void mousePressed(MouseEvent e) {
+            if (e.isPopupTrigger())
+                doPop(e);
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            if (e.isPopupTrigger())
+                doPop(e);
+        }
+
+        private void doPop(MouseEvent e) {
+            DPWorkPanel.PopUp menu = new DPWorkPanel.PopUp();
+            menu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 }
