@@ -27,6 +27,11 @@ public class DPToevCompon extends JPanel implements ActionListener {
         setBackground(Color.gray);
         //OG: 200-550
         setPreferredSize(new Dimension(350, 600));
+
+        JTextField beschikbaarheidField = new JTextField();
+        beschikbaarheidField.setText("99,99%");
+        add(beschikbaarheidField);
+
         toevoegen = new JButton("Component toevoegen");
         toevoegen.setFont(font1);
         toevoegen.setContentAreaFilled(true);
