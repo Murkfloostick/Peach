@@ -65,6 +65,15 @@ public class DesignPage extends JPanel implements ActionListener {
     menu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
     menuBar.add(menu);
 
+        menuItem = new JMenuItem("Nieuw", KeyEvent.VK_N);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        menuItem.addActionListener(ev -> {
+            if (!D.isDesignSavedToFile())
+                saveDesign(false);
+            D = new Design(null);
+        });
+        menu.add(menuItem);
+
 //a group of JMenuItems
     menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
