@@ -54,4 +54,9 @@ public class Design {
         for (PlacedComponent placedComponent : placedComponents)
             this.totalCost += placedComponent.getRegisteredComponent().getCost();
     }
+
+    @NotNull
+    public void delPlacComponent(PlacedComponent PC){
+        placedComponents.remove(PC);
+    }
 }
