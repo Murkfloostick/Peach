@@ -97,8 +97,7 @@ public class DPComponPanel extends JPanel {
     private ComponentRegistry CR;
     private Design D;
     private DPWorkPanel DPWP;
-    //TODO ICONS DEZELFDE GROOTTE
-    private Dimension dim = new Dimension(600, 550);
+    private Dimension dim = new Dimension(350, 600);
 
     private final DPComponPanel thisReference = this;
     //TODO Slepen om toe te voegen

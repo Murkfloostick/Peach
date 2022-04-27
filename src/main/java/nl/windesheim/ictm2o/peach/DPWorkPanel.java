@@ -56,11 +56,11 @@ public class DPWorkPanel extends JPanel{
             JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);
             map.put(label, PC);
             add(label);
-            label.addMouseListener(new DPWorkPanel.PopClickListener());
+            //label.addMouseListener(new DPWorkPanel.PopClickListener());
 
             //Breedte en hoogte moet vast staan
             //Wilt niet plaatsen als het niet gerenderd wordt
-            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 90, 50);
+            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 90, 65);
         }
         setVisible(false);
         setVisible(true);
