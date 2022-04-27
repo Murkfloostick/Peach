@@ -53,7 +53,7 @@ public class DesignFile {
         }
     }
 
-    public void save(@NotNull Design design) {
+    public FileSaveError save(@NotNull Design design) {
         JSONObject object = new JSONObject();
         object.append("targetAvailability", design.getTargetAvailability());
 
@@ -77,7 +77,10 @@ public class DesignFile {
             fileWriter.close();
         } catch (Exception exception) {
             exception.printStackTrace();
+            return FileSaveError.GENERIC;
         }
+
+        return FileSaveError.NONE;
     }
 
 }

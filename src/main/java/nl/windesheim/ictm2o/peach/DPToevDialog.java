@@ -73,6 +73,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
             CR.getRegisteredComponents().add(newComponent);
             mainFrame.getComponPanel().refreshPanel();
             dispose();
+            mainFrame.setDesignModified();
         }
         if(e.getSource() == cancel){
             dispose();
