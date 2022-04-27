@@ -26,6 +26,7 @@ public class DPWorkPanel extends JPanel{
     private final DesignPage designPage;
 
     public DPWorkPanel(Design D, @NotNull DesignPage designPage) {
+        //TODO Dynamic dim instellen
         this.D = D;
         this.designPage = designPage;
         setBackground(Color.lightGray);
@@ -51,7 +52,7 @@ public class DPWorkPanel extends JPanel{
                 icon = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
-                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/Generic.png");
+                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
             }
 
             JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);

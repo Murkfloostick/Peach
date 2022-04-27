@@ -16,6 +16,7 @@ public class MonitorPage extends JPanel implements ActionListener {
     private final Graph memoryGraph = new Graph(20, Color.red);
     private final PeachWindow m_parent;
     private final JButton terugKnop;
+    private final JButton afsluiten;
 
     public MonitorPage(PeachWindow m_parent) {
         this.m_parent = m_parent;
@@ -37,6 +38,11 @@ public class MonitorPage extends JPanel implements ActionListener {
         terugKnop.setFont(new Font("Inter", Font.BOLD, 20));
         terugKnop.addActionListener(this);
         add(terugKnop);
+
+        afsluiten = new JButton("Afsluiten");
+        afsluiten.setFont(new Font("Inter", Font.BOLD, 20));
+        afsluiten.addActionListener(this);
+        add(afsluiten);
 
         Random random = new Random();
 
@@ -82,6 +88,8 @@ public class MonitorPage extends JPanel implements ActionListener {
                 ex.printStackTrace();
                 System.exit(0);
             }
+        }else if(e.getSource() == afsluiten){
+            System.exit(0);
         }
     }
 }

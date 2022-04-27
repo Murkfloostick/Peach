@@ -17,7 +17,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private PeachWindow m_parent;
 
 
-    Font font1 = new Font("Arial", Font.BOLD, 20);
+    Font font1 = new Font("Arial", Font.BOLD, 15);
 
     public DPToevCompon(ComponentRegistry CR, DesignPage mainFrame, PeachWindow m_parent) {
         this.m_parent = m_parent;
@@ -30,12 +30,10 @@ public class DPToevCompon extends JPanel implements ActionListener {
         toevoegen = new JButton("Component toevoegen");
         toevoegen.setFont(font1);
         toevoegen.setContentAreaFilled(true);
-        toevoegen.setBorder(new LineBorder(Color.BLACK));
         add(toevoegen);
         terugKnop = new JButton("Terug");
         terugKnop.setFont(font1);
         terugKnop.setContentAreaFilled(true);
-        terugKnop.setBorder(new LineBorder(Color.BLACK));
         add(terugKnop);
         toevoegen.addActionListener(this);
         terugKnop.addActionListener(this);

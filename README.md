@@ -1,4 +1,5 @@
-# PeachOS - A Linux OS
+# PeachOS - A Linux Ontwerp Systeem
+
 
 "PeachOS, made by people with divine intellect".
 -Terry A Davis
@@ -37,3 +38,5 @@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ```
+
+
