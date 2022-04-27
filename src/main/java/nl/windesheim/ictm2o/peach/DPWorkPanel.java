@@ -4,6 +4,7 @@ import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
