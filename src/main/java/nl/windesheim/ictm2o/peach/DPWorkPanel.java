@@ -65,7 +65,7 @@ public class DPWorkPanel extends JPanel{
             //label.addMouseListener(new DPWorkPanel.PopClickListener());
 
             //Breedte en hoogte moet vast staan
-            //Wilt niet plaatsen als het niet gerenderd wordt
+            //Label wordt niet geplaatst omdat breedte en hoogte 0 is als het nog niet gerenderd is
             label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 90, 65);
         }
         setVisible(false);
@@ -105,6 +105,9 @@ public class DPWorkPanel extends JPanel{
                     break;
                 }
             }
+
+            if (e.isPopupTrigger())
+                doPop(e);
         }
 
         /**
@@ -134,6 +137,14 @@ public class DPWorkPanel extends JPanel{
             PC.setPosition(pos);
             target = null;
             designPage.setDesignModified();
+
+            if (e.isPopupTrigger())
+                doPop(e);
+        }
+
+        private void doPop(MouseEvent e) {
+            DPWorkPanel.PopUp menu = new DPWorkPanel.PopUp();
+            menu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 
@@ -156,24 +167,6 @@ public class DPWorkPanel extends JPanel{
                 //En dat component verwijderen
                 //TODO Verwijder functie maken
             }
-        }
-    }
-
-    class PopClickListener extends MouseAdapter {
-        //Popmenu
-        public void mousePressed(MouseEvent e) {
-            if (e.isPopupTrigger())
-                doPop(e);
-        }
-
-        public void mouseReleased(MouseEvent e) {
-            if (e.isPopupTrigger())
-                doPop(e);
-        }
-
-        private void doPop(MouseEvent e) {
-            DPWorkPanel.PopUp menu = new DPWorkPanel.PopUp();
-            menu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 }
