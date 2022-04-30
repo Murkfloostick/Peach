@@ -7,14 +7,16 @@ import org.jetbrains.annotations.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DPComponPanel extends JPanel {
+    private final Map<Button, RegisteredComponent> map = new HashMap<>(); //Voor het verwijderen
 
     class Button extends JLabel {
         private ImageIcon image;
@@ -41,15 +43,39 @@ public class DPComponPanel extends JPanel {
         }
     }
 
-    class PopUp extends JPopupMenu {
+    class PopUp extends JPopupMenu implements ActionListener {
         JMenuItem anItem;
         public PopUp() {
-            anItem = new JMenuItem("Verwijder!");
+            anItem = new JMenuItem("Verwijder");
             add(anItem);
+            anItem.addActionListener(this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == anItem);{
+                //Haal component op die verwijdert wilt worden
+                Component invoker = getInvoker();
+                Button button = (Button) invoker;
+                RegisteredComponent RC = button.getRegisteredComponent();
+
+                //Check of het geplaatst is op het workpanel
+                for (PlacedComponent PC:D.getPlacedComponents()
+                     ) {
+                    if(PC.getRegisteredComponent().getID() == RC.getID()){
+                        JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                //En anders verwijden van de ComponentRegistry
+                CR.delComponent(RC);
+            }
+            refreshPanel();
         }
     }
 
     class PopClickListener extends MouseAdapter {
+        //Popmenu
         public void mousePressed(MouseEvent e) {
             if (e.isPopupTrigger())
                 doPop(e);
@@ -70,8 +96,7 @@ public class DPComponPanel extends JPanel {
     private ComponentRegistry CR;
     private Design D;
     private DPWorkPanel DPWP;
-    //Vergroten zodat icoons meer ruimte hebben? - OG: 200-550
-    private Dimension dim = new Dimension(600, 550);
+    private Dimension dim = new Dimension(350, 600);
 
     private final DPComponPanel thisReference = this;
 
@@ -79,17 +104,18 @@ public class DPComponPanel extends JPanel {
     private DesignPage designPage;
   
     //TODO Slepen om toe te voegen
-    //TODO rechte knop menu om te verwijderen
-    //Dubbelklik om component toe te voegen aan sleeppaneel?
+    //Dubbelklik om component toe te voegen aan sleeppaneel
     MouseListener ml = new MouseAdapter() {
         public void mousePressed(MouseEvent me) {
             if (me.getClickCount() == 2) {//double-click
+                //Voor als het fout gaat
                 if (!(me.getSource() instanceof Button button)) {
                     JOptionPane.showMessageDialog(thisReference, "Een interne fout is opgetreden");
                     return;
                 }
 
-                Position pos = new Position(250,250);
+                //Maak een placedcomponent aan met de component die wordt toegevoegd.
+                Position pos = new Position(250, 250);
                 PlacedComponent PC = new PlacedComponent(button.getRegisteredComponent(),
                         button.getRegisteredComponent().getName(), pos);
                 D.getPlacedComponents().add(PC);
@@ -108,50 +134,29 @@ public class DPComponPanel extends JPanel {
         //setPreferredSize(dim);
         //setMinimumSize(dim);
         setLayout(new GridLayout(GLrows, 2));
-        //setAutoscrolls(true);
         refreshPanel();
     }
 
     public void refreshPanel(){
         removeAll();
         updateUI();
+        map.clear();
+
         GLrows = 0;
         for (RegisteredComponent RC : CR.getRegisteredComponents()) {
             addButton(RC);
         }
     }
 
-    //DIT WORDT NIET MEER GEBRUIKT. VERVANGEN DOOR IMAGEICON BIJ DE BUTTON CLASS!!!
-//    private static class Image extends JComponent {
-//        private BufferedImage image;
-//        public Image(RegisteredComponent RC) {
-//            try {
-//                String iconnaam = RC.getIcon().name();
-//                //Uncommenten zodra wij icons hebben
-//                //image = ImageIO.read(new File("src/main/resources/Icons/" + iconnaam + ".png"));
-//                image = ImageIO.read(new File("src/main/resources/Peach.png"));
-//            } catch (IOException ex) {
-//                JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
-//            }
-//        }
-//
-//        @Override
-//        protected void paintComponent(Graphics g) {
-//            super.paintComponent(g);
-//
-//            Graphics2D g2 = (Graphics2D) g;
-//            g2.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
-//
-//        }
-//    }
-
     public void addButton(RegisteredComponent RC) {
         //Vergroot plek
         GLrows += 1;
+
+        //En voeg een component toe aan de lijst
         setLayout(new GridLayout(GLrows, 2));
-        //add(new Image(RC));
         Button button = new Button(RC);
         button.addMouseListener(ml);
+        map.put(button, RC);
         button.addMouseListener(new PopClickListener());
         add(button);
     }

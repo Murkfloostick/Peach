@@ -3,6 +3,8 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -12,8 +14,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.*;
 import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,8 +61,8 @@ public class DPWorkPanel extends JPanel{
             add(label);
 
             //Breedte en hoogte moet vast staan
-            //Wilt niet plaatsen als het niet gerenderd wordt
-            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 90, 50);
+            //Label wordt niet geplaatst omdat breedte en hoogte 0 is als het nog niet gerenderd is
+            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 90, 65);
         }
         setVisible(false);
         setVisible(true);
@@ -100,6 +101,8 @@ public class DPWorkPanel extends JPanel{
                     break;
                 }
             }
+            if (e.isPopupTrigger())
+                doPop(e);
         }
 
         /**
@@ -121,14 +124,6 @@ public class DPWorkPanel extends JPanel{
         public void mouseReleased(MouseEvent e) {
             JLabel jl = (JLabel) target;
             PlacedComponent PC;
-            //Werkt niet met meerdere labels met dezelfde naam
-//            for (PlacedComponent PCfind:D.getPlacedComponents()
-//            ) {
-//                if(jl.getText().equals(PCfind.getName())){
-//                    PC = PCfind;
-//                    break;
-//                }
-//            }
 
             PC = map.get(target);
 
@@ -137,6 +132,49 @@ public class DPWorkPanel extends JPanel{
             PC.setPosition(pos);
             target = null;
             designPage.setDesignModified();
+
+            if (e.isPopupTrigger())
+                doPop(e);
+        }
+
+        private void doPop(MouseEvent e) {
+            //TODO functie van maken
+            //Haal Jlabel op die is geklikt
+            Container container = (Container) e.getComponent();
+            for (Component c : container.getComponents()) {
+                if (c.getBounds().contains(e.getPoint())) {
+                    target = c;
+                    break;
+                }
+            }
+
+            PopUp menu = new PopUp(target);
+            menu.show(e.getComponent(), e.getX(), e.getY());
+        }
+    }
+
+    class PopUp extends JPopupMenu implements ActionListener {
+        JMenuItem anItem;
+        JLabel target;
+
+        public PopUp(Component target) {
+            this.target = (JLabel) target;
+            anItem = new JMenuItem("Verwijder");
+            add(anItem);
+            anItem.addActionListener(this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == anItem);{
+                //Haal component op die verwijdert wilt worden
+                PlacedComponent PC;
+                PC = map.get(target);
+
+                //En dat component verwijderen
+                D.delPlacComponent(PC);
+                refreshWP();
+            }
         }
     }
 }

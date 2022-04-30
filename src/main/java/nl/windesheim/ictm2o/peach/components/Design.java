@@ -76,4 +76,9 @@ public class Design {
     public void setModified() {
         this.isDesignSavedToFile = false;
     }
+
+    @NotNull
+    public void delPlacComponent(PlacedComponent PC){
+        placedComponents.remove(PC);
+    }
 }
