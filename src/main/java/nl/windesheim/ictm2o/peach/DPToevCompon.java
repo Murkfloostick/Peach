@@ -58,16 +58,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             dialoog.setLocationRelativeTo(null);
 
         } else if (e.getSource() == terugKnop) {
-            //Verwijderen als het niet werkt
-            try {
-                m_parent.dispose();
-                PeachWindow peachWindow = new PeachWindow();
-                peachWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                peachWindow.setUndecorated(false);
-                peachWindow.setVisible(true);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            m_parent.openStartPage(mainFrame);
         }
 
     }

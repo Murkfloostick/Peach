@@ -14,16 +14,19 @@ public class Design {
     private float totalCost = 0;
 
     @NotNull
-    private final List<PlacedComponent> placedComponents = new ArrayList<>();
+    private final List<PlacedComponent> placedComponents;
 
     private boolean isDesignSavedToFile = false;
 
     public Design(@Nullable String filePath) {
         this.filePath = filePath;
+        this.placedComponents = new ArrayList<>();
     }
 
-    public Design(@Nullable String filePath, float targetAvailability, @Nullable List<PlacedComponent> placedComponents) {
+    public Design(@Nullable String filePath, float targetAvailability, @NotNull List<PlacedComponent> placedComponents) {
         this.filePath = filePath;
+        this.targetAvailability = targetAvailability;
+        this.placedComponents = placedComponents;
     }
 
     @Nullable
@@ -31,7 +34,7 @@ public class Design {
         return filePath;
     }
 
-    public void setFilePath(String path) {
+    public void setFilePath(@Nullable String path) {
         this.filePath = path;
     }
 
@@ -43,6 +46,7 @@ public class Design {
         return totalCost;
     }
 
+    @NotNull
     public List<PlacedComponent> getPlacedComponents() {
         return placedComponents;
     }

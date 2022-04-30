@@ -3,6 +3,7 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,11 +29,13 @@ public class DesignPage extends JPanel implements ActionListener {
 
     private PeachWindow m_parent;
 
-    private ComponentRegistry CR = new ComponentRegistry();
-    private Design D = new Design(null); //Voor nu null
+    private ComponentRegistry CR;
+    private Design D;
 
-    public DesignPage(PeachWindow peachWindow, PeachWindow m_parent) {
+    public DesignPage(PeachWindow peachWindow, PeachWindow m_parent, @NotNull Design design) {
         this.m_parent = m_parent;
+        this.CR = peachWindow.getComponentRegistry();
+        this.D = design;
         workPanel = new DPWorkPanel(D, this);
         componPanel = new DPComponPanel(CR, D, workPanel, this);
 
@@ -174,14 +177,18 @@ public class DesignPage extends JPanel implements ActionListener {
         if (forceFileDialog || D.getFilePath() == null) {
             var fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Ontwerp opslaan als");
-            fileChooser.setFileFilter(new FileNameExtensionFilter("NerdyGadgets Infrastructuur Ontwerpen (*.ngio)", "ngio"));
+            fileChooser.setFileFilter(DesignFile.getFileFilter());
 
             final var selection = fileChooser.showSaveDialog(m_parent);
             if (selection != JFileChooser.APPROVE_OPTION)
                 return;
 
-            D.setFilePath(fileChooser.getSelectedFile().getAbsolutePath());
-            designFile = new DesignFile(fileChooser.getSelectedFile());
+            String path = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!path.endsWith(".ngio"))
+                path += ".ngio";
+
+            D.setFilePath(path);
+            designFile = new DesignFile(new File(path));
         } else {
             designFile = new DesignFile(new File(D.getFilePath()));
         }
