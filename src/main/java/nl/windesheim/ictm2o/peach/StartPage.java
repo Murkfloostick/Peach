@@ -2,6 +2,7 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
+import nl.windesheim.ictm2o.peach.storage.ResourceManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -48,7 +49,7 @@ public class StartPage extends JPanel {
         m_newDesignButton = new Button("Nieuw Ontwerp");
         m_openDesignButton = new Button("Open Ontwerp");
 
-        BufferedImage buttonIcon1 = ImageIO.read(new File("src/main/resources/IconPack/Setting.png"));
+        BufferedImage buttonIcon1 = ImageIO.read(ResourceManager.load("IconPack/Setting.png"));
         button1 = new JButton();
         button1.setPreferredSize(new Dimension(150, 150));
         button1.setBorder(BorderFactory.createEmptyBorder());
@@ -56,7 +57,7 @@ public class StartPage extends JPanel {
         button1 = new JButton(new ImageIcon(buttonIcon1));
         add(button1);
 
-        BufferedImage buttonIcon2 = ImageIO.read(new File("src/main/resources/IconPack/Monitor.png"));
+        BufferedImage buttonIcon2 = ImageIO.read(ResourceManager.load("IconPack/Monitor.png"));
         button2 = new JButton();
         button2.setPreferredSize(new Dimension(150, 150));
         button2.setBorder(BorderFactory.createEmptyBorder());
@@ -64,7 +65,7 @@ public class StartPage extends JPanel {
         button2 = new JButton(new ImageIcon(buttonIcon2));
         add(button2);
 
-        BufferedImage buttonIcon3 = ImageIO.read(new File("src/main/resources/IconPack/OpenIcon.png"));
+        BufferedImage buttonIcon3 = ImageIO.read(ResourceManager.load("IconPack/OpenIcon.png"));
         button3 = new JButton();
         button3.setPreferredSize(new Dimension(150, 150));
         button3.setBorder(BorderFactory.createEmptyBorder());

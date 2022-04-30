@@ -31,5 +31,13 @@ task generateJava(type:Copy) {
     expand templateContext
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'nl.windesheim.ictm2o.peach.Main'
+        )
+    }
+}
+
 sourceSets.main.java.srcDir "$buildDir/generated/java" // add the extra source dir
 compileJava.dependsOn generateJava // wire the generateJava task into the DAG
