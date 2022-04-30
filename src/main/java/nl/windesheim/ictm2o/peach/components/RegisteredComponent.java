@@ -10,12 +10,14 @@ public class RegisteredComponent {
     private final @NotNull String name;
     private final @NotNull ComponentIcon icon;
     private final float cost;
+    private final float availability;
 
-    public RegisteredComponent(@NotNull UUID id, @NotNull String name, @NotNull ComponentIcon icon, float cost) {
+    public RegisteredComponent(@NotNull UUID id, @NotNull String name, @NotNull ComponentIcon icon, float cost, float availability) {
         this.id = id;
         this.name = name;
         this.icon = icon;
         this.cost = cost;
+        this.availability = availability;
     }
 
     @NotNull
@@ -37,4 +39,7 @@ public class RegisteredComponent {
         return cost;
     }
 
+    public float getAvailability() {
+        return availability;
+    }
 }

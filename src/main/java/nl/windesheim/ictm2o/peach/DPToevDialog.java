@@ -17,10 +17,12 @@ public class DPToevDialog extends JDialog implements ActionListener {
     private JComboBox options;
     private JTextField naam = new JTextField(5);
     private JTextField prijs = new JTextField(5);
+    private JTextField beschikbaarheid = new JTextField(5);
     private JButton toevoegen = new JButton("Toevoegen");
     private JButton cancel = new JButton("Annuleren");
     private JLabel labelNaam = new JLabel("Naam");
     private JLabel labelPrijs = new JLabel("Prijs");
+    private JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
 
     private ComponentRegistry CR;
     private DesignPage mainFrame;
@@ -49,6 +51,8 @@ public class DPToevDialog extends JDialog implements ActionListener {
         add(naam);
         add(labelPrijs);
         add(prijs);
+        add(labelBeschikbaarheid);
+        add(beschikbaarheid);
         add(toevoegen);
         toevoegen.addActionListener(this);
         add(cancel);
@@ -69,7 +73,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
                     break;
                 }
             }
-            RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), CI, Float.parseFloat(prijs.getText()));
+            RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()));
             CR.getRegisteredComponents().add(newComponent);
             mainFrame.getComponPanel().refreshPanel();
             dispose();
