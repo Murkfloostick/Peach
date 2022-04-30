@@ -1,6 +1,7 @@
 package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.*;
+import nl.windesheim.ictm2o.peach.storage.ResourceManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,15 +25,15 @@ public class DPComponPanel extends JPanel {
         @NotNull
         public RegisteredComponent registeredComponent;
 
-        public Button(@NotNull RegisteredComponent registeredComponent) {
+        public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
             super(registeredComponent.getName(), SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
             try {
                 String iconnaam = registeredComponent.getIcon().name();
-                image = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
+                image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/" + iconnaam + ".png")));
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
-                image = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
+                image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/GENERIC.png")));
             }
             this.setIcon(image);
         }
@@ -154,7 +155,14 @@ public class DPComponPanel extends JPanel {
 
         //En voeg een component toe aan de lijst
         setLayout(new GridLayout(GLrows, 2));
-        Button button = new Button(RC);
+        Button button;
+        try {
+            button = new Button(RC);
+        } catch (Exception e) {
+            System.exit(1);
+            return;
+        }
+
         button.addMouseListener(ml);
         map.put(button, RC);
         button.addMouseListener(new PopClickListener());
