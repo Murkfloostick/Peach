@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.example'
-version '1.0-SNAPSHOT'
+version '0.1'
 
 repositories {
     mavenCentral()
@@ -22,3 +22,14 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+task generateJava(type:Copy) {
+    def templateContext = [version: project.version]
+    inputs.properties templateContext // for gradle up-to-date check
+    from 'src/template/java'
+    into "$buildDir/generated/java"
+    expand templateContext
+}
+
+sourceSets.main.java.srcDir "$buildDir/generated/java" // add the extra source dir
+compileJava.dependsOn generateJava // wire the generateJava task into the DAG
