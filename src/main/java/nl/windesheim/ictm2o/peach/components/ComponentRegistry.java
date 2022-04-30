@@ -10,7 +10,7 @@ import java.util.UUID;
 public class ComponentRegistry {
 
     @NotNull
-    private final List<RegisteredComponent> registeredComponents;
+    private List<RegisteredComponent> registeredComponents;
 
     public ComponentRegistry() {
         this.registeredComponents = new ArrayList<>();
@@ -24,6 +24,10 @@ public class ComponentRegistry {
     @NotNull
     public List<RegisteredComponent> getRegisteredComponents() {
         return registeredComponents;
+    }
+
+    public void setRegisteredComponents(@NotNull List<RegisteredComponent> registeredComponents) {
+        this.registeredComponents = registeredComponents;
     }
 
     @Nullable

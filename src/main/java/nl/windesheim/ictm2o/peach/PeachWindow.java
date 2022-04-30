@@ -1,6 +1,7 @@
 package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
+import nl.windesheim.ictm2o.peach.storage.Configuration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +14,7 @@ public class PeachWindow extends JFrame {
 
     @NotNull
     private final ComponentRegistry componentRegistry = new ComponentRegistry();
+    private final Configuration configuration = new Configuration(this);
 
     public static boolean isAppleSystem() {
         @Nullable final String osName = System.getProperty("os.name");
@@ -23,7 +25,7 @@ public class PeachWindow extends JFrame {
     }
 
     public PeachWindow() throws IOException {
-        super("Windesheim Peach v" + BuildInfo.getVersion());
+        super("NerdyGadgets Peach v" + BuildInfo.getVersion());
 
         setThemeToSystem();
         if (isAppleSystem()) {
@@ -36,6 +38,8 @@ public class PeachWindow extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        configuration.load();
+
         add(new StartPage(this));
     }
 
@@ -44,11 +48,11 @@ public class PeachWindow extends JFrame {
     }
 
     public void setPageTitle(@NotNull String pageTitle) {
-        super.setTitle("Windesheim Peach v" + BuildInfo.getVersion() + " - " + pageTitle);
+        super.setTitle("NerdyGadgets Peach v" + BuildInfo.getVersion() + " - " + pageTitle);
     }
 
     public void openStartPage(@NotNull JPanel originPanel) {
-        super.setTitle("Windesheim Peach v" + BuildInfo.getVersion());
+        super.setTitle("NerdyGadgets Peach v" + BuildInfo.getVersion());
 
         remove(originPanel);
 
