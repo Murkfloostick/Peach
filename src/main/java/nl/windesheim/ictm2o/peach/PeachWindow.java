@@ -1,5 +1,6 @@
 package nl.windesheim.ictm2o.peach;
 
+import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -8,6 +9,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class PeachWindow extends JFrame {
+
+    @NotNull
+    private final ComponentRegistry componentRegistry = new ComponentRegistry();
 
     public PeachWindow() throws IOException {
         super("Windesheim Peach v" + BuildInfo.getVersion());
@@ -34,7 +38,23 @@ public class PeachWindow extends JFrame {
         super.setTitle("Windesheim Peach v" + BuildInfo.getVersion() + " - " + pageTitle);
     }
 
-    public void openPage(JPanel origin, String title, JPanel panel) {
+    public void openStartPage(@NotNull JPanel originPanel) {
+        super.setTitle("Windesheim Peach v" + BuildInfo.getVersion());
+
+        remove(originPanel);
+
+        try {
+            add(new StartPage(this));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        invalidate();
+        revalidate();
+        repaint();
+    }
+
+    public void openPage(@NotNull JPanel origin, @NotNull String title, @NotNull JPanel panel) {
         setPageTitle(title);
         remove(origin);
         add(panel);
@@ -95,4 +115,10 @@ public class PeachWindow extends JFrame {
         menuBar.add(file);
         setJMenuBar(menuBar);
     }
+
+    @NotNull
+    public ComponentRegistry getComponentRegistry() {
+        return componentRegistry;
+    }
+
 }

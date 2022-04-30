@@ -1,5 +1,8 @@
 package nl.windesheim.ictm2o.peach;
 
+import nl.windesheim.ictm2o.peach.components.Design;
+import nl.windesheim.ictm2o.peach.storage.DesignFile;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -101,7 +104,8 @@ public class StartPage extends JPanel {
         button2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                m_parent.openPage(startPage, "Ontwerper - Nieuw Ontwerp", new DesignPage(m_parent, m_parent));
+                m_parent.openPage(startPage, "Ontwerper - Nieuw Ontwerp",
+                        new DesignPage(m_parent, m_parent, new Design(null)));
                 e.consume();
             }
         });
@@ -110,8 +114,29 @@ public class StartPage extends JPanel {
         button3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                m_parent.openPage(startPage, "Ontwerper", new DesignPage(m_parent, m_parent));
                 e.consume();
+
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileFilter(DesignFile.getFileFilter());
+
+                int option = fileChooser.showOpenDialog(m_parent);
+                if (option != JFileChooser.APPROVE_OPTION)
+                    return;
+
+                var file = fileChooser.getSelectedFile();
+                assert file != null;
+
+                final var designFile = new DesignFile(file);
+                final var result = designFile.load(m_parent, m_parent.getComponentRegistry());
+
+                if (result.isFailure()) {
+                    JOptionPane.showMessageDialog(m_parent, result.getErrorMessage(), "Windesheim Peach - Fout",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                assert result.getDesign() != null;
+                m_parent.openPage(startPage, "Ontwerper", new DesignPage(m_parent, m_parent, result.getDesign()));
             }
         });
     }
