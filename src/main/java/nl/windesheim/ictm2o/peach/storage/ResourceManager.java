@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 
 public class ResourceManager {
-    
+
     /**
      * Example:
      *     For src/main/resources/Peach.png use ResourceManager.load("Peach.png");

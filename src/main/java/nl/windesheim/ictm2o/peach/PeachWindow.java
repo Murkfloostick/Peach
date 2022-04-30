@@ -2,6 +2,7 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +14,19 @@ public class PeachWindow extends JFrame {
     @NotNull
     private final ComponentRegistry componentRegistry = new ComponentRegistry();
 
+    public static boolean isAppleSystem() {
+        @Nullable final String osName = System.getProperty("os.name");
+        if (osName == null)
+            return false;
+
+        return osName.toLowerCase().contains("mac");
+    }
+
     public PeachWindow() throws IOException {
         super("Windesheim Peach v" + BuildInfo.getVersion());
 
         setThemeToSystem();
-        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+        if (isAppleSystem()) {
             setAppleIcon();
         } else {
             setIcon();
