@@ -163,9 +163,9 @@ public class DesignPage extends JPanel implements ActionListener {
     public void setDesignModified() {
         D.setModified();
         if (D.getFilePath() == null)
-            m_parent.setTitle("Peach - Nieuw Ontwerp*");
+            m_parent.setPageTitle("Ontwerper - Nieuw Ontwerp*");
         else
-            m_parent.setTitle("Peach - " + D.getFilePath() + "*");
+            m_parent.setPageTitle("Ontwerper - " + D.getFilePath() + "*");
     }
 
     public void saveDesign(boolean forceFileDialog) {
@@ -187,7 +187,7 @@ public class DesignPage extends JPanel implements ActionListener {
         }
 
         designFile.save(D);
-        m_parent.setTitle("Peach - " + D.getFilePath());
+        m_parent.setPageTitle("Ontwerper - " + D.getFilePath());
     }
 
     public DPComponPanel getComponPanel() {

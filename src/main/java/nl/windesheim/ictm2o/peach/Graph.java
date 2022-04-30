@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Tristan Gerritsen
+ * Alle Rechten Voorbehouden
+ */
+
 package nl.windesheim.ictm2o.peach;
 
 import org.jetbrains.annotations.NotNull;

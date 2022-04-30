@@ -1,5 +1,7 @@
 package nl.windesheim.ictm2o.peach;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.util.Objects;
 public class PeachWindow extends JFrame {
 
     public PeachWindow() throws IOException {
-        super("Windesheim Peach");
+        super("Windesheim Peach v" + BuildInfo.getVersion());
 
         setThemeToSystem();
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
@@ -28,9 +30,12 @@ public class PeachWindow extends JFrame {
         setVisible(true);
     }
 
-    public void openPage(JPanel origin, String title, JPanel panel) {
-        setTitle("Windesheim Peach - " + title);
+    public void setPageTitle(@NotNull String pageTitle) {
+        super.setTitle("Windesheim Peach v" + BuildInfo.getVersion() + " - " + pageTitle);
+    }
 
+    public void openPage(JPanel origin, String title, JPanel panel) {
+        setPageTitle(title);
         remove(origin);
         add(panel);
         invalidate();
