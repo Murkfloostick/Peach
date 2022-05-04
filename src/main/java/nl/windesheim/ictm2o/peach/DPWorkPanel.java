@@ -31,10 +31,13 @@ public class DPWorkPanel extends JPanel{
         this.D = D;
         this.designPage = designPage;
         setBackground(Color.lightGray);
+
+        //Slepen aanzetten
         ComponentDragger dragger = new ComponentDragger();
         addMouseListener(dragger);
         addMouseMotionListener(dragger);
         setLayout(null);
+
         setPreferredSize(dim);
         refreshWP();
         setVisible(true);
@@ -62,7 +65,7 @@ public class DPWorkPanel extends JPanel{
 
             //Breedte en hoogte moet vast staan
             //Label wordt niet geplaatst omdat breedte en hoogte 0 is als het nog niet gerenderd is
-            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 90, 65);
+            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 150, 65);
         }
         setVisible(false);
         setVisible(true);
