@@ -7,6 +7,7 @@ import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import org.jetbrains.annotations.NotNull;
 
+
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,7 +22,11 @@ import java.util.Map;
 public class DPWorkPanel extends JPanel{
     private final Design D;
     private final Map<JLabel, PlacedComponent> map = new HashMap<>();
+    private final Map<PlacedComponent, PlacedComponent> lineMap = new HashMap<>();
     private final Dimension dim = new Dimension(500, 550);//Workplace
+
+    private boolean selectieModus = false;
+    private PlacedComponent firstSelection;
 
     @NotNull
     private final DesignPage designPage;
@@ -85,7 +90,8 @@ public class DPWorkPanel extends JPanel{
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g;
-        //Later
+
+        lineMap.forEach((k, v) -> g.drawLine(Math.toIntExact(k.getPosition().getX()),Math.toIntExact(k.getPosition().getY()),Math.toIntExact(v.getPosition().getX()),Math.toIntExact(v.getPosition().getY())));
     }
 
     private class ComponentDragger extends MouseAdapter {
@@ -104,6 +110,7 @@ public class DPWorkPanel extends JPanel{
                     break;
                 }
             }
+
             if (e.isPopupTrigger())
                 doPop(e);
         }
@@ -113,9 +120,11 @@ public class DPWorkPanel extends JPanel{
          */
         @Override
         public void mouseDragged(MouseEvent e) {
+
             if (target != null) {
                 target.setBounds(e.getX(), e.getY(), target.getWidth(), target.getHeight());
                 e.getComponent().repaint();
+                repaint();
                 designPage.setDesignModified();
             }
         }
@@ -150,34 +159,52 @@ public class DPWorkPanel extends JPanel{
                     break;
                 }
             }
-
+            //TODO normaal klik van maken
+            if(selectieModus){
+                PlacedComponent secondSelection = (PlacedComponent) map.get(target);
+                lineMap.put(firstSelection, secondSelection);
+                selectieModus = false;
+                return;
+            }
             PopUp menu = new PopUp(target);
             menu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 
-    class PopUp extends JPopupMenu implements ActionListener {
+    class PopUp extends JPopupMenu {
         JMenuItem anItem;
+        JMenuItem selecteren;
         JLabel target;
 
         public PopUp(Component target) {
             this.target = (JLabel) target;
             anItem = new JMenuItem("Verwijder");
+            selecteren = new JMenuItem("Selecteren");
+            add(selecteren);
             add(anItem);
-            anItem.addActionListener(this);
+            anItem.addActionListener(ev -> {
+                verwijderComponent();
+                    });
+            selecteren.addActionListener(ev -> {
+                selectieModusAan();
+            });
         }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == anItem);{
-                //Haal component op die verwijdert wilt worden
-                PlacedComponent PC;
-                PC = map.get(target);
+        public void verwijderComponent(){
+            //Haal component op die verwijdert wilt worden
+            PlacedComponent PC;
+            PC = map.get(target);
 
-                //En dat component verwijderen
-                D.delPlacComponent(PC);
-                refreshWP();
-            }
+            //En dat component verwijderen
+            D.delPlacComponent(PC);
+            refreshWP();
+        }
+
+        public void selectieModusAan(){
+            //this.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 30)); werkt niet
+            target.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+            selectieModus = true;
+            firstSelection = map.get(target);
         }
     }
 }
