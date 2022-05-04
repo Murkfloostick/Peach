@@ -30,6 +30,7 @@ public class DPWorkPanel extends JPanel{
 
     @NotNull
     private final DesignPage designPage;
+    private JLabel firstSelectionLabel;
 
     public DPWorkPanel(Design D, @NotNull DesignPage designPage) {
         //TODO Dynamic dim instellen
@@ -88,9 +89,6 @@ public class DPWorkPanel extends JPanel{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        Graphics2D g2d = (Graphics2D) g;
-
         lineMap.forEach((k, v) -> g.drawLine(Math.toIntExact(k.getPosition().getX())+30,Math.toIntExact(k.getPosition().getY())+30,Math.toIntExact(v.getPosition().getX())+30,Math.toIntExact(v.getPosition().getY()+30)));
     }
 
@@ -160,11 +158,15 @@ public class DPWorkPanel extends JPanel{
                     break;
                 }
             }
+
             //TODO normaal klik van maken
             if(selectieModus){
                 PlacedComponent secondSelection = (PlacedComponent) map.get(target);
                 lineMap.put(firstSelection, secondSelection);
                 selectieModus = false;
+                firstSelectionLabel.setBorder(null);
+                firstSelection = null;
+                firstSelectionLabel = null;
                 return;
             }
             PopUp menu = new PopUp(target);
@@ -206,6 +208,7 @@ public class DPWorkPanel extends JPanel{
             target.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
             selectieModus = true;
             firstSelection = map.get(target);
+            firstSelectionLabel = target;
         }
     }
 }
