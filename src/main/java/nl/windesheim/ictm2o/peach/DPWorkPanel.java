@@ -91,7 +91,7 @@ public class DPWorkPanel extends JPanel{
 
         Graphics2D g2d = (Graphics2D) g;
 
-        lineMap.forEach((k, v) -> g.drawLine(Math.toIntExact(k.getPosition().getX()),Math.toIntExact(k.getPosition().getY()),Math.toIntExact(v.getPosition().getX()),Math.toIntExact(v.getPosition().getY())));
+        lineMap.forEach((k, v) -> g.drawLine(Math.toIntExact(k.getPosition().getX())+30,Math.toIntExact(k.getPosition().getY())+30,Math.toIntExact(v.getPosition().getX())+30,Math.toIntExact(v.getPosition().getY()+30)));
     }
 
     private class ComponentDragger extends MouseAdapter {
@@ -124,7 +124,7 @@ public class DPWorkPanel extends JPanel{
             if (target != null) {
                 target.setBounds(e.getX(), e.getY(), target.getWidth(), target.getHeight());
                 e.getComponent().repaint();
-                repaint();
+
                 designPage.setDesignModified();
             }
         }
@@ -142,6 +142,7 @@ public class DPWorkPanel extends JPanel{
             //Memory leak?
             Position pos = new Position(jl.getX(), jl.getY());
             PC.setPosition(pos);
+            repaint();
             target = null;
             designPage.setDesignModified();
 
