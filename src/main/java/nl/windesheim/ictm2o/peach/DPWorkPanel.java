@@ -7,7 +7,6 @@ import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import org.jetbrains.annotations.NotNull;
 
-
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,6 +27,8 @@ public class DPWorkPanel extends JPanel{
     private boolean selectieModus = false;
     private PlacedComponent firstSelection;
 
+    private final JLabel beschikbaarheid = new JLabel("Beschikbaarheid: 0%");
+
     @NotNull
     private final DesignPage designPage;
     private JLabel firstSelectionLabel;
@@ -38,14 +39,28 @@ public class DPWorkPanel extends JPanel{
         this.designPage = designPage;
         setBackground(Color.lightGray);
 
+
         //Slepen aanzetten
+
+        setLayout(null);
+
         ComponentDragger dragger = new ComponentDragger();
         addMouseListener(dragger);
         addMouseMotionListener(dragger);
-        setLayout(null);
+
+
 
         setPreferredSize(dim);
         refreshWP();
+
+//        JFreeChart barChart = ChartFactory.createBarChart(
+//                chartTitle,
+//                "Category",
+//                "Score",
+//                createDataset(),
+//                PlotOrientation.VERTICAL,
+//                true, true, false);
+
         setVisible(true);
     }
 
@@ -54,6 +69,10 @@ public class DPWorkPanel extends JPanel{
         removeAll();
         updateUI();
         map.clear();
+
+        add(beschikbaarheid);
+        beschikbaarheid.setBounds(350, 570, 150, 10);
+        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
 
         for (PlacedComponent PC : D.getPlacedComponents()) {
             ImageIcon icon = null;
