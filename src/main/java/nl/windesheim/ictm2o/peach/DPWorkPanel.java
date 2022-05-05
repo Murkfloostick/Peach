@@ -38,6 +38,7 @@ public class DPWorkPanel extends JPanel{
 
     public DPWorkPanel(Design D, @NotNull DesignPage designPage) {
         //TODO Dynamic dim instellen
+        //TODO In selectie modus alle andere input uit
         this.D = D;
         this.designPage = designPage;
         setBackground(Color.lightGray);
