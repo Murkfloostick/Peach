@@ -28,6 +28,7 @@ public class DPWorkPanel extends JPanel{
 
     private boolean selectieModus = false;
     private PlacedComponent firstSelection;
+    private boolean verwijderModus = false;
 
     private final JLabel beschikbaarheid = new JLabel("Beschikbaarheid: 0%");
 
@@ -185,7 +186,7 @@ public class DPWorkPanel extends JPanel{
             }
 
             //TODO normaal klik van maken
-            if(selectieModus){
+            if(selectieModus && !verwijderModus){
                 PlacedComponent secondSelection = (PlacedComponent) map.get(target);
                 ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
                 if(pcList == null){
@@ -195,12 +196,39 @@ public class DPWorkPanel extends JPanel{
                     pcList.add(secondSelection);
                 }
                 lineMap.put(firstSelection, pcList);
-                selectieModus = false;
+
+                //TODO Functie van maken
                 firstSelectionLabel.setBorder(null);
+                selectieModus = false;
+                verwijderModus = false;
                 firstSelection = null;
                 firstSelectionLabel = null;
                 return;
+            } else if(verwijderModus) {
+                PlacedComponent secondSelection = (PlacedComponent) map.get(target);
+                ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
+                pcList.remove(secondSelection);
+
+
+                //TODO Functie van maken
+                ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
+                for (PlacedComponent pc:v
+                ) {
+                    map.forEach((key, value) -> {
+                        if (value.equals(pc)) {
+                            key.setBorder(null);
+                        }
+                    });
+                }
+                lineMap.put(firstSelection, pcList);
+                firstSelectionLabel.setBorder(null);
+                selectieModus = false;
+                verwijderModus = false;
+                firstSelection = null;
+                firstSelectionLabel = null;
             }
+
+
             PopUp menu = new PopUp(target);
             menu.show(e.getComponent(), e.getX(), e.getY());
         }
@@ -209,19 +237,27 @@ public class DPWorkPanel extends JPanel{
     class PopUp extends JPopupMenu {
         JMenuItem anItem;
         JMenuItem selecteren;
+        JMenuItem verwijderLijn;
         JLabel target;
 
         public PopUp(Component target) {
             this.target = (JLabel) target;
             anItem = new JMenuItem("Verwijder");
             selecteren = new JMenuItem("Selecteren");
+            verwijderLijn = new JMenuItem("Verwijder lijn(en)");
+
             add(selecteren);
+            add(verwijderLijn);
             add(anItem);
             anItem.addActionListener(ev -> {
                 verwijderComponent();
                     });
             selecteren.addActionListener(ev -> {
                 selectieModusAan();
+            });
+            verwijderLijn.addActionListener(ev -> {
+                selectieModusAan();
+                verwijderenAan();
             });
         }
 
@@ -241,6 +277,20 @@ public class DPWorkPanel extends JPanel{
             selectieModus = true;
             firstSelection = map.get(target);
             firstSelectionLabel = target;
+        }
+
+        public void verwijderenAan(){
+            verwijderModus = true;
+            ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
+            //TODO Functie van maken
+            for (PlacedComponent pc:v
+            ) {
+                map.forEach((key, value) -> {
+                    if (value.equals(pc)) {
+                        key.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                    }
+                });
+            }
         }
     }
 }
