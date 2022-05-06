@@ -197,7 +197,17 @@ public class DPWorkPanel extends JPanel{
                     pcList = new ArrayList<>();
                     pcList.add(secondSelection);
                 } else{
-                    pcList.add(secondSelection);
+                    AtomicBoolean bestaatAl = new AtomicBoolean(false);
+                    map.forEach((key, value) -> {
+                        if (value.equals(secondSelection)) {
+                            bestaatAl.set(true);
+                        }
+                    });
+                    if(!bestaatAl.get()){
+                        pcList.add(secondSelection);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Een component kan niet meer dan een lijn per component hebben", "Ho daar: Component kan geen lijn trekken", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 lineMap.put(firstSelection, pcList);
 
