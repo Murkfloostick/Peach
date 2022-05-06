@@ -30,6 +30,7 @@ public class DPWorkPanel extends JPanel{
     private final Map<JLabel, PlacedComponent> map = new HashMap<>();
     private final Map<PlacedComponent, ArrayList<PlacedComponent>> lineMap = new HashMap<>();
     private final Dimension dim = new Dimension(500, 550);//Workplace
+    private static boolean accept = false;
 
     private boolean selectieModus = false;
     private PlacedComponent firstSelection;
@@ -112,6 +113,10 @@ public class DPWorkPanel extends JPanel{
     public Dimension getPreferredSize() {
         return dim;
     }
+
+    public static boolean isAccept() { return accept; }
+
+    public static void setAccept(boolean accept) { DPWorkPanel.accept = accept; }
 
     @Override
     public void paintComponent(Graphics g) {
@@ -312,7 +317,7 @@ public class DPWorkPanel extends JPanel{
 
         @Override
         public boolean importData(TransferHandler.TransferSupport support) {
-            boolean accept = false;
+            accept = false;
             if (canImport(support)) {
                 try {
                     Transferable t = support.getTransferable();
@@ -325,6 +330,7 @@ public class DPWorkPanel extends JPanel{
 //                        ((LayerContainer) component).add(j); // Add a new drag JLabel
                         System.out.println(value);
                         accept = true;
+                        return accept;
                     }
                 } catch (Exception exp) {
                     exp.printStackTrace();
