@@ -3,27 +3,21 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
-import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
-import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DPWorkPanel extends JPanel{
     private final Design D;
@@ -217,9 +211,6 @@ public class DPWorkPanel extends JPanel{
             } else if(verwijderModus) {
                 PlacedComponent secondSelection = (PlacedComponent) map.get(target);
                 ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
-                pcList.remove(secondSelection);
-
-
                 //TODO Functie van maken
                 ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
                 for (PlacedComponent pc:v
@@ -230,6 +221,7 @@ public class DPWorkPanel extends JPanel{
                         }
                     });
                 }
+                pcList.remove(secondSelection);
                 lineMap.put(firstSelection, pcList);
                 firstSelectionLabel.setBorder(null);
                 selectieModus = false;
@@ -257,7 +249,30 @@ public class DPWorkPanel extends JPanel{
             verwijderLijn = new JMenuItem("Verwijder lijn(en)");
 
             add(selecteren);
-            add(verwijderLijn);
+            //Check of component lijnen heeft
+            PlacedComponent PC;
+            PC = map.get(target);
+            ArrayList<PlacedComponent> v = lineMap.get(PC);
+            AtomicBoolean lijnGevonden = new AtomicBoolean(false); //Intellij wou dit
+            if(v != null) {
+                for (PlacedComponent pc : v
+                ) {
+                    map.forEach((key, value) -> {
+                        if (value.equals(pc)) {
+                            lijnGevonden.set(true);
+                        }
+                    });
+                    //Anders werkt break niet, optimalisatie
+                    if (lijnGevonden.get()) {
+                        add(verwijderLijn);
+                        verwijderLijn.addActionListener(ev -> {
+                            selectieModusAan();
+                            verwijderenAan();
+                        });
+                        break;
+                    }
+                }
+            }
             add(anItem);
             anItem.addActionListener(ev -> {
                 verwijderComponent();
@@ -265,10 +280,7 @@ public class DPWorkPanel extends JPanel{
             selecteren.addActionListener(ev -> {
                 selectieModusAan();
             });
-            verwijderLijn.addActionListener(ev -> {
-                selectieModusAan();
-                verwijderenAan();
-            });
+
         }
 
         public void verwijderComponent(){
