@@ -13,7 +13,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.Component;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,8 +56,7 @@ public class DPWorkPanel extends JPanel{
         ComponentDragger dragger = new ComponentDragger();
         addMouseListener(dragger);
         addMouseMotionListener(dragger);
-
-
+        this.setTransferHandler(new ValueImportTransferHandler());
 
         setPreferredSize(dim);
         refreshWP();
@@ -65,7 +69,7 @@ public class DPWorkPanel extends JPanel{
 //                PlotOrientation.VERTICAL,
 //                true, true, false);
 
-        setVisible(true);
+    setVisible(true);
     }
 
     public void refreshWP(){
@@ -292,6 +296,41 @@ public class DPWorkPanel extends JPanel{
                     }
                 });
             }
+        }
+    }
+    protected static class ValueImportTransferHandler extends TransferHandler {
+
+        public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
+
+        public ValueImportTransferHandler() {
+        }
+
+        @Override
+        public boolean canImport(TransferHandler.TransferSupport support) {
+            return support.isDataFlavorSupported(SUPPORTED_DATE_FLAVOR);
+        }
+
+        @Override
+        public boolean importData(TransferHandler.TransferSupport support) {
+            boolean accept = false;
+            if (canImport(support)) {
+                try {
+                    Transferable t = support.getTransferable();
+                    Object value = t.getTransferData(SUPPORTED_DATE_FLAVOR);
+                    if (value instanceof String) { // Ensure no errors
+                        // TODO: here you can create your own handler
+                        // ie: ((LayerContainer) component).getHandler()....
+                        Component component = support.getComponent();
+//                        Button j = new LayerItem((String) value);
+//                        ((LayerContainer) component).add(j); // Add a new drag JLabel
+                        System.out.println(value);
+                        accept = true;
+                    }
+                } catch (Exception exp) {
+                    exp.printStackTrace();
+                }
+            }
+            return accept;
         }
     }
 }

@@ -3,17 +3,17 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.components.*;
 import nl.windesheim.ictm2o.peach.storage.ResourceManager;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DPComponPanel extends JPanel {
@@ -24,8 +24,9 @@ public class DPComponPanel extends JPanel {
 
         @NotNull
         public RegisteredComponent registeredComponent;
+
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
-            super( "<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() +"%</body></html>", SwingConstants.CENTER);
+            super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
             try {
                 String iconnaam = registeredComponent.getIcon().name();
@@ -35,11 +36,67 @@ public class DPComponPanel extends JPanel {
                 image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/GENERIC.png")));
             }
             this.setIcon(image);
+
+            this.setTransferHandler(new ValueExportTransferHandler("A", registeredComponent));
+
+            this.addMouseMotionListener(new MouseAdapter() {
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    JLabel lbl = (JLabel) e.getSource();
+                    TransferHandler handle = lbl.getTransferHandler();
+                    handle.exportAsDrag(lbl, e, TransferHandler.COPY);
+                }
+            });
+
+
         }
 
         @NotNull
         public RegisteredComponent getRegisteredComponent() {
             return registeredComponent;
+        }
+
+        protected static class ValueExportTransferHandler extends TransferHandler {
+
+            public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
+            private String value;
+            private RegisteredComponent RC;
+
+            public ValueExportTransferHandler(String value, RegisteredComponent RC) {
+                this.value = value;
+                this.RC = RC;
+            }
+
+            public String getValue() {
+                return value;
+            }
+
+            @Override
+            public int getSourceActions(JComponent c) {
+                return DnDConstants.ACTION_COPY_OR_MOVE;
+            }
+
+            @Override
+            protected Transferable createTransferable(JComponent c) {
+                Transferable t = new StringSelection(getValue());
+                return t;
+            }
+
+            @Override
+            protected void exportDone(JComponent source, Transferable data, int action) {
+                super.exportDone(source, data, action);
+                Position pos = new Position(250, 250);
+                PlacedComponent PC = new PlacedComponent(RC,
+                        RC.getName(), pos);
+                D.getPlacedComponents().add(PC);
+                DPWP.refreshWP();
+                designPage.setDesignModified();
+
+                // Clean up and remove the LayerItem that was moved
+//                ((Button) source).setVisible(false);
+//                ((Button) source).getParent().remove((Button) source);
+            }
+
         }
     }
 
@@ -94,14 +151,14 @@ public class DPComponPanel extends JPanel {
 
     private int GLrows = 0;
     private ComponentRegistry CR;
-    private Design D;
-    private DPWorkPanel DPWP;
+    private static Design D;
+    private static DPWorkPanel DPWP;
     private Dimension dim = new Dimension(350, 600);
 
     private final DPComponPanel thisReference = this;
 
     @NotNull
-    private DesignPage designPage;
+    private static DesignPage designPage;
   
     //TODO Slepen om toe te voegen
     //Dubbelklik om component toe te voegen aan sleeppaneel
@@ -115,6 +172,7 @@ public class DPComponPanel extends JPanel {
                 }
 
                 //Maak een placedcomponent aan met de component die wordt toegevoegd.
+                //TODO functie van maken
                 Position pos = new Position(250, 250);
                 PlacedComponent PC = new PlacedComponent(button.getRegisteredComponent(),
                         button.getRegisteredComponent().getName(), pos);
