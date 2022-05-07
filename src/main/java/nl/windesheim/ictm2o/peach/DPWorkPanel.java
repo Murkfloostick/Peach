@@ -53,7 +53,7 @@ public class DPWorkPanel extends JPanel{
         addMouseMotionListener(dragger);
         this.setTransferHandler(new ValueImportTransferHandler());
 
-        setPreferredSize(dim);
+        //setPreferredSize(dim);
         refreshWP();
 
 //        JFreeChart barChart = ChartFactory.createBarChart(

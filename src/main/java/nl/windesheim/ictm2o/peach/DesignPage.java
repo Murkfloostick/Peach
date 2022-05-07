@@ -61,23 +61,23 @@ public class DesignPage extends JPanel implements ActionListener {
         GridBagConstraints c = new GridBagConstraints();
         setSize(950, 650);
 
-        c.fill = GridBagConstraints.VERTICAL;
+        c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
     c.gridy = 0;
+        c.weightx = 0.5;
+        c.weighty = 1;
 
     add(scroller, c);
     //peachWindow.getContentPane().add(scroller);
         //add(componPanel, c);
     c.gridx = 1;
-        c.ipady = 0;
-        c.weightx = 2.0;
+        c.weightx = 1.5;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
     add(workPanel, c);
     c.gridx = 2;
-        c.ipady = 0;
-        c.weightx = 1.0;
-        c.weighty = 0.05;
+        c.weightx = 0.5;
+        c.weighty = 1;
     add(toevCompon, c);
 
     menuBar = new JMenuBar();
