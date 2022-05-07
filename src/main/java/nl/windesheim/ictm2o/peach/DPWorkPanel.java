@@ -74,7 +74,7 @@ public class DPWorkPanel extends JPanel{
         map.clear();
 
         add(beschikbaarheid);
-        beschikbaarheid.setBounds(350, 570, 150, 10);
+        beschikbaarheid.setBounds(800, 950, 150, 10);
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
 
         for (PlacedComponent PC : D.getPlacedComponents()) {

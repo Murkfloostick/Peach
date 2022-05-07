@@ -2,6 +2,8 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.Design;
+import nl.windesheim.ictm2o.peach.components.PlacedComponent;
+import nl.windesheim.ictm2o.peach.components.Position;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +31,7 @@ public class DesignPage extends JPanel implements ActionListener {
     private ComponentRegistry CR;
     private Design D;
 
+    private Dimension originalSize;
     public DesignPage(PeachWindow peachWindow, PeachWindow m_parent, @NotNull Design design) {
         this.m_parent = m_parent;
         this.CR = peachWindow.getComponentRegistry();
@@ -45,15 +48,26 @@ public class DesignPage extends JPanel implements ActionListener {
             public void componentResized(ComponentEvent e) {
                 // This is only called when the user releases the mouse button.
                 System.out.println("componentResized");
-                validate();
 
-                //Verander groottes schermen?
                 Dimension screenSize = getSize();
                 double width = screenSize.getWidth();
                 double height = screenSize.getHeight();
                 System.out.println(width + "," + height);
 
-                componPanel.setSize(componPanel.getWidth(), (int) Math.round(height));
+                  //WERKT NIET component resized wordt op verkeerde momenten en te vaak opgeroepen
+//                //Componenten en beschikbaarheid terugfluiten
+//                long difWidth = Math.round(originalSize.getWidth()) - Math.round(workPanel.getX());
+//                long difHeight = Math.round(originalSize.getHeight()) - Math.round(workPanel.getY());
+//
+//                for (PlacedComponent PC:D.getPlacedComponents()
+//                     ) {
+//                    Position oldPos = PC.getPosition();
+//                    Position newPos = new Position(oldPos.getX()-difWidth, oldPos.getY()-difHeight);
+//                    PC.setPosition(newPos);
+//                }
+//
+//                originalSize = screenSize;
+//                workPanel.refreshWP();
             }
         });
 
@@ -121,6 +135,7 @@ public class DesignPage extends JPanel implements ActionListener {
 
         peachWindow.setJMenuBar(menuBar);
         setVisible(true);
+        originalSize = getSize();//Voor eerste keer
     }
 
     @Override
