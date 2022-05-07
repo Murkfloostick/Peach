@@ -46,6 +46,14 @@ public class DesignPage extends JPanel implements ActionListener {
                 // This is only called when the user releases the mouse button.
                 System.out.println("componentResized");
                 validate();
+
+                //Verander groottes schermen?
+                Dimension screenSize = getSize();
+                double width = screenSize.getWidth();
+                double height = screenSize.getHeight();
+                System.out.println(width + "," + height);
+
+                componPanel.setSize(componPanel.getWidth(), (int) Math.round(height));
             }
         });
 
@@ -61,8 +69,15 @@ public class DesignPage extends JPanel implements ActionListener {
     //peachWindow.getContentPane().add(scroller);
         //add(componPanel, c);
     c.gridx = 1;
+        c.ipady = 0;
+        c.weightx = 2.0;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
     add(workPanel, c);
     c.gridx = 2;
+        c.ipady = 0;
+        c.weightx = 1.0;
+        c.weighty = 0.05;
     add(toevCompon, c);
 
     menuBar = new JMenuBar();
@@ -157,21 +172,5 @@ public class DesignPage extends JPanel implements ActionListener {
 
     public DPComponPanel getComponPanel() {
         return componPanel;
-    }
-
-    @Override
-    public void validate() {
-        resize();
-        super.validate();
-    };
-
-    private void resize() {
-        Dimension screenSize = getSize();
-
-        double width = screenSize.getWidth();
-
-        double height = screenSize.getHeight();
-
-        System.out.println(width + "," + height);
     }
 }
