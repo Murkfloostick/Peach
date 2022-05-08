@@ -2,16 +2,15 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.Design;
+import nl.windesheim.ictm2o.peach.components.PlacedComponent;
+import nl.windesheim.ictm2o.peach.components.Position;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 
 public class DesignPage extends JPanel implements ActionListener {
@@ -32,6 +31,7 @@ public class DesignPage extends JPanel implements ActionListener {
     private ComponentRegistry CR;
     private Design D;
 
+    private Dimension originalSize;
     public DesignPage(PeachWindow peachWindow, PeachWindow m_parent, @NotNull Design design) {
         this.m_parent = m_parent;
         this.CR = peachWindow.getComponentRegistry();
@@ -44,21 +44,54 @@ public class DesignPage extends JPanel implements ActionListener {
 
         scroller.setPreferredSize(componPanel.getDim());
         //peachWindow.getContentPane().add(scroller);
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                // This is only called when the user releases the mouse button.
+                System.out.println("componentResized");
+
+                Dimension screenSize = getSize();
+                double width = screenSize.getWidth();
+                double height = screenSize.getHeight();
+                System.out.println(width + "," + height);
+
+                  //WERKT NIET component resized wordt op verkeerde momenten en te vaak opgeroepen
+//                //Componenten en beschikbaarheid terugfluiten
+//                long difWidth = Math.round(originalSize.getWidth()) - Math.round(workPanel.getX());
+//                long difHeight = Math.round(originalSize.getHeight()) - Math.round(workPanel.getY());
+//
+//                for (PlacedComponent PC:D.getPlacedComponents()
+//                     ) {
+//                    Position oldPos = PC.getPosition();
+//                    Position newPos = new Position(oldPos.getX()-difWidth, oldPos.getY()-difHeight);
+//                    PC.setPosition(newPos);
+//                }
+//
+//                originalSize = screenSize;
+//                workPanel.refreshWP();
+            }
+        });
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         setSize(950, 650);
 
-        c.fill = GridBagConstraints.VERTICAL;
+        c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
     c.gridy = 0;
+        c.weightx = 0.5;
+        c.weighty = 1;
 
     add(scroller, c);
     //peachWindow.getContentPane().add(scroller);
         //add(componPanel, c);
     c.gridx = 1;
+        c.weightx = 1.5;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
     add(workPanel, c);
     c.gridx = 2;
+        c.weightx = 0.5;
+        c.weighty = 1;
     add(toevCompon, c);
 
     menuBar = new JMenuBar();
@@ -93,53 +126,7 @@ public class DesignPage extends JPanel implements ActionListener {
     });
     menu.add(menuItem);
 
-        menuItem = new JMenuItem(new ImageIcon("images/middle.gif"));
-        menuItem.setMnemonic(KeyEvent.VK_D);
-        menu.add(menuItem);
-
-        //a group of radio button menu items
-        menu.addSeparator();
-        ButtonGroup group = new ButtonGroup();
-        rbMenuItem = new JRadioButtonMenuItem("A radio button menu item");
-        rbMenuItem.setSelected(true);
-        rbMenuItem.setMnemonic(KeyEvent.VK_R);
-        group.add(rbMenuItem);
-        menu.add(rbMenuItem);
-
-        rbMenuItem = new JRadioButtonMenuItem("Another one");
-        rbMenuItem.setMnemonic(KeyEvent.VK_O);
-        group.add(rbMenuItem);
-        menu.add(rbMenuItem);
-
-        //a group of check box menu items
-        menu.addSeparator();
-        cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
-        cbMenuItem.setMnemonic(KeyEvent.VK_C);
-        menu.add(cbMenuItem);
-
-        cbMenuItem = new JCheckBoxMenuItem("Another one");
-        cbMenuItem.setMnemonic(KeyEvent.VK_H);
-        menu.add(cbMenuItem);
-
-        //a submenu
-        menu.addSeparator();
-        submenu = new JMenu("A submenu");
-        submenu.setMnemonic(KeyEvent.VK_S);
-
-        menuItem = new JMenuItem("An item in the submenu");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
-        submenu.add(menuItem);
-
-        menuItem = new JMenuItem("Another item");
-        submenu.add(menuItem);
-        menu.add(submenu);
-
-        //Build second menu in the menu bar.
-        menu = new JMenu("Another Menu");
-        menu.setMnemonic(KeyEvent.VK_N);
-        menu.getAccessibleContext().setAccessibleDescription("This menu does nothing");
-        menuBar.add(menu);
-
+    //Terug knop
         menu1 = new JMenuItem("Terug");
         menuBar.add(menu1);
         menu1.addActionListener(this);
@@ -148,6 +135,7 @@ public class DesignPage extends JPanel implements ActionListener {
 
         peachWindow.setJMenuBar(menuBar);
         setVisible(true);
+        originalSize = getSize();//Voor eerste keer
     }
 
     @Override
