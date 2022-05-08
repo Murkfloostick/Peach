@@ -198,7 +198,7 @@ public class DPWorkPanel extends JPanel{
                     pcList.add(secondSelection);
                 } else{
                     AtomicBoolean bestaatAl = new AtomicBoolean(false);
-                    map.forEach((key, value) -> {
+                    lineMap.forEach((key, value) -> {
                         if (value.equals(secondSelection)) {
                             bestaatAl.set(true);
                         }
