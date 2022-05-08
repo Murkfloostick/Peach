@@ -14,6 +14,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private ComponentRegistry CR;
     private DesignPage mainFrame;
     private JButton terugKnop;
+    private JButton optimaliseren;
     private PeachWindow m_parent;
 
 
@@ -40,8 +41,13 @@ public class DPToevCompon extends JPanel implements ActionListener {
         terugKnop.setFont(font1);
         terugKnop.setContentAreaFilled(true);
         add(terugKnop);
+        optimaliseren = new JButton("Optimaliseren");
+        optimaliseren.setFont(font1);
+        optimaliseren.setContentAreaFilled(true);
+        add(optimaliseren);
         toevoegen.addActionListener(this);
         terugKnop.addActionListener(this);
+        optimaliseren.addActionListener(this);
     }
 
     @Override
