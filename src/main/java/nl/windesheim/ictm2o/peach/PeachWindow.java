@@ -134,4 +134,8 @@ public class PeachWindow extends JFrame {
         return componentRegistry;
     }
 
+    @NotNull
+    public Configuration getConfiguration() {
+        return configuration;
+    }
 }

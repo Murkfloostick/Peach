@@ -188,4 +188,9 @@ public class DesignPage extends JPanel implements ActionListener {
     public DPComponPanel getComponPanel() {
         return componPanel;
     }
+
+    @NotNull
+    public PeachWindow getPeachWindow() {
+        return m_parent;
+    }
 }
