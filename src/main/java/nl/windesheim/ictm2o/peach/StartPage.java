@@ -63,7 +63,7 @@ public class StartPage extends JPanel {
 
         monitorServicesButton = new Button("Monitor Services", ImageIO.read(ResourceManager.load("IconPack/Monitor.png")));
         newDesignButton = new Button("Nieuw Ontwerp", ImageIO.read(ResourceManager.load("IconPack/Setting.png")));
-        openDesignButton = new Button("Open Ontwerp", ImageIO.read(ResourceManager.load("IconPack/OpenIcon.png")));
+        openDesignButton = new Button("Ontwerp Openen", ImageIO.read(ResourceManager.load("IconPack/OpenIcon.png")));
 
         add(monitorServicesButton);
         add(newDesignButton);
