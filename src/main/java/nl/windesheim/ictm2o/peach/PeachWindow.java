@@ -24,14 +24,6 @@ public class PeachWindow extends JFrame {
         return osName.toLowerCase().contains("mac");
     }
 
-    public static boolean isAppleSystem() {
-        @Nullable final String osName = System.getProperty("os.name");
-        if (osName == null)
-            return false;
-
-        return osName.toLowerCase().contains("mac");
-    }
-
     public PeachWindow() throws IOException {
         super("NerdyGadgets Peach v" + BuildInfo.getVersion());
 
@@ -142,4 +134,8 @@ public class PeachWindow extends JFrame {
         return componentRegistry;
     }
 
+    @NotNull
+    public Configuration getConfiguration() {
+        return configuration;
+    }
 }

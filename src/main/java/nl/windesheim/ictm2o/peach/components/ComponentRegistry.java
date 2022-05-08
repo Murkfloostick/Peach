@@ -46,7 +46,6 @@ public class ComponentRegistry {
         return null;
     }
 
-    @NotNull
     public void delComponent(RegisteredComponent RC){
         registeredComponents.remove(RC);
     }

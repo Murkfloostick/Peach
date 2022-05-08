@@ -70,6 +70,7 @@ public class DPComponPanel extends JPanel {
                 }
                 //En anders verwijden van de ComponentRegistry
                 CR.delComponent(RC);
+                designPage.getPeachWindow().getConfiguration().save();
             }
             refreshPanel();
         }
