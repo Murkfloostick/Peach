@@ -133,6 +133,7 @@ public class DPComponPanel extends JPanel {
                     CR.delComponent(RC);
                 }
                 refreshPanel();
+                designPage.getPeachWindow().getConfiguration().save();
             }
         }
 
