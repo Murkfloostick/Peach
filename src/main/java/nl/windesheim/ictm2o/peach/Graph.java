@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Graph extends JPanel {
 
-    private List<Integer> m_points = new ArrayList<>();
+    private final List<Integer> m_points = new ArrayList<>();
     private final int maxItems;
     private final Color pointColor;
 
@@ -33,32 +33,32 @@ public class Graph extends JPanel {
         m_points.add(point);
     }
 
-    public void update() {
-        repaint();
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        final var graphics2D = (Graphics2D) g;
         Dimension size = getSize();
 
+        final int bottomBorderWidth = 2;
         g.setColor(Color.black);
-        g.fillRect(0, size.height - 2, size.width, 2);
+        g.fillRect(0, size.height - bottomBorderWidth, size.width, bottomBorderWidth);
 
         if (m_points.size() == 0)
             return;
 
-        final int increaseX = size.width / maxItems;
-        final float yScale = size.height / 100.0f;
+        final int increaseX = size.width / (maxItems - 2);
+        final float yScale = (size.height - bottomBorderWidth) / 100.0f;
 
         Integer previousY = null;
         int x = 0;
 
         g.setColor(pointColor);
+        graphics2D.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         for (Integer y : m_points) {
-            y = (int)(y * yScale);
+            y = size.height - bottomBorderWidth - (int)(y * yScale);
 
             if (previousY != null) {
                 g.drawLine(x - increaseX, previousY, x, y);
@@ -69,4 +69,7 @@ public class Graph extends JPanel {
         }
     }
 
+    public int getMaxItems() {
+        return maxItems;
+    }
 }
