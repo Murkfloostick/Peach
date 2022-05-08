@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '0.1'
+group 'nl.windesheim.ictm2o'
+version '0.2'
 
 repositories {
     mavenCentral()
