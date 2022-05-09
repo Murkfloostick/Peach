@@ -50,11 +50,11 @@ public class DPComponPanel extends JPanel {
 
 
         }
-
         @NotNull
         public RegisteredComponent getRegisteredComponent() {
             return registeredComponent;
         }
+    }
 
         protected static class ValueExportTransferHandler extends TransferHandler {
 
@@ -101,7 +101,6 @@ public class DPComponPanel extends JPanel {
             }
 
         }
-    }
 
 
         class PopUp extends JPopupMenu implements ActionListener {
@@ -125,8 +124,7 @@ public class DPComponPanel extends JPanel {
                 Button button = (Button) invoker;
                 RegisteredComponent RC = button.getRegisteredComponent();
 
-                if (e.getSource() == anItem)
-                {
+                if (e.getSource() == anItem) {
                     //Check of het geplaatst is op het workpanel
                     for (PlacedComponent PC : D.getPlacedComponents()
                     ) {
@@ -136,11 +134,11 @@ public class DPComponPanel extends JPanel {
                         }
 
                     }
-                  //En anders verwijden van de ComponentRegistry
-                CR.delComponent(RC);
+                    //En anders verwijden van de ComponentRegistry
+                    CR.delComponent(RC);
                 }
 
-                if (e.getSource() == aanpassen){
+                if (e.getSource() == aanpassen) {
                     Window parentWindow = SwingUtilities.windowForComponent(this);
                     JFrame parentFrame = null;
                     if (parentWindow instanceof Frame) {
@@ -153,108 +151,109 @@ public class DPComponPanel extends JPanel {
                 refreshPanel();
                 designPage.getPeachWindow().getConfiguration().save();
             }
-            refreshPanel();
-            designPage.getPeachWindow().getConfiguration().save();
-        }
-    }
-
-    class PopClickListener extends MouseAdapter {
-        //Popmenu
-        public void mousePressed(MouseEvent e) {
-            if (e.isPopupTrigger())
-                doPop(e);
         }
 
-        public void mouseReleased(MouseEvent e) {
-            if (e.isPopupTrigger())
-                doPop(e);
-        }
 
-        private void doPop(MouseEvent e) {
-            PopUp menu = new PopUp();
-            menu.show(e.getComponent(), e.getX(), e.getY());
-        }
-    }
+        class PopClickListener extends MouseAdapter {
+            //Popmenu
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger())
+                    doPop(e);
+            }
 
-    private int GLrows = 0;
-    private ComponentRegistry CR;
-    private static Design D;
-    private static DPWorkPanel DPWP;
-    private Dimension dim = new Dimension(350, 600);
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger())
+                    doPop(e);
+            }
 
-    private final DPComponPanel thisReference = this;
-
-    @NotNull
-    private static DesignPage designPage;
-
-    //TODO Slepen om toe te voegen
-    //Dubbelklik om component toe te voegen aan sleeppaneel
-    MouseListener ml = new MouseAdapter() {
-        public void mousePressed(MouseEvent me) {
-            if (me.getClickCount() == 2) {//double-click
-                //Voor als het fout gaat
-                if (!(me.getSource() instanceof Button button)) {
-                    JOptionPane.showMessageDialog(thisReference, "Een interne fout is opgetreden");
-                    return;
-                }
-
-                //Maak een placedcomponent aan met de component die wordt toegevoegd.
-                //TODO functie van maken
-                Position pos = new Position(250, 250);
-                PlacedComponent PC = new PlacedComponent(button.getRegisteredComponent(),
-                        button.getRegisteredComponent().getName(), pos);
-                D.getPlacedComponents().add(PC);
-                DPWP.refreshWP();
-                designPage.setDesignModified();
+            private void doPop(MouseEvent e) {
+                PopUp menu = new PopUp();
+                menu.show(e.getComponent(), e.getX(), e.getY());
             }
         }
-    };
 
-    public DPComponPanel(ComponentRegistry CR, Design D, DPWorkPanel DPWP, @NotNull DesignPage designPage) {
-        this.CR = CR;
-        this.D = D;
-        this.DPWP = DPWP;
-        this.designPage = designPage;
-        setBackground(Color.gray);
-        //setPreferredSize(dim);
-        //setMinimumSize(dim);
-        setLayout(new GridLayout(GLrows, 2));
-        refreshPanel();
-    }
+        private int GLrows = 0;
+        private ComponentRegistry CR;
+        private static Design D;
+        private static DPWorkPanel DPWP;
+        private Dimension dim = new Dimension(350, 600);
 
-    public void refreshPanel() {
-        removeAll();
-        updateUI();
-        map.clear();
+        private final DPComponPanel thisReference = this;
 
-        GLrows = 0;
-        for (RegisteredComponent RC : CR.getRegisteredComponents()) {
-            addButton(RC);
+        @NotNull
+        private static DesignPage designPage;
+
+        //TODO Slepen om toe te voegen
+        //Dubbelklik om component toe te voegen aan sleeppaneel
+        MouseListener ml = new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 2) {//double-click
+                    //Voor als het fout gaat
+                    if (!(me.getSource() instanceof Button button)) {
+                        JOptionPane.showMessageDialog(thisReference, "Een interne fout is opgetreden");
+                        return;
+                    }
+
+                    //Maak een placedcomponent aan met de component die wordt toegevoegd.
+                    //TODO functie van maken
+                    Position pos = new Position(250, 250);
+                    PlacedComponent PC = new PlacedComponent(button.getRegisteredComponent(),
+                            button.getRegisteredComponent().getName(), pos);
+                    D.getPlacedComponents().add(PC);
+                    DPWP.refreshWP();
+                    designPage.setDesignModified();
+                }
+            }
+        };
+
+        public DPComponPanel(ComponentRegistry CR, Design D, DPWorkPanel DPWP, @NotNull DesignPage designPage) {
+            this.CR = CR;
+            this.D = D;
+            this.DPWP = DPWP;
+            this.designPage = designPage;
+
+            setBackground(Color.gray);
+            //setPreferredSize(dim);
+            //setMinimumSize(dim);
+            setLayout(new GridLayout(GLrows, 2));
+            refreshPanel();
         }
-    }
 
-    public void addButton(RegisteredComponent RC) {
-        //Vergroot plek
-        GLrows += 1;
+        public void refreshPanel() {
+            removeAll();
+            updateUI();
+            map.clear();
 
-        //En voeg een component toe aan de lijst
-        setLayout(new GridLayout(GLrows, 2));
-        Button button;
-        try {
-            button = new Button(RC);
-        } catch (Exception e) {
-            System.exit(1);
-            return;
+            GLrows = 0;
+            for (RegisteredComponent RC : CR.getRegisteredComponents()) {
+                addButton(RC);
+            }
         }
 
-        button.addMouseListener(ml);
-        map.put(button, RC);
-        button.addMouseListener(new PopClickListener());
-        add(button);
-    }
+        public void addButton(RegisteredComponent RC) {
+            //Vergroot plek
+            GLrows += 1;
 
-    public Dimension getDim() {
-        return dim;
-    }
+            //En voeg een component toe aan de lijst
+            setLayout(new GridLayout(GLrows, 2));
+            Button button;
+            try {
+                button = new Button(RC);
+            } catch (Exception e) {
+                System.exit(1);
+                return;
+            }
+
+            button.addMouseListener(ml);
+            map.put(button, RC);
+            button.addMouseListener(new PopClickListener());
+            add(button);
+        }
+
+        public Dimension getDim() {
+            return dim;
+        }
+
 }
+
 
