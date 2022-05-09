@@ -119,13 +119,13 @@ public class DPComponPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Haal component op die verwijdert/aangepast wilt worden
+                Component invoker = getInvoker();
+                Button button = (Button) invoker;
+                RegisteredComponent RC = button.getRegisteredComponent();
+
                 if (e.getSource() == anItem)
                 {
-                    //Haal component op die verwijdert wilt worden
-                    Component invoker = getInvoker();
-                    Button button = (Button) invoker;
-                    RegisteredComponent RC = button.getRegisteredComponent();
-
                     //Check of het geplaatst is op het workpanel
                     for (PlacedComponent PC : D.getPlacedComponents()
                     ) {
@@ -144,7 +144,7 @@ public class DPComponPanel extends JPanel {
                     if (parentWindow instanceof Frame) {
                         parentFrame = (JFrame) parentWindow;
                     }
-                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, CR, designPage);
+                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, CR, designPage, RC);
                     dialoog.setLocationRelativeTo(null);
                 }
                 refreshPanel();
