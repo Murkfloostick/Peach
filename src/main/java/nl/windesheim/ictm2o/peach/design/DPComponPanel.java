@@ -1,5 +1,6 @@
-package nl.windesheim.ictm2o.peach;
+package nl.windesheim.ictm2o.peach.design;
 
+import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.components.*;
 import nl.windesheim.ictm2o.peach.storage.ResourceManager;
 import org.jetbrains.annotations.NotNull;

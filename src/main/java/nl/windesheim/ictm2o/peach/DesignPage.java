@@ -2,13 +2,13 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.Design;
-import nl.windesheim.ictm2o.peach.components.PlacedComponent;
-import nl.windesheim.ictm2o.peach.components.Position;
+import nl.windesheim.ictm2o.peach.design.DPComponPanel;
+import nl.windesheim.ictm2o.peach.design.DPToevCompon;
+import nl.windesheim.ictm2o.peach.design.DPWorkPanel;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
