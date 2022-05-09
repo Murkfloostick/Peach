@@ -1,13 +1,17 @@
 package nl.windesheim.ictm2o.peach;
 
+import nl.windesheim.ictm2o.peach.algorithm.BestAlgorithm;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
+
 import nl.windesheim.ictm2o.peach.components.Design;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
+import javax.swing.border.LineBorder;
 import java.io.IOException;
 
 
@@ -24,7 +28,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private final JLabel kostenTotaal = new JLabel("Kosten totaal: 0,-");
 
 
-    Font font1 = new Font("Arial", Font.BOLD, 15);
+    Font font1 = new Font("Inter", Font.BOLD, 15);
 
     public DPToevCompon(ComponentRegistry CR, DesignPage mainFrame, PeachWindow m_parent, Design D) {
         this.m_parent = m_parent;
@@ -89,6 +93,10 @@ public class DPToevCompon extends JPanel implements ActionListener {
 
         } else if (e.getSource() == terugKnop) {
             m_parent.openStartPage(mainFrame);
+        } else if(e.getSource() == optimaliseren){
+            //Algorithm hieronder
+            //Zie nieuwe aangemaakte class voor toekomstige uitwerking
+            new BestAlgorithm();
         }
 
     }
