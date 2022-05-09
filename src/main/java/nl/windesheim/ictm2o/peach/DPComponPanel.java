@@ -144,7 +144,7 @@ public class DPComponPanel extends JPanel {
                     if (parentWindow instanceof Frame) {
                         parentFrame = (JFrame) parentWindow;
                     }
-                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, CR, designPage, RC);
+                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
                     dialoog.setLocationRelativeTo(null);
                 }
                 refreshPanel();

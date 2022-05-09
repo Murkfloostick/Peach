@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.UUID;
 
 public class DPAanpDialog extends JDialog implements ActionListener {
     //Options moet worden opgehaald uit iconenlijst?
@@ -24,13 +23,11 @@ public class DPAanpDialog extends JDialog implements ActionListener {
     private JLabel labelPrijs = new JLabel("Prijs");
     private JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
 
-    private ComponentRegistry CR;
     private DesignPage mainFrame;
     private RegisteredComponent RC;
 
-    public DPAanpDialog(JFrame frame, boolean modal, ComponentRegistry CR, DesignPage mainFrame, RegisteredComponent RC) {
+    public DPAanpDialog(JFrame frame, boolean modal, DesignPage mainFrame, RegisteredComponent RC) {
         super(frame, modal);
-        this.CR = CR;
         this.mainFrame = mainFrame;
         this.RC = RC;
 
@@ -64,12 +61,12 @@ public class DPAanpDialog extends JDialog implements ActionListener {
 
         //Vul gegevens in van component
         int counter2 = 0;
-        for (ComponentIcon IC : ComponentIcon.values()
+        for (String IC : optionsToChoose
         ) {
-            if (RC.getIcon().equals(IC)) {
+            if (RC.getIcon().toString().equals(IC)) {
                 break;
             }
-            counter2 += 1;
+            counter2+=1;
         }
             options.setSelectedIndex(counter2);
             naam.setText(RC.getName());
@@ -82,8 +79,8 @@ public class DPAanpDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == toevoegen){
-            UUID uuid=UUID.randomUUID();
             ComponentIcon CI = ComponentIcon.GENERIC;
+
             for (ComponentIcon IC:ComponentIcon.values()
             ) {
                 if(IC.name().equals(options.getSelectedItem())){
@@ -91,8 +88,9 @@ public class DPAanpDialog extends JDialog implements ActionListener {
                     break;
                 }
             }
-            RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()));
-            CR.getRegisteredComponents().add(newComponent);
+            //Pas component aan
+            RC.editComponent(naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()));
+
             mainFrame.getPeachWindow().getConfiguration().save();
             mainFrame.getComponPanel().refreshPanel();
             dispose();
