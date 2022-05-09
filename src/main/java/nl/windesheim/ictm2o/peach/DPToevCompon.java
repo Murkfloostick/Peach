@@ -1,6 +1,7 @@
 package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
+import nl.windesheim.ictm2o.peach.components.Design;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -13,17 +14,21 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private JButton toevoegen;
     private ComponentRegistry CR;
     private DesignPage mainFrame;
+    private Design D;
     private JButton terugKnop;
     private JButton optimaliseren;
     private PeachWindow m_parent;
 
+    private final JLabel beschikbaarheid = new JLabel("Beschikbaarheid: 0%");
+
 
     Font font1 = new Font("Arial", Font.BOLD, 15);
 
-    public DPToevCompon(ComponentRegistry CR, DesignPage mainFrame, PeachWindow m_parent) {
+    public DPToevCompon(ComponentRegistry CR, DesignPage mainFrame, PeachWindow m_parent, Design D) {
         this.m_parent = m_parent;
         this.CR = CR;
         this.mainFrame = mainFrame;
+        this.D = D;
         this.setVisible(true);
         setBackground(Color.gray);
         //OG: 200-550
@@ -48,8 +53,15 @@ public class DPToevCompon extends JPanel implements ActionListener {
         toevoegen.addActionListener(this);
         terugKnop.addActionListener(this);
         optimaliseren.addActionListener(this);
+
+        beschikbaarheid.setFont(font1);
+        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
+        add(beschikbaarheid);
     }
 
+    public void refreshGegevens(){
+        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == toevoegen) {

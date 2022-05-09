@@ -34,13 +34,15 @@ public class DPWorkPanel extends JPanel{
 
     @NotNull
     private final DesignPage designPage;
+    private final DPToevCompon toevCompon;
     private JLabel firstSelectionLabel;
 
-    public DPWorkPanel(Design D, @NotNull DesignPage designPage) {
+    public DPWorkPanel(Design D, @NotNull DesignPage designPage, DPToevCompon toevCompon) {
         //TODO Dynamic dim instellen
         //TODO In selectie modus alle andere input uit
         this.D = D;
         this.designPage = designPage;
+        this.toevCompon = toevCompon;
         setBackground(Color.lightGray);
 
 
@@ -74,6 +76,7 @@ public class DPWorkPanel extends JPanel{
         map.clear();
 
         add(beschikbaarheid);
+        toevCompon.refreshGegevens();
         beschikbaarheid.setBounds(800, 950, 150, 10);
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
 

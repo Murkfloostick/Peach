@@ -36,10 +36,11 @@ public class DesignPage extends JPanel implements ActionListener {
         this.m_parent = m_parent;
         this.CR = peachWindow.getComponentRegistry();
         this.D = design;
-        workPanel = new DPWorkPanel(D, this);
-        componPanel = new DPComponPanel(CR, D, workPanel, this);
 
-        toevCompon = new DPToevCompon(CR, this, this.m_parent);
+
+        toevCompon = new DPToevCompon(CR, this, this.m_parent, D);
+        workPanel = new DPWorkPanel(D, this, toevCompon);
+        componPanel = new DPComponPanel(CR, D, workPanel, this);
         JScrollPane scroller = new JScrollPane(componPanel);
 
         scroller.setPreferredSize(componPanel.getDim());
