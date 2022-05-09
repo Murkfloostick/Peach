@@ -90,7 +90,11 @@ public class DPToevCompon extends JPanel implements ActionListener {
 
        remove(table);
         JTable table = new JTable(data2, columnNames);
-        add(new JScrollPane(table));
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(table);
+        scrollPane.setPreferredSize(new Dimension(400,50));
+        add(scrollPane);
     }
 
     @Override
