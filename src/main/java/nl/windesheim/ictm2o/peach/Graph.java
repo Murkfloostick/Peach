@@ -58,7 +58,7 @@ public class Graph extends JPanel {
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         for (Integer y : m_points) {
-            y = size.height - bottomBorderWidth - (int)(y * yScale);
+            y = size.height - bottomBorderWidth - (int) (y * yScale);
 
             if (previousY != null) {
                 g.drawLine(x - increaseX, previousY, x, y);

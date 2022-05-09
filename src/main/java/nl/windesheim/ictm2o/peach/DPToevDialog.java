@@ -27,11 +27,11 @@ public class DPToevDialog extends JDialog implements ActionListener {
     private ComponentRegistry CR;
     private DesignPage mainFrame;
 
-    public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR, DesignPage mainFrame){
+    public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR, DesignPage mainFrame) {
         super(frame, modal);
         this.CR = CR;
         this.mainFrame = mainFrame;
-        setSize(350,110);
+        setSize(350, 110);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Toevoegen component");
@@ -39,8 +39,8 @@ public class DPToevDialog extends JDialog implements ActionListener {
         //Haal icoontjes op
         optionsToChoose = new String[ComponentIcon.values().length];
         int counter = 0;
-        for (ComponentIcon IC:ComponentIcon.values()
-             ) {
+        for (ComponentIcon IC : ComponentIcon.values()
+        ) {
             optionsToChoose[counter] = IC.name();
             counter += 1;
         }
@@ -63,12 +63,12 @@ public class DPToevDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == toevoegen){
-            UUID uuid=UUID.randomUUID();
+        if (e.getSource() == toevoegen) {
+            UUID uuid = UUID.randomUUID();
             ComponentIcon CI = ComponentIcon.GENERIC;
-            for (ComponentIcon IC:ComponentIcon.values()
+            for (ComponentIcon IC : ComponentIcon.values()
             ) {
-                if(IC.name().equals(options.getSelectedItem())){
+                if (IC.name().equals(options.getSelectedItem())) {
                     CI = IC;
                     break;
                 }
@@ -80,7 +80,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
             dispose();
             mainFrame.setDesignModified();
         }
-        if(e.getSource() == cancel){
+        if (e.getSource() == cancel) {
             dispose();
         }
     }

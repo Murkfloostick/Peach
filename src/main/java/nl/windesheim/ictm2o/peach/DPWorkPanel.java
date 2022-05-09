@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class DPWorkPanel extends JPanel{
+public class DPWorkPanel extends JPanel {
     private final Design D;
     private final Map<JLabel, PlacedComponent> map = new HashMap<>();
     private final Map<PlacedComponent, ArrayList<PlacedComponent>> lineMap = new HashMap<>();
@@ -64,10 +64,10 @@ public class DPWorkPanel extends JPanel{
 //                PlotOrientation.VERTICAL,
 //                true, true, false);
 
-    setVisible(true);
+        setVisible(true);
     }
 
-    public void refreshWP(){
+    public void refreshWP() {
         //Alles leeghalen
         removeAll();
         updateUI();
@@ -75,7 +75,7 @@ public class DPWorkPanel extends JPanel{
 
         add(beschikbaarheid);
         beschikbaarheid.setBounds(800, 950, 150, 10);
-        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
+        beschikbaarheid.setText("Beschikbaarheid: " + 100 * D.getAvailbility() + "%");
 
         for (PlacedComponent PC : D.getPlacedComponents()) {
             ImageIcon icon = null;
@@ -108,16 +108,20 @@ public class DPWorkPanel extends JPanel{
         return dim;
     }
 
-    public static boolean isAccept() { return accept; }
+    public static boolean isAccept() {
+        return accept;
+    }
 
-    public static void setAccept(boolean accept) { DPWorkPanel.accept = accept; }
+    public static void setAccept(boolean accept) {
+        DPWorkPanel.accept = accept;
+    }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         lineMap.forEach((k, v) -> {
-            for (PlacedComponent pc:v
-                 ) {
+            for (PlacedComponent pc : v
+            ) {
                 g.drawLine(Math.toIntExact(k.getPosition().getX()) + 30, Math.toIntExact(k.getPosition().getY()) + 30, Math.toIntExact(pc.getPosition().getX()) + 30, Math.toIntExact(pc.getPosition().getY() + 30));
             }
         });
@@ -190,20 +194,20 @@ public class DPWorkPanel extends JPanel{
             }
 
             //TODO normaal klik van maken
-            if(selectieModus && !verwijderModus){
+            if (selectieModus && !verwijderModus) {
                 PlacedComponent secondSelection = (PlacedComponent) map.get(target);
                 ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
-                if(pcList == null){
+                if (pcList == null) {
                     pcList = new ArrayList<>();
                     pcList.add(secondSelection);
-                } else{
+                } else {
                     AtomicBoolean bestaatAl = new AtomicBoolean(false);
                     lineMap.forEach((key, value) -> {
                         if (value.equals(secondSelection)) {
                             bestaatAl.set(true);
                         }
                     });
-                    if(!bestaatAl.get()){
+                    if (!bestaatAl.get()) {
                         pcList.add(secondSelection);
                     } else {
                         JOptionPane.showMessageDialog(null, "Een component kan niet meer dan een lijn per component hebben", "Ho daar: Component kan geen lijn trekken", JOptionPane.ERROR_MESSAGE);
@@ -218,12 +222,12 @@ public class DPWorkPanel extends JPanel{
                 firstSelection = null;
                 firstSelectionLabel = null;
                 return;
-            } else if(verwijderModus) {
+            } else if (verwijderModus) {
                 PlacedComponent secondSelection = (PlacedComponent) map.get(target);
                 ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
                 //TODO Functie van maken
                 ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
-                for (PlacedComponent pc:v
+                for (PlacedComponent pc : v
                 ) {
                     map.forEach((key, value) -> {
                         if (value.equals(pc)) {
@@ -264,7 +268,7 @@ public class DPWorkPanel extends JPanel{
             PC = map.get(target);
             ArrayList<PlacedComponent> v = lineMap.get(PC);
             AtomicBoolean lijnGevonden = new AtomicBoolean(false); //Intellij wou dit
-            if(v != null) {
+            if (v != null) {
                 for (PlacedComponent pc : v
                 ) {
                     map.forEach((key, value) -> {
@@ -286,14 +290,14 @@ public class DPWorkPanel extends JPanel{
             add(anItem);
             anItem.addActionListener(ev -> {
                 verwijderComponent();
-                    });
+            });
             selecteren.addActionListener(ev -> {
                 selectieModusAan();
             });
 
         }
 
-        public void verwijderComponent(){
+        public void verwijderComponent() {
             //Haal component op die verwijdert wilt worden
             PlacedComponent PC;
             PC = map.get(target);
@@ -303,7 +307,7 @@ public class DPWorkPanel extends JPanel{
             refreshWP();
         }
 
-        public void selectieModusAan(){
+        public void selectieModusAan() {
             //this.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 30)); werkt niet
             target.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
             selectieModus = true;
@@ -311,11 +315,11 @@ public class DPWorkPanel extends JPanel{
             firstSelectionLabel = target;
         }
 
-        public void verwijderenAan(){
+        public void verwijderenAan() {
             verwijderModus = true;
             ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
             //TODO Functie van maken
-            for (PlacedComponent pc:v
+            for (PlacedComponent pc : v
             ) {
                 map.forEach((key, value) -> {
                     if (value.equals(pc)) {
@@ -325,6 +329,7 @@ public class DPWorkPanel extends JPanel{
             }
         }
     }
+
     protected static class ValueImportTransferHandler extends TransferHandler {
 
         public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
