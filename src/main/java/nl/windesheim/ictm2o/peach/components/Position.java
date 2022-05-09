@@ -1,5 +1,6 @@
 package nl.windesheim.ictm2o.peach.components;
 
+//TODO Record maken?
 public class Position {
 
     private final long x;

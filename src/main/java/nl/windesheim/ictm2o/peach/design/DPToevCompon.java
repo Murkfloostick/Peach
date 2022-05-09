@@ -14,17 +14,17 @@ import java.awt.event.ActionListener;
 
 
 public class DPToevCompon extends JPanel implements ActionListener {
-    private JButton toevoegen;
-    private ComponentRegistry CR;
-    private DesignPage mainFrame;
-    private Design D;
-    private JButton terugKnop;
-    private JButton optimaliseren;
-    private PeachWindow m_parent;
+    private final JButton toevoegen;
+    private final ComponentRegistry CR;
+    private final DesignPage mainFrame;
+    private final Design D;
+    private final JButton terugKnop;
+    private final JButton optimaliseren;
+    private final PeachWindow m_parent;
 
     private final JLabel beschikbaarheid = new JLabel("Beschikbaarheid: 0%");
 
-    private String[] columnNames = {
+    private final String[] columnNames = {
             "SERVER_WEB",
             "SERVER_DATABASE",
             "FIREWALL",

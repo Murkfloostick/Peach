@@ -1,7 +1,6 @@
 package nl.windesheim.ictm2o.peach.components;
 
 import org.jetbrains.annotations.NotNull;
-import java.awt.*;
 
 public class PlacedComponent {
 

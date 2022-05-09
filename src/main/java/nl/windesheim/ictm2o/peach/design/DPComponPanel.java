@@ -25,8 +25,7 @@ public class DPComponPanel extends JPanel {
         this.mainFrame = mainFrame;
     }
 
-    class Button extends JLabel {
-        private ImageIcon image;
+    static class Button extends JLabel {
 
         @NotNull
         public RegisteredComponent registeredComponent;
@@ -34,6 +33,8 @@ public class DPComponPanel extends JPanel {
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
             super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
+            //TODO Local variable?
+            ImageIcon image;
             try {
                 String iconnaam = registeredComponent.getIcon().name();
                 image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/" + iconnaam + ".png")));
@@ -65,8 +66,8 @@ public class DPComponPanel extends JPanel {
         protected static class ValueExportTransferHandler extends TransferHandler {
 
             public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
-            private String value;
-            private RegisteredComponent RC;
+            private final String value;
+            private final RegisteredComponent RC;
 
             public ValueExportTransferHandler(String value, RegisteredComponent RC) {
                 this.value = value;
@@ -84,8 +85,7 @@ public class DPComponPanel extends JPanel {
 
             @Override
             protected Transferable createTransferable(JComponent c) {
-                Transferable t = new StringSelection(getValue());
-                return t;
+                return new StringSelection(getValue());
             }
 
             @Override
@@ -99,10 +99,6 @@ public class DPComponPanel extends JPanel {
                     DPWP.refreshWP();
                     designPage.setDesignModified();
                     DPWorkPanel.setAccept(false);
-
-                    //Clean up and remove the LayerItem that was moved
-                    //((Button) source).setVisible(false);
-                    //((Button) source).getParent().remove((Button) source);
                 }
             }
 
@@ -199,14 +195,12 @@ public class DPComponPanel extends JPanel {
         }
 
         private int GLrows = 0;
-        private ComponentRegistry CR;
+        private final ComponentRegistry CR;
         private static Design D;
         private static DPWorkPanel DPWP;
-        private Dimension dim = new Dimension(350, 600);
+        private final Dimension dim = new Dimension(350, 600);
 
         private final DPComponPanel thisReference = this;
-
-        @NotNull
         private static DesignPage designPage;
 
         //TODO Slepen om toe te voegen
@@ -239,8 +233,6 @@ public class DPComponPanel extends JPanel {
             this.designPage = designPage;
 
             setBackground(Color.gray);
-            //setPreferredSize(dim);
-            //setMinimumSize(dim);
             setLayout(new GridLayout(GLrows, 2));
             refreshPanel();
         }

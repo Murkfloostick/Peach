@@ -3,7 +3,6 @@ package nl.windesheim.ictm2o.peach.components;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Array;
 import java.util.*;
 
 public class Design {
@@ -78,7 +77,6 @@ public class Design {
         this.isDesignSavedToFile = false;
     }
 
-    @NotNull
     public void delPlacComponent(PlacedComponent PC) {
         placedComponents.remove(PC);
     }
