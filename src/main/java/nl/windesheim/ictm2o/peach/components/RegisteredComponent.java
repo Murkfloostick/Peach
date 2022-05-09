@@ -7,10 +7,10 @@ import java.util.UUID;
 public class RegisteredComponent {
 
     private final @NotNull UUID id;
-    private final @NotNull String name;
-    private final @NotNull ComponentIcon icon;
-    private final float cost;
-    private final float availability;
+    private @NotNull String name;
+    private @NotNull ComponentIcon icon;
+    private float cost;
+    private float availability;
 
     public RegisteredComponent(@NotNull UUID id, @NotNull String name, @NotNull ComponentIcon icon, float cost, float availability) {
         this.id = id;
@@ -41,5 +41,12 @@ public class RegisteredComponent {
 
     public float getAvailability() {
         return availability;
+    }
+
+    public void editComponent(@NotNull String name, @NotNull ComponentIcon icon, float cost, float availability){
+        this.name = name;
+        this.icon = icon;
+        this.cost = cost;
+        this.availability = availability;
     }
 }

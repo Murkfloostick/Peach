@@ -26,7 +26,7 @@ public class DPComponPanel extends JPanel {
         public RegisteredComponent registeredComponent;
 
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
-            super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%</body></html>", SwingConstants.CENTER);
+            super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
             try {
                 String iconnaam = registeredComponent.getIcon().name();
@@ -103,34 +103,55 @@ public class DPComponPanel extends JPanel {
         }
     }
 
-    class PopUp extends JPopupMenu implements ActionListener {
-        JMenuItem anItem;
 
-        public PopUp() {
-            anItem = new JMenuItem("Verwijder");
-            add(anItem);
-            anItem.addActionListener(this);
-        }
+        class PopUp extends JPopupMenu implements ActionListener {
+            JMenuItem anItem;
+            JMenuItem aanpassen;
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == anItem) ;
-            {
-                //Haal component op die verwijdert wilt worden
+            public PopUp() {
+                aanpassen = new JMenuItem("Aanpassen");
+                add(aanpassen);
+                aanpassen.addActionListener(this);
+
+                anItem = new JMenuItem("Verwijder");
+                add(anItem);
+                anItem.addActionListener(this);
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Haal component op die verwijdert/aangepast wilt worden
                 Component invoker = getInvoker();
                 Button button = (Button) invoker;
                 RegisteredComponent RC = button.getRegisteredComponent();
 
-                //Check of het geplaatst is op het workpanel
-                for (PlacedComponent PC : D.getPlacedComponents()
-                ) {
-                    if (PC.getRegisteredComponent().getID() == RC.getID()) {
-                        JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
-                        return;
+                if (e.getSource() == anItem)
+                {
+                    //Check of het geplaatst is op het workpanel
+                    for (PlacedComponent PC : D.getPlacedComponents()
+                    ) {
+                        if (PC.getRegisteredComponent().getID() == RC.getID()) {
+                            JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
                     }
-                }
-                //En anders verwijden van de ComponentRegistry
+                  //En anders verwijden van de ComponentRegistry
                 CR.delComponent(RC);
+                }
+
+                if (e.getSource() == aanpassen){
+                    Window parentWindow = SwingUtilities.windowForComponent(this);
+                    JFrame parentFrame = null;
+                    if (parentWindow instanceof Frame) {
+                        parentFrame = (JFrame) parentWindow;
+                    }
+                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
+                    dialoog.setLocationRelativeTo(null);
+                }
+                refreshPanel();
+                designPage.getPeachWindow().getConfiguration().save();
             }
             refreshPanel();
             designPage.getPeachWindow().getConfiguration().save();
