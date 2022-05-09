@@ -21,6 +21,7 @@ public class BestAlgorithm {
 
 
     //Hier komt uiteraad straks verder een geweldig algorithm
+    //Met backtracking
 
 
 }
