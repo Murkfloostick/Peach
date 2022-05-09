@@ -23,8 +23,20 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private PeachWindow m_parent;
 
     private final JLabel beschikbaarheid = new JLabel("Beschikbaarheid: 0%");
-    private final JLabel kostenTotaal = new JLabel("Kosten totaal: 0,-");
 
+    private String[] columnNames = {
+            "SERVER_WEB",
+            "SERVER_DATABASE",
+            "FIREWALL",
+            "ROUTER",
+            "GENERIC",
+            "TOTAAL"};
+    private Object[][] data = {
+            {0,0,0,0,0,0},
+    };
+
+    JTable table = new JTable(data, columnNames);
+    JScrollPane scrollPane = new JScrollPane();
 
     Font font1 = new Font("Inter", Font.BOLD, 15);
 
@@ -62,18 +74,27 @@ public class DPToevCompon extends JPanel implements ActionListener {
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
         add(beschikbaarheid);
 
-        //GRAFIEK
-        kostenTotaal.setFont(font1);
-        kostenTotaal.setText("Kosten totaal: " + D.getKosten()[5] + "");
-        add(kostenTotaal);
+        scrollPane.setViewportView(table);
+        scrollPane.setPreferredSize(new Dimension(400,50));
+        add(scrollPane);
 
     }
 
-
-
     public void refreshGegevens(){
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
-        kostenTotaal.setText("Kosten totaal: " + D.getKosten()[5] + "");
+
+        data = new Object[][]{
+                {D.getKosten()[0],
+                        D.getKosten()[1],
+                        D.getKosten()[2],
+                        D.getKosten()[3],
+                        D.getKosten()[4],
+                        D.getKosten()[5]}
+        };
+        remove(table);
+        JTable table = new JTable(data, columnNames);
+
+        scrollPane.setViewportView(table);
     }
 
     @Override
