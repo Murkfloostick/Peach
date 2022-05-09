@@ -113,7 +113,7 @@ public class DPComponPanel extends JPanel {
             JMenuItem anItem;
             JMenuItem aanpassen;
             JMenuItem toevoegen;
-            
+
             public PopUp() {
 //                aanpassen = new JMenuItem("Aanpassen");
 //                add(aanpassen);
@@ -122,7 +122,7 @@ public class DPComponPanel extends JPanel {
                 toevoegen = new JMenuItem("Nieuwe Toevoegen");
                 add(toevoegen);
                 toevoegen.addActionListener(this);
-                
+
                 anItem = new JMenuItem("Verwijder");
                 add(anItem);
                 anItem.addActionListener(this);
