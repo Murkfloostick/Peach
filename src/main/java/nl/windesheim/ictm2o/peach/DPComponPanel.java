@@ -105,8 +105,13 @@ public class DPComponPanel extends JPanel {
 
         class PopUp extends JPopupMenu implements ActionListener {
             JMenuItem anItem;
+            JMenuItem aanpassen;
 
             public PopUp() {
+                aanpassen = new JMenuItem("Aanpassen");
+                add(aanpassen);
+                aanpassen.addActionListener(this);
+
                 anItem = new JMenuItem("Verwijder");
                 add(anItem);
                 anItem.addActionListener(this);
@@ -114,7 +119,7 @@ public class DPComponPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == anItem) ;
+                if (e.getSource() == anItem)
                 {
                     //Haal component op die verwijdert wilt worden
                     Component invoker = getInvoker();
@@ -131,6 +136,16 @@ public class DPComponPanel extends JPanel {
                     }
                     //En anders verwijden van de ComponentRegistry
                     CR.delComponent(RC);
+                }
+
+                if (e.getSource() == aanpassen){
+                    Window parentWindow = SwingUtilities.windowForComponent(this);
+                    JFrame parentFrame = null;
+                    if (parentWindow instanceof Frame) {
+                        parentFrame = (JFrame) parentWindow;
+                    }
+                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, CR, designPage);
+                    dialoog.setLocationRelativeTo(null);
                 }
                 refreshPanel();
                 designPage.getPeachWindow().getConfiguration().save();
