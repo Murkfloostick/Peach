@@ -23,8 +23,19 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private PeachWindow m_parent;
 
     private final JLabel beschikbaarheid = new JLabel("Beschikbaarheid: 0%");
-    private final JLabel kostenTotaal = new JLabel("Kosten totaal: 0,-");
 
+    private String[] columnNames = {
+            "SERVER_WEB",
+            "SERVER_DATABASE",
+            "FIREWALL",
+            "ROUTER",
+            "GENERIC",
+            "TOTAAL"};
+    private Object[][] data = {
+            {0,0,0,0,0,0},
+    };
+
+    JTable table = new JTable(data, columnNames);
 
     Font font1 = new Font("Inter", Font.BOLD, 15);
 
@@ -61,19 +72,25 @@ public class DPToevCompon extends JPanel implements ActionListener {
         beschikbaarheid.setFont(font1);
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
         add(beschikbaarheid);
-
-        //GRAFIEK
-        kostenTotaal.setFont(font1);
-        kostenTotaal.setText("Kosten totaal: " + D.getKosten()[5] + "");
-        add(kostenTotaal);
+        add(table);
 
     }
 
-
-
     public void refreshGegevens(){
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
-        kostenTotaal.setText("Kosten totaal: " + D.getKosten()[5] + "");
+            Object[][] data2 = {
+                    {D.getKosten()[0],
+                    D.getKosten()[1],
+                    D.getKosten()[2],
+                    D.getKosten()[3],
+                    D.getKosten()[4],
+                    D.getKosten()[5]}
+            };
+
+
+       remove(table);
+        JTable table = new JTable(data2, columnNames);
+        add(new JScrollPane(table));
     }
 
     @Override
