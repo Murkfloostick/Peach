@@ -6,9 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.Random;
 
 public class MonitorPage extends JPanel {
@@ -16,13 +13,8 @@ public class MonitorPage extends JPanel {
     private final Graph cpuGraph = new Graph(30, Color.green);
     private final Graph memoryGraph = new Graph(30, Color.red);
     private final Graph diskGraph = new Graph(30, Color.blue);
-    private final PeachWindow m_parent;
 
     public MonitorPage(PeachWindow m_parent) {
-        this.m_parent = m_parent;
-//        cpuGraph.setPreferredSize(new Dimension(550, 200));
-//        memoryGraph.setPreferredSize(new Dimension(550, 200));
-
         setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]", "[grow,fill]"));
         setBorder(new EmptyBorder(new Insets(0, 30, 0, 30)));
 

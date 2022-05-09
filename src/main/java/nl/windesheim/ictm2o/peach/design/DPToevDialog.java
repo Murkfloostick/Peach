@@ -12,21 +12,16 @@ import java.awt.event.ActionListener;
 import java.util.UUID;
 
 public class DPToevDialog extends JDialog implements ActionListener {
-    //Options moet worden opgehaald uit iconenlijst?
-    private String[] optionsToChoose;
 
-    private JComboBox options;
-    private JTextField naam = new JTextField(5);
-    private JTextField prijs = new JTextField(5);
-    private JTextField beschikbaarheid = new JTextField(5);
-    private JButton toevoegen = new JButton("Toevoegen");
-    private JButton cancel = new JButton("Annuleren");
-    private JLabel labelNaam = new JLabel("Naam");
-    private JLabel labelPrijs = new JLabel("Prijs");
-    private JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
+    private final JComboBox options;
+    private final JTextField naam = new JTextField(5);
+    private final JTextField prijs = new JTextField(5);
+    private final JTextField beschikbaarheid = new JTextField(5);
+    private final JButton toevoegen = new JButton("Toevoegen");
+    private final JButton cancel = new JButton("Annuleren");
 
-    private ComponentRegistry CR;
-    private DesignPage mainFrame;
+    private final ComponentRegistry CR;
+    private final DesignPage mainFrame;
 
     public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR, DesignPage mainFrame) {
         super(frame, modal);
@@ -38,7 +33,8 @@ public class DPToevDialog extends JDialog implements ActionListener {
         setTitle("Toevoegen component");
 
         //Haal icoontjes op
-        optionsToChoose = new String[ComponentIcon.values().length];
+        //Options moet worden opgehaald uit iconenlijst?
+        String[] optionsToChoose = new String[ComponentIcon.values().length];
         int counter = 0;
         for (ComponentIcon IC : ComponentIcon.values()
         ) {
@@ -48,10 +44,13 @@ public class DPToevDialog extends JDialog implements ActionListener {
         options = new JComboBox(optionsToChoose);
         add(options);
 
+        JLabel labelNaam = new JLabel("Naam");
         add(labelNaam);
         add(naam);
+        JLabel labelPrijs = new JLabel("Prijs");
         add(labelPrijs);
         add(prijs);
+        JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
         add(labelBeschikbaarheid);
         add(beschikbaarheid);
         add(toevoegen);
