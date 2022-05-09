@@ -144,6 +144,7 @@ public class DPComponPanel extends JPanel {
                     if (parentWindow instanceof Frame) {
                         parentFrame = (JFrame) parentWindow;
                     }
+                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
                     DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
                     dialoog.setLocationRelativeTo(null);
                 }
