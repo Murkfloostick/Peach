@@ -1,5 +1,6 @@
-package nl.windesheim.ictm2o.peach;
+package nl.windesheim.ictm2o.peach.design;
 
+import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;

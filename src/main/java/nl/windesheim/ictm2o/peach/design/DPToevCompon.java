@@ -1,5 +1,7 @@
-package nl.windesheim.ictm2o.peach;
+package nl.windesheim.ictm2o.peach.design;
 
+import nl.windesheim.ictm2o.peach.DesignPage;
+import nl.windesheim.ictm2o.peach.PeachWindow;
 import nl.windesheim.ictm2o.peach.algorithm.BestAlgorithm;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 
@@ -9,10 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
-import javax.swing.border.LineBorder;
-import java.io.IOException;
 
 
 public class DPToevCompon extends JPanel implements ActionListener {

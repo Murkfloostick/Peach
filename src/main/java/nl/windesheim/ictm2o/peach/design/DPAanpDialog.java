@@ -1,5 +1,6 @@
-package nl.windesheim.ictm2o.peach;
+package nl.windesheim.ictm2o.peach.design;
 
+import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
@@ -8,9 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.UUID;
 
-public class DPToevDialog extends JDialog implements ActionListener {
+public class DPAanpDialog extends JDialog implements ActionListener {
     //Options moet worden opgehaald uit iconenlijst?
     private String[] optionsToChoose;
 
@@ -18,23 +18,24 @@ public class DPToevDialog extends JDialog implements ActionListener {
     private JTextField naam = new JTextField(5);
     private JTextField prijs = new JTextField(5);
     private JTextField beschikbaarheid = new JTextField(5);
-    private JButton toevoegen = new JButton("Toevoegen");
+    private JButton toevoegen = new JButton("Aanpassen");
     private JButton cancel = new JButton("Annuleren");
     private JLabel labelNaam = new JLabel("Naam");
     private JLabel labelPrijs = new JLabel("Prijs");
     private JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
 
-    private ComponentRegistry CR;
     private DesignPage mainFrame;
+    private RegisteredComponent RC;
 
-    public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR, DesignPage mainFrame) {
+    public DPAanpDialog(JFrame frame, boolean modal, DesignPage mainFrame, RegisteredComponent RC) {
         super(frame, modal);
-        this.CR = CR;
         this.mainFrame = mainFrame;
+        this.RC = RC;
+
         setSize(350, 110);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setTitle("Toevoegen component");
+        setTitle("Aanpassen component");
 
         //Haal icoontjes op
         optionsToChoose = new String[ComponentIcon.values().length];
@@ -58,29 +59,45 @@ public class DPToevDialog extends JDialog implements ActionListener {
         add(cancel);
         cancel.addActionListener(this);
         setLocationRelativeTo(null);
-        setVisible(true);
-    }
+
+        //Vul gegevens in van component
+        int counter2 = 0;
+        for (String IC : optionsToChoose
+        ) {
+            if (RC.getIcon().toString().equals(IC)) {
+                break;
+            }
+            counter2+=1;
+        }
+            options.setSelectedIndex(counter2);
+            naam.setText(RC.getName());
+            prijs.setText(String.valueOf(RC.getCost()));
+            beschikbaarheid.setText(String.valueOf(RC.getAvailability()*100));
+
+            setVisible(true);
+        }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == toevoegen) {
-            UUID uuid = UUID.randomUUID();
+        if(e.getSource() == toevoegen){
             ComponentIcon CI = ComponentIcon.GENERIC;
-            for (ComponentIcon IC : ComponentIcon.values()
+
+            for (ComponentIcon IC:ComponentIcon.values()
             ) {
-                if (IC.name().equals(options.getSelectedItem())) {
+                if(IC.name().equals(options.getSelectedItem())){
                     CI = IC;
                     break;
                 }
             }
-            RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()));
-            CR.getRegisteredComponents().add(newComponent);
+            //Pas component aan
+            RC.editComponent(naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()));
+
             mainFrame.getPeachWindow().getConfiguration().save();
             mainFrame.getComponPanel().refreshPanel();
             dispose();
             mainFrame.setDesignModified();
         }
-        if (e.getSource() == cancel) {
+        if(e.getSource() == cancel){
             dispose();
         }
     }
