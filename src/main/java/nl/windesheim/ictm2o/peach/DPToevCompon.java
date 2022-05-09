@@ -62,6 +62,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     public void refreshGegevens(){
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == toevoegen) {
