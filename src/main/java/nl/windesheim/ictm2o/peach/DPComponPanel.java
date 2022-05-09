@@ -26,7 +26,7 @@ public class DPComponPanel extends JPanel {
         public RegisteredComponent registeredComponent;
 
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
-            super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%</body></html>", SwingConstants.CENTER);
+            super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
             try {
                 String iconnaam = registeredComponent.getIcon().name();

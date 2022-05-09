@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+
 public class DPToevCompon extends JPanel implements ActionListener {
     private JButton toevoegen;
     private ComponentRegistry CR;
@@ -20,6 +21,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private PeachWindow m_parent;
 
     private final JLabel beschikbaarheid = new JLabel("Beschikbaarheid: 0%");
+    private final JLabel kostenTotaal = new JLabel("Kosten totaal: 0,-");
 
 
     Font font1 = new Font("Arial", Font.BOLD, 15);
@@ -57,10 +59,19 @@ public class DPToevCompon extends JPanel implements ActionListener {
         beschikbaarheid.setFont(font1);
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
         add(beschikbaarheid);
+
+        //GRAFIEK
+        kostenTotaal.setFont(font1);
+        kostenTotaal.setText("Kosten totaal: " + D.getKosten()[5] + "");
+        add(kostenTotaal);
+
     }
+
+
 
     public void refreshGegevens(){
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
+        kostenTotaal.setText("Kosten totaal: " + D.getKosten()[5] + "");
     }
 
     @Override

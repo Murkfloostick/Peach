@@ -138,4 +138,30 @@ public class Design {
         }
         return total;
     }
+
+    public float[] getKosten(){
+        float[] array = {0,0,0,0,0,0};
+
+        for (PlacedComponent PC:placedComponents
+        ) {
+            if(PC.getRegisteredComponent().getIcon().toString().equals("GENERIC")){
+                array[4] = array[4] + PC.getRegisteredComponent().getCost();
+            }
+            if(PC.getRegisteredComponent().getIcon().toString().equals("ROUTER")){
+                array[3] = array[3] + PC.getRegisteredComponent().getCost();
+            }
+            if(PC.getRegisteredComponent().getIcon().toString().equals("FIREWALL")){
+                array[2] = array[2] + PC.getRegisteredComponent().getCost();
+            }
+            if(PC.getRegisteredComponent().getIcon().toString().equals("SERVER_DATABASE")){
+                array[1] = array[1] + PC.getRegisteredComponent().getCost();
+            }
+            if(PC.getRegisteredComponent().getIcon().toString().equals("SERVER_WEB")){
+                array[0] = array[0] + PC.getRegisteredComponent().getCost();
+            }
+            array[5] = array[5] + PC.getRegisteredComponent().getCost();
+        }
+        return array;
+    }
+
 }

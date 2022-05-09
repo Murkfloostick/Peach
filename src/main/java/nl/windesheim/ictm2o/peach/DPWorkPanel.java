@@ -77,8 +77,8 @@ public class DPWorkPanel extends JPanel{
 
         add(beschikbaarheid);
         toevCompon.refreshGegevens();
-        beschikbaarheid.setBounds(800, 950, 150, 10);
-        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
+        //beschikbaarheid.setBounds(800, 950, 150, 10);
+        //beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
 
         for (PlacedComponent PC : D.getPlacedComponents()) {
             ImageIcon icon = null;
