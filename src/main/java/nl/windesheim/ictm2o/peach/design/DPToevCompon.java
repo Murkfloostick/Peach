@@ -36,6 +36,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     };
 
     JTable table = new JTable(data, columnNames);
+    JScrollPane scrollPane = new JScrollPane();
 
     Font font1 = new Font("Inter", Font.BOLD, 15);
 
@@ -72,29 +73,28 @@ public class DPToevCompon extends JPanel implements ActionListener {
         beschikbaarheid.setFont(font1);
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
         add(beschikbaarheid);
-        add(table);
+
+        scrollPane.setViewportView(table);
+        scrollPane.setPreferredSize(new Dimension(400,50));
+        add(scrollPane);
 
     }
 
     public void refreshGegevens(){
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
-            Object[][] data2 = {
-                    {D.getKosten()[0],
-                    D.getKosten()[1],
-                    D.getKosten()[2],
-                    D.getKosten()[3],
-                    D.getKosten()[4],
-                    D.getKosten()[5]}
-            };
 
+        data = new Object[][]{
+                {D.getKosten()[0],
+                        D.getKosten()[1],
+                        D.getKosten()[2],
+                        D.getKosten()[3],
+                        D.getKosten()[4],
+                        D.getKosten()[5]}
+        };
+        remove(table);
+        JTable table = new JTable(data, columnNames);
 
-       remove(table);
-        JTable table = new JTable(data2, columnNames);
-
-        JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(table);
-        scrollPane.setPreferredSize(new Dimension(400,50));
-        add(scrollPane);
     }
 
     @Override
