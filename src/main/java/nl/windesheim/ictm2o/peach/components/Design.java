@@ -12,7 +12,7 @@ public class Design {
 
 //    private float targetAvailability = 99.99f;
     //TODO Verbind dit met dat label in DPToevCOmpon
-    private float targetAvailability = 50.00f;
+    private float targetAvailability = 70.00f;
     private float totalCost = 0;
 
     @NotNull
@@ -148,7 +148,7 @@ public class Design {
         return total;
     }
 
-    public float[] getKosten(){
+    public float[] getKosten(List<PlacedComponent> placedComponents){
         float[] array = {0,0,0,0,0,0};
 
         for (PlacedComponent PC:placedComponents

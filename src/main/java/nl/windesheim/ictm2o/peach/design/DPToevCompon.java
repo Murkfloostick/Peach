@@ -84,12 +84,12 @@ public class DPToevCompon extends JPanel implements ActionListener {
         beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility(D.getPlacedComponents()) + "%");
 
         data = new Object[][]{
-                {D.getKosten()[0],
-                        D.getKosten()[1],
-                        D.getKosten()[2],
-                        D.getKosten()[3],
-                        D.getKosten()[4],
-                        D.getKosten()[5]}
+                {D.getKosten(D.getPlacedComponents())[0],
+                        D.getKosten(D.getPlacedComponents())[1],
+                        D.getKosten(D.getPlacedComponents())[2],
+                        D.getKosten(D.getPlacedComponents())[3],
+                        D.getKosten(D.getPlacedComponents())[4],
+                        D.getKosten(D.getPlacedComponents())[5]}
         };
         remove(table);
         JTable table = new JTable(data, columnNames);
@@ -116,7 +116,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             //Algorithm hieronder
             //Zie nieuwe aangemaakte class voor toekomstige uitwerking
             BestAlgorithm BA = new BestAlgorithm(D);
-            BA.vindAv3();
+            BA.vindAv4();
 
             //Update alles
             refreshGegevens();
