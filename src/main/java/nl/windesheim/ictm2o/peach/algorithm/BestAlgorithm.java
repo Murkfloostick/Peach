@@ -14,7 +14,7 @@ import java.util.Map;
 public class BestAlgorithm {
     private final Map<JLabel, PlacedComponent> map = new HashMap<>();
     private final Map<PlacedComponent, ArrayList<PlacedComponent>> lineMap = new HashMap<>();
-    private Design D = null;
+    private Design D;
 
     public BestAlgorithm(Design d) {
         D = d;
@@ -30,37 +30,59 @@ public class BestAlgorithm {
     }
 
 
-        float CA = D.getAvailbility(D.getPlacedComponents()); //Current availbility
+        float CA; //Current availbility
+        float TA; //Target availbility
         List<PlacedComponent> ARC; //Nieuwe components
-        List<PlacedComponent> PC = D.getPlacedComponents(); //Components waar we het mee moeten doen
+        List<PlacedComponent> PC; //Components waar we het mee moeten doen
 
     public void vindAv(){
         int counter= 0;
+        int counter2 = 0; //voor het toevoegen
+
+        //Voor de check of we alle componenten in lijst zijn aggegeaan
+        int totalSize = D.getPlacedComponents().size();
+        int usedCounter = 0;
+
         CA = 0;
+        PC = D.getPlacedComponents();
+        ARC = new ArrayList();
+        TA = D.getTargetAvailability();
 
         //Terwijl availbility lager is dan target availbility
-        while(CA < D.getTargetAvailability()){
-            //Dit moet anders, maakt een nieuw placed component en voegt toe aan nieuw lijst
-            Position pos = new Position(250, 250);
-            PlacedComponent NPC = new PlacedComponent(PC.get(counter).getRegisteredComponent(), PC.get(counter).getRegisteredComponent().getName(), pos);
-            ARC.add(NPC);
+        while(CA < D.getTargetAvailability()) {
+            //Zijn we aan einde van lijst? Voeg 1 component toe aan eerste en bij volgende de tweede...
+            if (totalSize-1 == usedCounter) {
+                //Voeg toe aan de eerste
+                if (counter2 == totalSize) {
+                    counter2 = 0; //reset naar begin en voeg weer toe.
+                }
+                Position pos = new Position(250, 250);
+                PlacedComponent NPC = new PlacedComponent(PC.get(counter2).getRegisteredComponent(), PC.get(counter2).getRegisteredComponent().getName(), pos);
+                ARC.add(NPC);
+                counter2 += 1;
+                usedCounter = 0;
+            } else {
+                Position pos = new Position(250, 250);
+                PlacedComponent NPC = new PlacedComponent(PC.get(counter).getRegisteredComponent(), PC.get(counter).getRegisteredComponent().getName(), pos);
+                ARC.add(NPC);
+                usedCounter += 1;
 
-            //Check of availbility nu lager is dan vorige
-            if(D.getAvailbility(ARC) < CA || D.getAvailbility(ARC) > CA ){
-                //Als dat zo is, gaan we 1 stap terug en gaan we naar de volgende component.
-                ARC.remove(NPC);
-                counter += 1;
-            } else if(D.getAvailbility(ARC) == CA){
-                //Als ze hetzelfde zijn, stop en geef de nieuwe components door aan Design
-                D.deletePlacComponentList();
-                D.newPlacComponentList(ARC);
+                CA = D.getAvailbility(ARC) * 100;
+                //Check of availbility nu lager is dan vorige
+
+                if (CA < TA || CA > TA) {
+                    //Als dat zo is, gaan we 1 stap terug en gaan we naar de volgende component.
+                    ARC.remove(NPC);
+                    counter += 1;
+                } else if (CA == TA) {
+                    //Als ze hetzelfde zijn, stop en geef de nieuwe components door aan Design
+                    //TODO Check of alle componenten zijn gebruikt;
+                    D.deletePlacComponentList();
+                    D.newPlacComponentList(ARC);
+                }
             }
         }
     }
-
-
-
-
 }
 
 
