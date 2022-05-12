@@ -61,6 +61,7 @@ public class BestAlgorithm {
                 ARC.add(NPC);
                 counter2 += 1;
                 usedCounter = 0;
+                counter = 0;
             } else {
                 Position pos = new Position(250, 250);
                 PlacedComponent NPC = new PlacedComponent(PC.get(counter).getRegisteredComponent(), PC.get(counter).getRegisteredComponent().getName(), pos);
