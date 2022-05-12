@@ -11,6 +11,7 @@ public class Design {
     private String filePath;
 
 //    private float targetAvailability = 99.99f;
+    //TODO Verbind dit met dat label in DPToevCOmpon
     private float targetAvailability = 50.00f;
     private float totalCost = 0;
 
