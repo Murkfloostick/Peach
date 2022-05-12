@@ -114,9 +114,9 @@ public class DPComponPanel extends JPanel {
             JMenuItem toevoegen;
             
             public PopUp() {
-                aanpassen = new JMenuItem("Aanpassen");
-                add(aanpassen);
-                aanpassen.addActionListener(this);
+//                aanpassen = new JMenuItem("Aanpassen");
+//                add(aanpassen);
+//                aanpassen.addActionListener(this);
 
                 toevoegen = new JMenuItem("Nieuwe Toevoegen");
                 add(toevoegen);
@@ -158,16 +158,16 @@ public class DPComponPanel extends JPanel {
                     CR.delComponent(RC);
                 }
 
-                if (e.getSource() == aanpassen) {
-                    Window parentWindow = SwingUtilities.windowForComponent(this);
-                    JFrame parentFrame = null;
-                    if (parentWindow instanceof Frame) {
-                        parentFrame = (JFrame) parentWindow;
-                    }
-                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
-                    dialoog.setLocationRelativeTo(null);
-                }
+//                if (e.getSource() == aanpassen) {
+//                    Window parentWindow = SwingUtilities.windowForComponent(this);
+//                    JFrame parentFrame = null;
+//                    if (parentWindow instanceof Frame) {
+//                        parentFrame = (JFrame) parentWindow;
+//                    }
+//                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+//                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
+//                    dialoog.setLocationRelativeTo(null);
+//                }
                 refreshPanel();
                 designPage.getPeachWindow().getConfiguration().save();
             }
