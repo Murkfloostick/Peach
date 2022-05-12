@@ -4,6 +4,7 @@ import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
+import org.w3c.dom.Node;
 
 import java.util.*;
 
@@ -33,7 +34,7 @@ public class BestAlgorithm {
         ) {
             Position pos = new Position(250, 250);
             PlacedComponent NPC = new PlacedComponent(PC.getRegisteredComponent(), PC.getRegisteredComponent().getName(), pos);
-            ARC.add(NPC);
+                    ARC.add(NPC);
         }
 
         //Nog meer variabelen die logic loops regelen
@@ -84,7 +85,6 @@ public class BestAlgorithm {
                 if (PC.size() <= counter) {
                     //Als we bij de einde zijn doe er nog een want anders komen we in een loop? Zet ook terug naar eerste component
                     counter = 0;
-                    ARC.remove(ARC.size() - 1);
                 } else {
                     counter += 1;
                 }
@@ -102,7 +102,7 @@ public class BestAlgorithm {
         for (List ARK:masterARC
              ) {
             inkomende = D.getKosten(ARK)[5];
-            if(beste < inkomende){
+            if(inkomende < beste){
                 beste = inkomende;
                 besteList = ARK;
             }
