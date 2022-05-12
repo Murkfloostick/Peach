@@ -115,13 +115,14 @@ public class DPComponPanel extends JPanel {
             JMenuItem toevoegen;
 
             public PopUp() {
-//                aanpassen = new JMenuItem("Aanpassen");
-//                add(aanpassen);
-//                aanpassen.addActionListener(this);
+                aanpassen = new JMenuItem("Aanpassen");
+                add(aanpassen);
+                aanpassen.addActionListener(this);
 
                 toevoegen = new JMenuItem("Nieuwe Toevoegen");
                 add(toevoegen);
                 toevoegen.addActionListener(this);
+
 
                 anItem = new JMenuItem("Verwijder");
                 add(anItem);
@@ -135,6 +136,7 @@ public class DPComponPanel extends JPanel {
                 Button button = (Button) invoker;
                 RegisteredComponent RC = button.getRegisteredComponent();
 
+
                 if (e.getSource() == toevoegen){
                     Window parentWindow = SwingUtilities.windowForComponent(this);
                     JFrame parentFrame = null;
@@ -145,6 +147,7 @@ public class DPComponPanel extends JPanel {
                     DPToevDialog dialoog = new DPToevDialog(parentFrame, true, CR, mainFrame);
                     dialoog.setLocationRelativeTo(null);
                 }
+
 
                 if (e.getSource() == anItem) {
                     //Check of het geplaatst is op het workpanel
@@ -159,16 +162,18 @@ public class DPComponPanel extends JPanel {
                     CR.delComponent(RC);
                 }
 
-//                if (e.getSource() == aanpassen) {
-//                    Window parentWindow = SwingUtilities.windowForComponent(this);
-//                    JFrame parentFrame = null;
-//                    if (parentWindow instanceof Frame) {
-//                        parentFrame = (JFrame) parentWindow;
-//                    }
-//                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-//                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
-//                    dialoog.setLocationRelativeTo(null);
-//                }
+
+                if (e.getSource() == aanpassen) {
+                    Window parentWindow = SwingUtilities.windowForComponent(this);
+                   JFrame parentFrame = null;
+                    if (parentWindow instanceof Frame) {
+                        parentFrame = (JFrame) parentWindow;
+                    }
+                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
+                    dialoog.setLocationRelativeTo(null);
+                }
+
                 refreshPanel();
                 designPage.getPeachWindow().getConfiguration().save();
             }
