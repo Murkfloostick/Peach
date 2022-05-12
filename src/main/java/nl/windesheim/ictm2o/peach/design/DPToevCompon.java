@@ -71,7 +71,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         optimaliseren.addActionListener(this);
 
         beschikbaarheid.setFont(font1);
-        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
+        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility(D.getPlacedComponents()) + "%");
         add(beschikbaarheid);
 
         scrollPane.setViewportView(table);
@@ -81,7 +81,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     }
 
     public void refreshGegevens(){
-        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
+        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility(D.getPlacedComponents()) + "%");
 
         data = new Object[][]{
                 {D.getKosten()[0],
@@ -115,7 +115,13 @@ public class DPToevCompon extends JPanel implements ActionListener {
         } else if(e.getSource() == optimaliseren){
             //Algorithm hieronder
             //Zie nieuwe aangemaakte class voor toekomstige uitwerking
-            new BestAlgorithm();
+            BestAlgorithm BA = new BestAlgorithm(D);
+            BA.vindAv();
+
+            //Update alles
+            refreshGegevens();
+            mainFrame.getComponPanel().refreshPanel();
+            mainFrame.getWorkPanel().refreshWP();
         }
 
     }

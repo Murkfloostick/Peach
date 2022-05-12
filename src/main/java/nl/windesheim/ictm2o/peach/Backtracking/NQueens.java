@@ -3,7 +3,7 @@ package nl.windesheim.ictm2o.peach.Backtracking;
 public class NQueens {
 
     public static void main(String[] args) {
-        int n = 8;
+        int n = 6;
         nQueens(n);
     }
 

@@ -17,6 +17,7 @@ public class DesignPage extends JPanel implements ActionListener {
     private final DPComponPanel componPanel;
     private final JMenuItem menu1;
     private final PeachWindow m_parent;
+    private final DPWorkPanel workPanel;
     private Design D;
 
     public DesignPage(PeachWindow peachWindow, PeachWindow m_parent, @NotNull Design design) {
@@ -26,7 +27,7 @@ public class DesignPage extends JPanel implements ActionListener {
 
 
         DPToevCompon toevCompon = new DPToevCompon(CR, this, this.m_parent, D);
-        DPWorkPanel workPanel = new DPWorkPanel(D, this, toevCompon);
+        workPanel = new DPWorkPanel(D, this, toevCompon);
         componPanel = new DPComponPanel(CR, D, workPanel, this);
         JScrollPane scroller = new JScrollPane(componPanel);
 
@@ -158,5 +159,9 @@ public class DesignPage extends JPanel implements ActionListener {
     @NotNull
     public PeachWindow getPeachWindow() {
         return m_parent;
+    }
+
+    public DPWorkPanel getWorkPanel() {
+        return workPanel;
     }
 }

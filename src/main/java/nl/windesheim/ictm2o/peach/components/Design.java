@@ -14,7 +14,7 @@ public class Design {
     private float totalCost = 0;
 
     @NotNull
-    private final List<PlacedComponent> placedComponents;
+    private List<PlacedComponent> placedComponents;
 
     private boolean isDesignSavedToFile = false;
 
@@ -81,7 +81,16 @@ public class Design {
         placedComponents.remove(PC);
     }
 
-    public float getAvailbility() {
+    //Voor optimalisatie
+    public void deletePlacComponentList(){
+        placedComponents = null;
+    }
+
+    public void newPlacComponentList(List NPC){
+        placedComponents = NPC;
+    }
+
+    public float getAvailbility(List<PlacedComponent> placedComponents) {
         float[] array = {0, 0, 0, 0, 0};
         float total = 0;
 
