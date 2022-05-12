@@ -2,7 +2,6 @@ package nl.windesheim.ictm2o.peach.design;
 
 import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
-import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 
 import javax.swing.*;
@@ -11,21 +10,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DPAanpDialog extends JDialog implements ActionListener {
-    //Options moet worden opgehaald uit iconenlijst?
-    private String[] optionsToChoose;
 
-    private JComboBox options;
-    private JTextField naam = new JTextField(5);
-    private JTextField prijs = new JTextField(5);
-    private JTextField beschikbaarheid = new JTextField(5);
-    private JButton toevoegen = new JButton("Aanpassen");
-    private JButton cancel = new JButton("Annuleren");
-    private JLabel labelNaam = new JLabel("Naam");
-    private JLabel labelPrijs = new JLabel("Prijs");
-    private JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
+    private final JComboBox options;
+    private final JTextField naam = new JTextField(5);
+    private final JTextField prijs = new JTextField(5);
+    private final JTextField beschikbaarheid = new JTextField(5);
+    private final JButton toevoegen = new JButton("Aanpassen");
+    private final JButton cancel = new JButton("Annuleren");
 
-    private DesignPage mainFrame;
-    private RegisteredComponent RC;
+    private final DesignPage mainFrame;
+    private final RegisteredComponent RC;
 
     public DPAanpDialog(JFrame frame, boolean modal, DesignPage mainFrame, RegisteredComponent RC) {
         super(frame, modal);
@@ -38,7 +32,8 @@ public class DPAanpDialog extends JDialog implements ActionListener {
         setTitle("Aanpassen component");
 
         //Haal icoontjes op
-        optionsToChoose = new String[ComponentIcon.values().length];
+        //Options moet worden opgehaald uit iconenlijst?
+        String[] optionsToChoose = new String[ComponentIcon.values().length];
         int counter = 0;
         for (ComponentIcon IC : ComponentIcon.values()
         ) {
@@ -48,10 +43,13 @@ public class DPAanpDialog extends JDialog implements ActionListener {
         options = new JComboBox(optionsToChoose);
         add(options);
 
+        JLabel labelNaam = new JLabel("Naam");
         add(labelNaam);
         add(naam);
+        JLabel labelPrijs = new JLabel("Prijs");
         add(labelPrijs);
         add(prijs);
+        JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
         add(labelBeschikbaarheid);
         add(beschikbaarheid);
         add(toevoegen);

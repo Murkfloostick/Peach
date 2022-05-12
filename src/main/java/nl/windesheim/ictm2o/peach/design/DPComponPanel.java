@@ -19,14 +19,8 @@ import java.util.Map;
 
 public class DPComponPanel extends JPanel {
     private final Map<Button, RegisteredComponent> map = new HashMap<>(); //Voor het verwijderen
-    private DesignPage mainFrame;
 
-    public DPComponPanel(DesignPage mainFrame){
-        this.mainFrame = mainFrame;
-    }
-
-    class Button extends JLabel {
-        private ImageIcon image;
+    static class Button extends JLabel {
 
         @NotNull
         public RegisteredComponent registeredComponent;
@@ -34,6 +28,8 @@ public class DPComponPanel extends JPanel {
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
             super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
+            //TODO Local variable?
+            ImageIcon image;
             try {
                 String iconnaam = registeredComponent.getIcon().name();
                 image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/" + iconnaam + ".png")));
@@ -65,8 +61,8 @@ public class DPComponPanel extends JPanel {
         protected static class ValueExportTransferHandler extends TransferHandler {
 
             public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
-            private String value;
-            private RegisteredComponent RC;
+            private final String value;
+            private final RegisteredComponent RC;
 
             public ValueExportTransferHandler(String value, RegisteredComponent RC) {
                 this.value = value;
@@ -84,8 +80,7 @@ public class DPComponPanel extends JPanel {
 
             @Override
             protected Transferable createTransferable(JComponent c) {
-                Transferable t = new StringSelection(getValue());
-                return t;
+                return new StringSelection(getValue());
             }
 
             @Override
@@ -99,10 +94,6 @@ public class DPComponPanel extends JPanel {
                     DPWP.refreshWP();
                     designPage.setDesignModified();
                     DPWorkPanel.setAccept(false);
-
-                    //Clean up and remove the LayerItem that was moved
-                    //((Button) source).setVisible(false);
-                    //((Button) source).getParent().remove((Button) source);
                 }
             }
 
@@ -112,17 +103,11 @@ public class DPComponPanel extends JPanel {
         class PopUp extends JPopupMenu implements ActionListener {
             JMenuItem anItem;
             JMenuItem aanpassen;
-            JMenuItem toevoegen;
 
             public PopUp() {
                 aanpassen = new JMenuItem("Aanpassen");
                 add(aanpassen);
                 aanpassen.addActionListener(this);
-
-                toevoegen = new JMenuItem("Nieuwe Toevoegen");
-                add(toevoegen);
-                toevoegen.addActionListener(this);
-
 
                 anItem = new JMenuItem("Verwijder");
                 add(anItem);
@@ -136,19 +121,6 @@ public class DPComponPanel extends JPanel {
                 Button button = (Button) invoker;
                 RegisteredComponent RC = button.getRegisteredComponent();
 
-
-                if (e.getSource() == toevoegen){
-                    Window parentWindow = SwingUtilities.windowForComponent(this);
-                    JFrame parentFrame = null;
-                    if (parentWindow instanceof Frame) {
-                        parentFrame = (JFrame) parentWindow;
-                    }
-                    DesignPage mainFrame = null;
-                    DPToevDialog dialoog = new DPToevDialog(parentFrame, true, CR, mainFrame);
-                    dialoog.setLocationRelativeTo(null);
-                }
-
-
                 if (e.getSource() == anItem) {
                     //Check of het geplaatst is op het workpanel
                     for (PlacedComponent PC : D.getPlacedComponents()
@@ -157,15 +129,15 @@ public class DPComponPanel extends JPanel {
                             JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
+
                     }
                     //En anders verwijden van de ComponentRegistry
                     CR.delComponent(RC);
                 }
 
-
                 if (e.getSource() == aanpassen) {
                     Window parentWindow = SwingUtilities.windowForComponent(this);
-                   JFrame parentFrame = null;
+                    JFrame parentFrame = null;
                     if (parentWindow instanceof Frame) {
                         parentFrame = (JFrame) parentWindow;
                     }
@@ -173,7 +145,6 @@ public class DPComponPanel extends JPanel {
                     DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
                     dialoog.setLocationRelativeTo(null);
                 }
-
                 refreshPanel();
                 designPage.getPeachWindow().getConfiguration().save();
             }
@@ -199,14 +170,12 @@ public class DPComponPanel extends JPanel {
         }
 
         private int GLrows = 0;
-        private ComponentRegistry CR;
+        private final ComponentRegistry CR;
         private static Design D;
         private static DPWorkPanel DPWP;
-        private Dimension dim = new Dimension(350, 600);
+        private final Dimension dim = new Dimension(350, 600);
 
         private final DPComponPanel thisReference = this;
-
-        @NotNull
         private static DesignPage designPage;
 
         //TODO Slepen om toe te voegen
@@ -239,8 +208,6 @@ public class DPComponPanel extends JPanel {
             this.designPage = designPage;
 
             setBackground(Color.gray);
-            //setPreferredSize(dim);
-            //setMinimumSize(dim);
             setLayout(new GridLayout(GLrows, 2));
             refreshPanel();
         }

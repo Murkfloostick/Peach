@@ -3,7 +3,6 @@ package nl.windesheim.ictm2o.peach.components;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Array;
 import java.util.*;
 
 public class Design {
@@ -11,11 +10,13 @@ public class Design {
     @Nullable
     private String filePath;
 
-    private float targetAvailability = 99.99f;
+//    private float targetAvailability = 99.99f;
+    //TODO Verbind dit met dat label in DPToevCOmpon
+    private float targetAvailability = 70.00f;
     private float totalCost = 0;
 
     @NotNull
-    private final List<PlacedComponent> placedComponents;
+    private List<PlacedComponent> placedComponents;
 
     private boolean isDesignSavedToFile = false;
 
@@ -78,12 +79,20 @@ public class Design {
         this.isDesignSavedToFile = false;
     }
 
-    @NotNull
     public void delPlacComponent(PlacedComponent PC) {
         placedComponents.remove(PC);
     }
 
-    public float getAvailbility() {
+    //Voor optimalisatie
+    public void deletePlacComponentList(){
+        placedComponents = null;
+    }
+
+    public void newPlacComponentList(List NPC){
+        placedComponents = NPC;
+    }
+
+    public float getAvailbility(List<PlacedComponent> placedComponents) {
         float[] array = {0, 0, 0, 0, 0};
         float total = 0;
 
@@ -139,7 +148,7 @@ public class Design {
         return total;
     }
 
-    public float[] getKosten(){
+    public float[] getKosten(List<PlacedComponent> placedComponents){
         float[] array = {0,0,0,0,0,0};
 
         for (PlacedComponent PC:placedComponents

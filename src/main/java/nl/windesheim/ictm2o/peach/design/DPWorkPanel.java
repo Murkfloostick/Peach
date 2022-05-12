@@ -55,18 +55,7 @@ public class DPWorkPanel extends JPanel {
         addMouseListener(dragger);
         addMouseMotionListener(dragger);
         this.setTransferHandler(new ValueImportTransferHandler());
-
-        //setPreferredSize(dim);
         refreshWP();
-
-//        JFreeChart barChart = ChartFactory.createBarChart(
-//                chartTitle,
-//                "Category",
-//                "Score",
-//                createDataset(),
-//                PlotOrientation.VERTICAL,
-//                true, true, false);
-
         setVisible(true);
     }
 
@@ -79,11 +68,9 @@ public class DPWorkPanel extends JPanel {
         add(beschikbaarheid);
 
         toevCompon.refreshGegevens();
-        //beschikbaarheid.setBounds(800, 950, 150, 10);
-        //beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility() + "%");
 
         for (PlacedComponent PC : D.getPlacedComponents()) {
-            ImageIcon icon = null;
+            ImageIcon icon;
             try {
                 String iconnaam = PC.getRegisteredComponent().getIcon().name();
                 icon = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
@@ -200,7 +187,7 @@ public class DPWorkPanel extends JPanel {
 
             //TODO normaal klik van maken
             if (selectieModus && !verwijderModus) {
-                PlacedComponent secondSelection = (PlacedComponent) map.get(target);
+                PlacedComponent secondSelection = map.get(target);
                 ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
                 if (pcList == null) {
                     pcList = new ArrayList<>();
@@ -228,7 +215,7 @@ public class DPWorkPanel extends JPanel {
                 firstSelectionLabel = null;
                 return;
             } else if (verwijderModus) {
-                PlacedComponent secondSelection = (PlacedComponent) map.get(target);
+                PlacedComponent secondSelection = map.get(target);
                 ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
                 //TODO Functie van maken
                 ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
@@ -293,12 +280,8 @@ public class DPWorkPanel extends JPanel {
                 }
             }
             add(anItem);
-            anItem.addActionListener(ev -> {
-                verwijderComponent();
-            });
-            selecteren.addActionListener(ev -> {
-                selectieModusAan();
-            });
+            anItem.addActionListener(ev -> verwijderComponent());
+            selecteren.addActionListener(ev -> selectieModusAan());
 
         }
 
@@ -355,14 +338,8 @@ public class DPWorkPanel extends JPanel {
                     Transferable t = support.getTransferable();
                     Object value = t.getTransferData(SUPPORTED_DATE_FLAVOR);
                     if (value instanceof String) { // Ensure no errors
-                        // TODO: here you can create your own handler
-                        // ie: ((LayerContainer) component).getHandler()....
-                        Component component = support.getComponent();
-//                        Button j = new LayerItem((String) value);
-//                        ((LayerContainer) component).add(j); // Add a new drag JLabel
                         System.out.println(value);
                         accept = true;
-                        return accept;
                     }
                 } catch (Exception exp) {
                     exp.printStackTrace();
