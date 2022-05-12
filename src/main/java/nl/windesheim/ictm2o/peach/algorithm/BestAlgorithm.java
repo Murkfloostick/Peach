@@ -19,8 +19,6 @@ public class BestAlgorithm {
         return lineMap;
     }
 
-
     //Hier komt uiteraad straks verder een geweldig algorithm
-
 
 }

@@ -87,7 +87,7 @@ public class Configuration {
             return;
 
         try {
-            if (!file.exists() &&!file.createNewFile()) {
+            if (!file.exists() && !file.createNewFile()) {
                 JOptionPane.showMessageDialog(peachWindow, "Kon de configuratie niet opslaan omdat we geen rechten hebben om een nieuw bestand aan te maken in \"" + file.getAbsolutePath() + "\"", "NerdyGadgets Peach", JOptionPane.ERROR_MESSAGE);
                 return;
             }

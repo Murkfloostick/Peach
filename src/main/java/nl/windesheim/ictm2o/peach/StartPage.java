@@ -10,11 +10,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.SQLOutput;
+
 
 public class StartPage extends JPanel {
 
@@ -22,8 +22,10 @@ public class StartPage extends JPanel {
     private final Button monitorServicesButton;
     private final Button newDesignButton;
     private final Button openDesignButton;
+    private static JLabel logoImageLabel = null;
 
-    private static class Button extends JPanel {
+    private static class Button extends JPanel implements ActionListener {
+        private JButton knopVersie;
 
         private final JButton jButton;
 
@@ -36,28 +38,53 @@ public class StartPage extends JPanel {
             JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
             titleLabel.setFont(new Font("Arial", Font.BOLD, 25));
             add(titleLabel, "al center");
+
+            knopVersie = new JButton("Peach");
+            knopVersie.setFont(new Font("Inter", Font.BOLD, 60));
+            knopVersie.addActionListener(this);
+            knopVersie.setOpaque(false);
+            knopVersie.setContentAreaFilled(false);
+            knopVersie.setBorderPainted(false);
+
         }
 
         public void installMouseListener(MouseListener mouseListener) {
             jButton.addMouseListener(mouseListener);
         }
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == knopVersie) {
+                System.exit(0);
+            } else if (e.getSource() == logoImageLabel) {
+                closeScreen();
+            }
+        }
     }
 
     public StartPage(PeachWindow parent) throws IOException {
         m_parent = parent;
+        JButton knopVersie;
 
         setLayout(new MigLayout("insets 0 10% 0 10%"));
 
         JPanel logoPanel = new JPanel();
         logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
 
-        JLabel logoImageLabel = new JLabel(loadIcon());
+        logoImageLabel = new JLabel(loadIcon());
         logoPanel.add(logoImageLabel);
 
-        JLabel logoTextLabel = new JLabel("Peach");
-        logoTextLabel.setFont(new Font("Inter", Font.BOLD, 60));
-        logoPanel.add(logoTextLabel);
+        //JLabel logoTextLabel = new JLabel("Peach");
+        //logoTextLabel.setFont(new Font("Inter", Font.BOLD, 60));
+        //logoPanel.add(logoTextLabel);
+
+        knopVersie = new JButton("Peach");
+        knopVersie.setFont(new Font("Inter", Font.BOLD, 60));
+        //knopVersie.addActionListener((ActionListener) this);
+        knopVersie.setOpaque(false);
+        knopVersie.setContentAreaFilled(false);
+        knopVersie.setBorderPainted(false);
+        logoPanel.add(knopVersie);
 
         add(logoPanel, "wrap");
 
@@ -70,6 +97,7 @@ public class StartPage extends JPanel {
         add(openDesignButton);
 
         installMouseListeners();
+
     }
 
     private void installMouseListeners() {
@@ -127,6 +155,10 @@ public class StartPage extends JPanel {
         final var loadedImage = new ImageIcon(ImageIO.read(ResourceManager.load("Peach.png")));
         final var scaledImage = loadedImage.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
         return new ImageIcon(scaledImage);
+    }
+
+    static void closeScreen() {
+        System.exit(0);
     }
 
 }
