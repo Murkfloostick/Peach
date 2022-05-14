@@ -7,6 +7,7 @@ import nl.windesheim.ictm2o.peach.components.Position;
 import org.w3c.dom.Node;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BestAlgorithm {
     private Design D;
@@ -114,24 +115,81 @@ public class BestAlgorithm {
     }
 
     //Dit genereert alle combinaties
-    private void helper(List<PlacedComponent[]> combinations, PlacedComponent data[], int start, int end, int index) {
-        if (index == data.length) {
-            PlacedComponent[] combination = data.clone();
-            combinations.add(combination);
-        } else if (start <= end) {
-            data[index] = start;
-            helper(combinations, data, start + 1, end, index + 1);
-            helper(combinations, data, start + 1, end, index);
+    //TODO Voeg meerdere van dezelfde toe
+    //TODO Vind of het target beschikbaarheid haalt en stop in lijst
+    //TODO Vindt goedkoopste van bovenstelijst en zet het op het werkpaneel
+    //TODO Backtracking toevoegen
+    public static void combinations(PlacedComponent[] values, List<PlacedComponent> current, Set<Set<PlacedComponent>> accumulator, int size, int pos) {
+        if (current.size() == size) {
+            Set<PlacedComponent> toAdd = current.stream().collect(Collectors.toSet());
+            if (accumulator.contains(toAdd)) {
+                throw new RuntimeException("Duplicated value " + current);
+            }
+            accumulator.add(toAdd);
+            return;
+        }
+        for (int i = pos; i <= values.length - size + current.size(); i++) {
+            current.add(values[i]);
+            combinations(values, current, accumulator, size, i + 1);
+            current.remove(current.size() - 1);
         }
     }
 
-    public List<PlacedComponent[]> generate(int n, int r) {
-        //R is hoe groot de lijst
-        //N is hoeveel items
-        //Omzetten in Placedcomponents objecten en dan backtracking toevoegen
-        List<PlacedComponent[]> combinations = new ArrayList<>();
-        helper(combinations, new PlacedComponent[r], 0, n-1, 0);
-        return combinations;
+    public void aaaaa(){
+        //Variabelen initalisatie
+        CA = 0;
+        PC = D.getPlacedComponents();
+        ARC = new ArrayList();
+        List<PlacedComponent> tempArc = new ArrayList();
+        ArrayList<List<PlacedComponent>> masterARC = new ArrayList<>(); //Lijst met alle oplossingen
+        TA = D.getTargetAvailability();
+        PlacedComponent main;
+        int counter = 0;
+        int max = 3;
+
+        //Plaats eerst alle componenten
+        for (PlacedComponent PC:PC
+             ) {
+            ARC.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
+            tempArc.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
+        }
+
+        masterARC.add(ARC);//Dit is een oplossing
+
+
+            //De eerste waar we het mee gaan doen
+            main = PC.get(counter);
+
+            //Eerst plaatsen en dan ze allemaal en dan een voor een
+            ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
+            masterARC.add(ARC); //Dit is een oplossing
+
+            //En dan de rest
+            for (int count = 0+counter+1; count <= PC.size()-1; count++){
+                ARC.add(new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition()));
+            }
+            masterARC.add(ARC); //Dit is een oplossing
+
+            //Haal het leeg
+            ARC = null;
+            ARC = new ArrayList<>(tempArc);
+
+            //Plaats de eerste
+            ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
+
+            //Dan de tweede, terug, derde enzovoort
+            for (int count = 0+counter; count <= PC.size()-1; count++){
+                PlacedComponent plaats = new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition());
+                ARC.add(plaats);
+                masterARC.add(ARC);
+                ARC.remove(plaats);
+            }
+
+            //Print nu alles in masterarc
+        for (List<PlacedComponent> ARC:masterARC
+             ) {
+            System.out.println(ARC.toString());
+        }
     }
         }
 
