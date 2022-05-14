@@ -121,12 +121,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             BestAlgorithm BA = new BestAlgorithm(D);
             //BA.vindAv(); OUD ALGORITME
 
-            //NIEUW DIE ALLE COMBINATIES PAKT
-            String[] vegetablesSet = { "Pepper", "Cabbage", "Tomato", "Carrot", "Beans", "Cucumber", "Peas" };
-            Set<Set<String>> result = new HashSet<>();
-            BA.combinations(vegetablesSet, new ArrayList<>(), result, 5, 0);
-            result.forEach(System.out::println);
-
+            BA.aaaaa();
             //Update alles
             refreshGegevens();
             mainFrame.getComponPanel().refreshPanel();
