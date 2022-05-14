@@ -6,11 +6,14 @@ import nl.windesheim.ictm2o.peach.algorithm.BestAlgorithm;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 
 import nl.windesheim.ictm2o.peach.components.Design;
+import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.List;
 
 
 public class DPToevCompon extends JPanel implements ActionListener {
@@ -116,7 +119,13 @@ public class DPToevCompon extends JPanel implements ActionListener {
             //Algorithm hieronder
             //Zie nieuwe aangemaakte class voor toekomstige uitwerking
             BestAlgorithm BA = new BestAlgorithm(D);
-            BA.vindAv();
+            //BA.vindAv(); OUD ALGORITME
+
+            //NIEUW DIE ALLE COMBINATIES PAKT
+            String[] vegetablesSet = { "Pepper", "Cabbage", "Tomato", "Carrot", "Beans", "Cucumber", "Peas" };
+            Set<Set<String>> result = new HashSet<>();
+            BA.combinations(vegetablesSet, new ArrayList<>(), result, 5, 0);
+            result.forEach(System.out::println);
 
             //Update alles
             refreshGegevens();
