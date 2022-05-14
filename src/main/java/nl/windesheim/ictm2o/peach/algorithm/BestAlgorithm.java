@@ -144,6 +144,27 @@ public class BestAlgorithm {
         D.deletePlacComponentList();
         D.newPlacComponentList(besteList);
     }
+
+    //Dit genereert alle combinaties
+    private void helper(List<PlacedComponent[]> combinations, PlacedComponent data[], int start, int end, int index) {
+        if (index == data.length) {
+            PlacedComponent[] combination = data.clone();
+            combinations.add(combination);
+        } else if (start <= end) {
+            data[index] = start;
+            helper(combinations, data, start + 1, end, index + 1);
+            helper(combinations, data, start + 1, end, index);
+        }
+    }
+
+    public List<PlacedComponent[]> generate(int n, int r) {
+        //R is hoe groot de lijst
+        //N is hoeveel items
+        //Omzetten in Placedcomponents objecten en dan backtracking toevoegen
+        List<PlacedComponent[]> combinations = new ArrayList<>();
+        helper(combinations, new PlacedComponent[r], 0, n-1, 0);
+        return combinations;
+    }
         }
 
 
