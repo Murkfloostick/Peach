@@ -168,6 +168,7 @@ public class BestAlgorithm {
     }
 
     public void aaaaa(){
+        //TODO Verhogen van maximaal aantal componenten
         //Variabelen initalisatie
         CA = 0;
         PC = D.getPlacedComponents();
@@ -176,8 +177,10 @@ public class BestAlgorithm {
         ArrayList<List<PlacedComponent>> masterARC = new ArrayList<>(); //Lijst met alle oplossingen
         TA = D.getTargetAvailability();
         PlacedComponent main;
+        PlacedComponent main2;//De tweede die wordt gebruikt
+        int counter2 = 0;
 
-        int max = 3;
+        int max = 3; //Max aantal componenten van dezelfde RegisterdeComponent
 
         //Plaats eerst alle componenten
         for (PlacedComponent PC:PC
@@ -214,16 +217,30 @@ public class BestAlgorithm {
             //Dan de tweede, terug, derde enzovoort
             for (int count = 0; count <= PC.size() - 1; count++) {
                 if(count != counter) { //Voorkom dat we Main weer plaatsen
+                    main2 = PC.get(count);//Hou de tweede vast en doe de volgende componenten eerst
+
+                    //Plaats max keer, dan minder tot er maar 1 is en dan volgende component die main2 wordt
+                    if(main != main2){
+                        //plaats max keer
+                    }
+                    //dan for elk ander component dat niet main en main2 is plaatsen
                     PlacedComponent plaats = new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition());
                     ARC.add(plaats);
                     masterARC.add(ARC);
                     ARC.remove(plaats);
+
+                    //Volgende is main en hetzelfde
                 }
             }
 
             //Haal het leeg
             ARC = null;
             ARC = new ArrayList<>(tempArc);
+
+            //Nog een keer doen maar dan met een extra component totdat max is gehaald
+            if(counter+1 <= PC.size()-1){
+
+            }
         }
 
         //Print nu alles in masterarc
