@@ -121,7 +121,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             BestAlgorithm BA = new BestAlgorithm(D);
             //BA.vindAv(); OUD ALGORITME
 
-            BA.aaaaa();
+            BA.optiMalisatie();
             //Update alles
             refreshGegevens();
             mainFrame.getComponPanel().refreshPanel();
