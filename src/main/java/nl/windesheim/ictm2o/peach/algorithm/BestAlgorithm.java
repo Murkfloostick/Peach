@@ -20,6 +20,22 @@ public class BestAlgorithm {
     List<PlacedComponent> PC; //Components waar we het mee moeten doen
 
     //Dit genereert alle combinaties
+    //De werking zal zo moeten werken:
+    //
+    //       ABC    AB     A C
+    //ABC -> ABC -> ABC -> ABC
+    //
+    //En dan zo door met B en C als de 'hoofd' component in dat loop. (main)
+    //Nu gaan we met 1 omhoog om ook daar alle combinaties te pakken
+    //
+    //       ABC    AB     AB
+    //       ABC    ABC    AB
+    //ABC -> ABC -> ABC -> ABC
+    //
+    //Dan is C de volgende die maximaal alles heeft (main2)
+    //Is misschien niet de volledige uitleg die ik mijn gedachte heeft. Misschien ook niet de goede oplossing.
+    //We zullen dit grondig moeten testen!
+    //
     //TODO Backtracking toevoegen. (Is dit een vereiste?)
 
     public void optiMalisatie(){
