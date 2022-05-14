@@ -188,6 +188,7 @@ public class BestAlgorithm {
                     main2 = PC.get(count);//Hou de tweede vast en doe de volgende componenten eerst
 
                     //Plaats max keer, dan minder tot er maar 1 is en dan volgende component die main2 wordt
+                    //MAX begint bij 2 tot de echte max
                     if(main != main2){
                         //plaats max keer
                     }
