@@ -144,7 +144,7 @@ public class BestAlgorithm {
         ArrayList<List<PlacedComponent>> masterARC = new ArrayList<>(); //Lijst met alle oplossingen
         TA = D.getTargetAvailability();
         PlacedComponent main;
-        int counter = 0;
+
         int max = 3;
 
         //Plaats eerst alle componenten
@@ -156,7 +156,7 @@ public class BestAlgorithm {
 
         masterARC.add(ARC);//Dit is een oplossing
 
-
+        for (int counter = 0; counter <= PC.size()-1; counter++) {
             //De eerste waar we het mee gaan doen
             main = PC.get(counter);
 
@@ -165,8 +165,10 @@ public class BestAlgorithm {
             masterARC.add(ARC); //Dit is een oplossing
 
             //En dan de rest
-            for (int count = 0+counter+1; count <= PC.size()-1; count++){
-                ARC.add(new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition()));
+            for (int count = 0; count <= PC.size() - 1; count++) {
+                if(count != counter){ //Voorkom dat we Main weer plaatsen
+                    ARC.add(new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition()));
+                }
             }
             masterARC.add(ARC); //Dit is een oplossing
 
@@ -178,16 +180,23 @@ public class BestAlgorithm {
             ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
 
             //Dan de tweede, terug, derde enzovoort
-            for (int count = 0+counter; count <= PC.size()-1; count++){
-                PlacedComponent plaats = new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition());
-                ARC.add(plaats);
-                masterARC.add(ARC);
-                ARC.remove(plaats);
+            for (int count = 0; count <= PC.size() - 1; count++) {
+                if(count != counter) { //Voorkom dat we Main weer plaatsen
+                    PlacedComponent plaats = new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition());
+                    ARC.add(plaats);
+                    masterARC.add(ARC);
+                    ARC.remove(plaats);
+                }
             }
 
-            //Print nu alles in masterarc
-        for (List<PlacedComponent> ARC:masterARC
-             ) {
+            //Haal het leeg
+            ARC = null;
+            ARC = new ArrayList<>(tempArc);
+        }
+
+        //Print nu alles in masterarc
+        for (List<PlacedComponent> ARC : masterARC
+        ) {
             System.out.println(ARC.toString());
         }
     }
