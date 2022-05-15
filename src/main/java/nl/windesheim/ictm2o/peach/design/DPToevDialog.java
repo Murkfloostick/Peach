@@ -1,5 +1,6 @@
-package nl.windesheim.ictm2o.peach;
+package nl.windesheim.ictm2o.peach.design;
 
+import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
@@ -11,46 +12,45 @@ import java.awt.event.ActionListener;
 import java.util.UUID;
 
 public class DPToevDialog extends JDialog implements ActionListener {
-    //Options moet worden opgehaald uit iconenlijst?
-    private String[] optionsToChoose;
 
-    private JComboBox options;
-    private JTextField naam = new JTextField(5);
-    private JTextField prijs = new JTextField(5);
-    private JTextField beschikbaarheid = new JTextField(5);
-    private JButton toevoegen = new JButton("Toevoegen");
-    private JButton cancel = new JButton("Annuleren");
-    private JLabel labelNaam = new JLabel("Naam");
-    private JLabel labelPrijs = new JLabel("Prijs");
-    private JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
+    private final JComboBox options;
+    private final JTextField naam = new JTextField(5);
+    private final JTextField prijs = new JTextField(5);
+    private final JTextField beschikbaarheid = new JTextField(5);
+    private final JButton toevoegen = new JButton("Toevoegen");
+    private final JButton cancel = new JButton("Annuleren");
 
-    private ComponentRegistry CR;
-    private DesignPage mainFrame;
+    private final ComponentRegistry CR;
+    private final DesignPage mainFrame;
 
-    public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR, DesignPage mainFrame){
+    public DPToevDialog(JFrame frame, boolean modal, ComponentRegistry CR, DesignPage mainFrame) {
         super(frame, modal);
         this.CR = CR;
         this.mainFrame = mainFrame;
-        setSize(350,110);
+        setSize(350, 110);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Toevoegen component");
 
         //Haal icoontjes op
-        optionsToChoose = new String[ComponentIcon.values().length];
+        //Options moet worden opgehaald uit iconenlijst?
+        String[] optionsToChoose = new String[ComponentIcon.values().length];
         int counter = 0;
-        for (ComponentIcon IC:ComponentIcon.values()
-             ) {
+        for (ComponentIcon IC : ComponentIcon.values()
+        ) {
             optionsToChoose[counter] = IC.name();
             counter += 1;
         }
         options = new JComboBox(optionsToChoose);
         add(options);
 
+        JLabel labelNaam = new JLabel("Naam");
         add(labelNaam);
         add(naam);
+        JLabel labelPrijs = new JLabel("Prijs");
         add(labelPrijs);
         add(prijs);
+        JLabel labelBeschikbaarheid = new JLabel("Beschikbaarheid");
         add(labelBeschikbaarheid);
         add(beschikbaarheid);
         add(toevoegen);
@@ -63,12 +63,12 @@ public class DPToevDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == toevoegen){
-            UUID uuid=UUID.randomUUID();
+        if (e.getSource() == toevoegen) {
+            UUID uuid = UUID.randomUUID();
             ComponentIcon CI = ComponentIcon.GENERIC;
-            for (ComponentIcon IC:ComponentIcon.values()
+            for (ComponentIcon IC : ComponentIcon.values()
             ) {
-                if(IC.name().equals(options.getSelectedItem())){
+                if (IC.name().equals(options.getSelectedItem())) {
                     CI = IC;
                     break;
                 }
@@ -80,7 +80,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
             dispose();
             mainFrame.setDesignModified();
         }
-        if(e.getSource() == cancel){
+        if (e.getSource() == cancel) {
             dispose();
         }
     }

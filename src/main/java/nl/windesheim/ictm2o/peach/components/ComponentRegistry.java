@@ -49,5 +49,4 @@ public class ComponentRegistry {
     public void delComponent(RegisteredComponent RC){
         registeredComponents.remove(RC);
     }
-
 }

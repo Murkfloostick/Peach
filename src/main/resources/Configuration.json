@@ -1,0 +1,53 @@
+{
+  "registeredComponents": [
+    {
+      "cost": 4000,
+      "name": "pfSense",
+      "icon": "FIREWALL",
+      "availability": 0.9998,
+      "uuid": "803b7358-6e5e-4074-8b0b-cb4bd669d57f"
+    },
+    {
+      "cost": 5100,
+      "name": "HAL9001DB",
+      "icon": "SERVER_DATABASE",
+      "availability": 0.9,
+      "uuid": "b21f6b2b-8a40-4706-b35f-11a139da2669"
+    },
+    {
+      "cost": 7700,
+      "name": "HAL9002DB",
+      "icon": "SERVER_DATABASE",
+      "availability": 0.95,
+      "uuid": "d5db3806-e0d1-4b2f-af99-3bc4f1fcbf04"
+    },
+    {
+      "cost": 12200,
+      "name": "HAL9003DB",
+      "icon": "SERVER_DATABASE",
+      "availability": 0.98,
+      "uuid": "a06795be-388b-45ec-9bf6-c5074f7bc0a4"
+    },
+    {
+      "cost": 2200,
+      "name": "HAL9001W",
+      "icon": "SERVER_WEB",
+      "availability": 0.8,
+      "uuid": "2e92e587-e928-44d0-b3bb-01d4a7001164"
+    },
+    {
+      "cost": 3200,
+      "name": "HAL9002W",
+      "icon": "SERVER_WEB",
+      "availability": 0.9,
+      "uuid": "4856e3d5-a279-41e2-89f4-1d0fb33bfe40"
+    },
+    {
+      "cost": 5100,
+      "name": "HAL9003W",
+      "icon": "SERVER_WEB",
+      "availability": 0.95,
+      "uuid": "80f9995f-6f76-4f74-8a0f-c1c8c8edafe6"
+    }
+  ]
+}

@@ -3,7 +3,6 @@ package nl.windesheim.ictm2o.peach.components;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Array;
 import java.util.*;
 
 public class Design {
@@ -11,11 +10,13 @@ public class Design {
     @Nullable
     private String filePath;
 
-    private float targetAvailability = 99.99f;
+//    private float targetAvailability = 99.99f;
+    //TODO Verbind dit met dat label in DPToevCOmpon
+    private float targetAvailability = 70.00f;
     private float totalCost = 0;
 
     @NotNull
-    private final List<PlacedComponent> placedComponents;
+    private List<PlacedComponent> placedComponents;
 
     private boolean isDesignSavedToFile = false;
 
@@ -78,47 +79,55 @@ public class Design {
         this.isDesignSavedToFile = false;
     }
 
-    @NotNull
-    public void delPlacComponent(PlacedComponent PC){
+    public void delPlacComponent(PlacedComponent PC) {
         placedComponents.remove(PC);
     }
 
-    public float getAvailbility() {
-        float[] array = {0,0,0,0,0};
+    //Voor optimalisatie
+    public void deletePlacComponentList(){
+        placedComponents = null;
+    }
+
+    public void newPlacComponentList(List NPC){
+        placedComponents = NPC;
+    }
+
+    public float getAvailbility(List<PlacedComponent> placedComponents) {
+        float[] array = {0, 0, 0, 0, 0};
         float total = 0;
 
-        for (PlacedComponent PC:placedComponents
-             ) {
-            if(PC.getRegisteredComponent().getIcon().toString().equals("GENERIC")){
-                if(array[4] != 0){
+        for (PlacedComponent PC : placedComponents
+        ) {
+            if (PC.getRegisteredComponent().getIcon().toString().equals("GENERIC")) {
+                if (array[4] != 0) {
                     array[4] = array[4] * PC.getRegisteredComponent().getAvailability();
                 } else {
                     array[4] = array[4] + PC.getRegisteredComponent().getAvailability();
                 }
             }
-            if(PC.getRegisteredComponent().getIcon().toString().equals("ROUTER")){
-                if(array[3] != 0){
+            if (PC.getRegisteredComponent().getIcon().toString().equals("ROUTER")) {
+                if (array[3] != 0) {
                     array[3] = array[3] * PC.getRegisteredComponent().getAvailability();
                 } else {
                     array[3] = array[3] + PC.getRegisteredComponent().getAvailability();
                 }
             }
-            if(PC.getRegisteredComponent().getIcon().toString().equals("FIREWALL")){
-                if(array[2] != 0){
+            if (PC.getRegisteredComponent().getIcon().toString().equals("FIREWALL")) {
+                if (array[2] != 0) {
                     array[2] = array[2] * PC.getRegisteredComponent().getAvailability();
                 } else {
                     array[2] = array[2] + PC.getRegisteredComponent().getAvailability();
                 }
             }
-            if(PC.getRegisteredComponent().getIcon().toString().equals("SERVER_DATABASE")){
-                if(array[1] != 0){
+            if (PC.getRegisteredComponent().getIcon().toString().equals("SERVER_DATABASE")) {
+                if (array[1] != 0) {
                     array[1] = array[1] * PC.getRegisteredComponent().getAvailability();
                 } else {
                     array[1] = array[1] + PC.getRegisteredComponent().getAvailability();
                 }
             }
-            if(PC.getRegisteredComponent().getIcon().toString().equals("SERVER_WEB")){
-                if(array[0] != 0){
+            if (PC.getRegisteredComponent().getIcon().toString().equals("SERVER_WEB")) {
+                if (array[0] != 0) {
                     array[0] = array[0] * PC.getRegisteredComponent().getAvailability();
                 } else {
                     array[0] = array[0] + PC.getRegisteredComponent().getAvailability();
@@ -126,10 +135,10 @@ public class Design {
             }
         }
 
-        for (float av:array
-             ) {
-            if(av != 0){
-                if(total != 0){
+        for (float av : array
+        ) {
+            if (av != 0) {
+                if (total != 0) {
                     total *= av;
                 } else {
                     total += av;
@@ -138,4 +147,30 @@ public class Design {
         }
         return total;
     }
+
+    public float[] getKosten(List<PlacedComponent> placedComponents){
+        float[] array = {0,0,0,0,0,0};
+
+        for (PlacedComponent PC:placedComponents
+        ) {
+            if(PC.getRegisteredComponent().getIcon().toString().equals("GENERIC")){
+                array[4] = array[4] + PC.getRegisteredComponent().getCost();
+            }
+            if(PC.getRegisteredComponent().getIcon().toString().equals("ROUTER")){
+                array[3] = array[3] + PC.getRegisteredComponent().getCost();
+            }
+            if(PC.getRegisteredComponent().getIcon().toString().equals("FIREWALL")){
+                array[2] = array[2] + PC.getRegisteredComponent().getCost();
+            }
+            if(PC.getRegisteredComponent().getIcon().toString().equals("SERVER_DATABASE")){
+                array[1] = array[1] + PC.getRegisteredComponent().getCost();
+            }
+            if(PC.getRegisteredComponent().getIcon().toString().equals("SERVER_WEB")){
+                array[0] = array[0] + PC.getRegisteredComponent().getCost();
+            }
+            array[5] = array[5] + PC.getRegisteredComponent().getCost();
+        }
+        return array;
+    }
+
 }

@@ -2,44 +2,33 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.Design;
-import nl.windesheim.ictm2o.peach.components.PlacedComponent;
-import nl.windesheim.ictm2o.peach.components.Position;
+import nl.windesheim.ictm2o.peach.design.DPComponPanel;
+import nl.windesheim.ictm2o.peach.design.DPToevCompon;
+import nl.windesheim.ictm2o.peach.design.DPWorkPanel;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 
 public class DesignPage extends JPanel implements ActionListener {
-    private DPComponPanel componPanel;
-    private DPWorkPanel workPanel;
-    private DPToevCompon toevCompon;
-    private JMenuBar menuBar;
-
-    private JMenu menu, submenu;
-    private JMenuItem menu1;
-
-    private JMenuItem menuItem;
-    private JRadioButtonMenuItem rbMenuItem;
-    private JCheckBoxMenuItem cbMenuItem;
-
-    private PeachWindow m_parent;
-
-    private ComponentRegistry CR;
+    private final DPComponPanel componPanel;
+    private final JMenuItem menu1;
+    private final PeachWindow m_parent;
+    private final DPWorkPanel workPanel;
     private Design D;
 
-    private Dimension originalSize;
     public DesignPage(PeachWindow peachWindow, PeachWindow m_parent, @NotNull Design design) {
         this.m_parent = m_parent;
-        this.CR = peachWindow.getComponentRegistry();
+        ComponentRegistry CR = peachWindow.getComponentRegistry();
         this.D = design;
-        workPanel = new DPWorkPanel(D, this);
-        componPanel = new DPComponPanel(CR, D, workPanel, this);
 
-        toevCompon = new DPToevCompon(CR, this, this.m_parent);
+
+        DPToevCompon toevCompon = new DPToevCompon(CR, this, this.m_parent, D);
+        workPanel = new DPWorkPanel(D, this, toevCompon);
+        componPanel = new DPComponPanel(CR, D, workPanel, this);
         JScrollPane scroller = new JScrollPane(componPanel);
 
         scroller.setPreferredSize(componPanel.getDim());
@@ -53,21 +42,6 @@ public class DesignPage extends JPanel implements ActionListener {
                 double width = screenSize.getWidth();
                 double height = screenSize.getHeight();
                 System.out.println(width + "," + height);
-
-                  //WERKT NIET component resized wordt op verkeerde momenten en te vaak opgeroepen
-//                //Componenten en beschikbaarheid terugfluiten
-//                long difWidth = Math.round(originalSize.getWidth()) - Math.round(workPanel.getX());
-//                long difHeight = Math.round(originalSize.getHeight()) - Math.round(workPanel.getY());
-//
-//                for (PlacedComponent PC:D.getPlacedComponents()
-//                     ) {
-//                    Position oldPos = PC.getPosition();
-//                    Position newPos = new Position(oldPos.getX()-difWidth, oldPos.getY()-difHeight);
-//                    PC.setPosition(newPos);
-//                }
-//
-//                originalSize = screenSize;
-//                workPanel.refreshWP();
             }
         });
 
@@ -76,32 +50,31 @@ public class DesignPage extends JPanel implements ActionListener {
         setSize(950, 650);
 
         c.fill = GridBagConstraints.BOTH;
-    c.gridx = 0;
-    c.gridy = 0;
+        c.gridx = 0;
+        c.gridy = 0;
         c.weightx = 0.5;
         c.weighty = 1;
 
-    add(scroller, c);
-    //peachWindow.getContentPane().add(scroller);
-        //add(componPanel, c);
-    c.gridx = 1;
+        add(scroller, c);
+        c.gridx = 1;
         c.weightx = 1.5;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-    add(workPanel, c);
-    c.gridx = 2;
+        add(workPanel, c);
+        c.gridx = 2;
         c.weightx = 0.5;
         c.weighty = 1;
-    add(toevCompon, c);
+        add(toevCompon, c);
 
-    menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
 
-    menu = new JMenu("Bestand");
+        JMenu menu = new JMenu("Bestand");
+
 //    menu.setMnemonic(KeyEvent.VK_S);
-    menu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
-    menuBar.add(menu);
+        menu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
+        menuBar.add(menu);
 
-        menuItem = new JMenuItem("Nieuw", KeyEvent.VK_N);
+        JMenuItem menuItem = new JMenuItem("Nieuw", KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         menuItem.addActionListener(ev -> {
             if (!D.isDesignSavedToFile())
@@ -111,31 +84,25 @@ public class DesignPage extends JPanel implements ActionListener {
         menu.add(menuItem);
 
 //a group of JMenuItems
-    menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 //    menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
-    menuItem.addActionListener(ev -> {
-        saveDesign(false);
-    });
-    menu.add(menuItem);
+        menuItem.addActionListener(ev -> saveDesign(false));
+        menu.add(menuItem);
 
-    menuItem = new JMenuItem("Opslaan Als", KeyEvent.VK_T);
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
-    menuItem.addActionListener(ev -> {
-        saveDesign(true);
-    });
-    menu.add(menuItem);
+        menuItem = new JMenuItem("Opslaan Als", KeyEvent.VK_T);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
+        menuItem.addActionListener(ev -> saveDesign(true));
+        menu.add(menuItem);
 
-    //Terug knop
+        //Terug knop
         menu1 = new JMenuItem("Terug");
         menuBar.add(menu1);
         menu1.addActionListener(this);
 
         menu1.addActionListener(e -> System.exit(0));
-
         peachWindow.setJMenuBar(menuBar);
         setVisible(true);
-        originalSize = getSize();//Voor eerste keer
     }
 
     @Override
@@ -192,5 +159,9 @@ public class DesignPage extends JPanel implements ActionListener {
     @NotNull
     public PeachWindow getPeachWindow() {
         return m_parent;
+    }
+
+    public DPWorkPanel getWorkPanel() {
+        return workPanel;
     }
 }

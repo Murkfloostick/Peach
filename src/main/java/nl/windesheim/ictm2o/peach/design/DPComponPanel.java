@@ -1,5 +1,6 @@
-package nl.windesheim.ictm2o.peach;
+package nl.windesheim.ictm2o.peach.design;
 
+import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.components.*;
 import nl.windesheim.ictm2o.peach.storage.ResourceManager;
 import org.jetbrains.annotations.NotNull;
@@ -19,15 +20,16 @@ import java.util.Map;
 public class DPComponPanel extends JPanel {
     private final Map<Button, RegisteredComponent> map = new HashMap<>(); //Voor het verwijderen
 
-    class Button extends JLabel {
-        private ImageIcon image;
+    static class Button extends JLabel {
 
         @NotNull
         public RegisteredComponent registeredComponent;
 
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
-            super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%</body></html>", SwingConstants.CENTER);
+            super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
+            //TODO Local variable?
+            ImageIcon image;
             try {
                 String iconnaam = registeredComponent.getIcon().name();
                 image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/" + iconnaam + ".png")));
@@ -50,17 +52,17 @@ public class DPComponPanel extends JPanel {
 
 
         }
-
         @NotNull
         public RegisteredComponent getRegisteredComponent() {
             return registeredComponent;
         }
+    }
 
         protected static class ValueExportTransferHandler extends TransferHandler {
 
             public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
-            private String value;
-            private RegisteredComponent RC;
+            private final String value;
+            private final RegisteredComponent RC;
 
             public ValueExportTransferHandler(String value, RegisteredComponent RC) {
                 this.value = value;
@@ -78,8 +80,7 @@ public class DPComponPanel extends JPanel {
 
             @Override
             protected Transferable createTransferable(JComponent c) {
-                Transferable t = new StringSelection(getValue());
-                return t;
+                return new StringSelection(getValue());
             }
 
             @Override
@@ -93,20 +94,21 @@ public class DPComponPanel extends JPanel {
                     DPWP.refreshWP();
                     designPage.setDesignModified();
                     DPWorkPanel.setAccept(false);
-
-                    //Clean up and remove the LayerItem that was moved
-                    //((Button) source).setVisible(false);
-                    //((Button) source).getParent().remove((Button) source);
                 }
             }
 
-            }
         }
+
 
         class PopUp extends JPopupMenu implements ActionListener {
             JMenuItem anItem;
+            JMenuItem aanpassen;
 
             public PopUp() {
+                aanpassen = new JMenuItem("Aanpassen");
+                add(aanpassen);
+                aanpassen.addActionListener(this);
+
                 anItem = new JMenuItem("Verwijder");
                 add(anItem);
                 anItem.addActionListener(this);
@@ -114,13 +116,12 @@ public class DPComponPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == anItem) ;
-                {
-                    //Haal component op die verwijdert wilt worden
-                    Component invoker = getInvoker();
-                    Button button = (Button) invoker;
-                    RegisteredComponent RC = button.getRegisteredComponent();
+                //Haal component op die verwijdert/aangepast wilt worden
+                Component invoker = getInvoker();
+                Button button = (Button) invoker;
+                RegisteredComponent RC = button.getRegisteredComponent();
 
+                if (e.getSource() == anItem) {
                     //Check of het geplaatst is op het workpanel
                     for (PlacedComponent PC : D.getPlacedComponents()
                     ) {
@@ -128,14 +129,27 @@ public class DPComponPanel extends JPanel {
                             JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
+
                     }
                     //En anders verwijden van de ComponentRegistry
                     CR.delComponent(RC);
+                }
+
+                if (e.getSource() == aanpassen) {
+                    Window parentWindow = SwingUtilities.windowForComponent(this);
+                    JFrame parentFrame = null;
+                    if (parentWindow instanceof Frame) {
+                        parentFrame = (JFrame) parentWindow;
+                    }
+                    button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+                    DPAanpDialog dialoog = new DPAanpDialog(parentFrame, true, designPage, RC);
+                    dialoog.setLocationRelativeTo(null);
                 }
                 refreshPanel();
                 designPage.getPeachWindow().getConfiguration().save();
             }
         }
+
 
         class PopClickListener extends MouseAdapter {
             //Popmenu
@@ -156,14 +170,12 @@ public class DPComponPanel extends JPanel {
         }
 
         private int GLrows = 0;
-        private ComponentRegistry CR;
+        private final ComponentRegistry CR;
         private static Design D;
         private static DPWorkPanel DPWP;
-        private Dimension dim = new Dimension(350, 600);
+        private final Dimension dim = new Dimension(350, 600);
 
         private final DPComponPanel thisReference = this;
-
-        @NotNull
         private static DesignPage designPage;
 
         //TODO Slepen om toe te voegen
@@ -194,9 +206,8 @@ public class DPComponPanel extends JPanel {
             this.D = D;
             this.DPWP = DPWP;
             this.designPage = designPage;
+
             setBackground(Color.gray);
-            //setPreferredSize(dim);
-            //setMinimumSize(dim);
             setLayout(new GridLayout(GLrows, 2));
             refreshPanel();
         }
@@ -235,5 +246,7 @@ public class DPComponPanel extends JPanel {
         public Dimension getDim() {
             return dim;
         }
-    }
+
+}
+
 
