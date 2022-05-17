@@ -2,6 +2,7 @@ package nl.windesheim.ictm2o.peach;
 
 import net.miginfocom.swing.MigLayout;
 import nl.windesheim.ictm2o.peach.components.Design;
+import nl.windesheim.ictm2o.peach.monitor.MonitorPage;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
 import nl.windesheim.ictm2o.peach.storage.ResourceManager;
 import org.jetbrains.annotations.NotNull;

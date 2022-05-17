@@ -17,10 +17,12 @@ public class Graph extends JPanel {
     private final List<Integer> m_points = new ArrayList<>();
     private final int maxItems;
     private final Color pointColor;
+    private final int pointScale;
 
-    public Graph(int maxItems, @NotNull Color pointColor) {
+    public Graph(int maxItems, @NotNull Color pointColor, int pointScale) {
         this.maxItems = maxItems;
         this.pointColor = pointColor;
+        this.pointScale = pointScale;
     }
 
     public void popFront() {
@@ -48,7 +50,7 @@ public class Graph extends JPanel {
             return;
 
         final int increaseX = size.width / (maxItems - 2);
-        final float yScale = (size.height - bottomBorderWidth) / 100.0f;
+        final float yScale = (size.height - bottomBorderWidth) / ((float)pointScale);
 
         Integer previousY = null;
         int x = 0;

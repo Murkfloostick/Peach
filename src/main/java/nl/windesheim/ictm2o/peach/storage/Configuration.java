@@ -72,12 +72,12 @@ public class Configuration {
                 ));
             }
 
-            JSONArray recentFilesJSON = object.getJSONArray("recentFiles");
-            if (recentFilesJSON != null) {
-                for (int i = 0; i < recentFilesJSON.length(); ++i) {
-                    recentFiles.push(recentFilesJSON.getString(i));
-                }
-            }
+//            JSONArray recentFilesJSON = object.getJSONArray("recentFiles");
+//            if (recentFilesJSON != null) {
+//                for (int i = 0; i < recentFilesJSON.length(); ++i) {
+//                    recentFiles.push(recentFilesJSON.getString(i));
+//                }
+//            }
 
             inputStream.close();
         } catch (Exception exception) {
