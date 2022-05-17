@@ -1,9 +1,8 @@
 package nl.windesheim.ictm2o.peach.algorithm;
 
 import nl.windesheim.ictm2o.peach.DesignPage;
-import nl.windesheim.ictm2o.peach.components.Design;
-import nl.windesheim.ictm2o.peach.components.PlacedComponent;
-import nl.windesheim.ictm2o.peach.components.Position;
+import nl.windesheim.ictm2o.peach.components.*;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Node;
 
 import java.util.*;
@@ -21,11 +20,47 @@ public class BestAlgorithm {
     List<PlacedComponent> ARC; //Nieuwe components
     List<PlacedComponent> PC; //Components waar we het mee moeten doen
 
+    private static float calculateCost(final @NotNull List<PlacedComponent> placedComponents) {
+        float total = 0;
+        for (PlacedComponent placedComponent : placedComponents)
+            total += placedComponent.getRegisteredComponent().getCost();
+        return total;
+    }
+
+    private static float calculateAvailability(final @NotNull List<PlacedComponent> placedComponents) {
+        if (placedComponents.isEmpty())
+            return 0;
+
+        float total = 1;
+        for (PlacedComponent placedComponent : placedComponents)
+            total *= (1 - placedComponent.getRegisteredComponent().getAvailability());
+        return 1 - total;
+    }
+
+    private static final int MAXIMUM_PER_TYPE = 20;
+
+//    private static void recursive(@NotNull HashMap<RegisteredComponent, Integer> current,
+//                                  @NotNull RegisteredComponent component,
+//                                  Runnable)
+
+    public void calculate(@NotNull final List<RegisteredComponent> registeredComponents,
+                          @NotNull ComponentIcon targetType, float minimumAvailability) {
+        var currentBest = new HashMap<RegisteredComponent, Integer>();
+        var currentBestCost = 0;
+
+        // alle combinaties bij langs gaan
+
+
+        // combinaties met elkaar vergelijken
+        // positioneren
+        // klaar.
+    }
+
     public void vindAv() {
         //Variabelen initalisatie
         CA = 0;
         PC = D.getPlacedComponents();
-        ARC = new ArrayList();
+        ARC = new ArrayList<>();
         ArrayList<List<PlacedComponent>> masterARC = new ArrayList<>(); //Lijst met alle oplossingen
         TA = D.getTargetAvailability();
 
@@ -40,10 +75,9 @@ public class BestAlgorithm {
         //Nog meer variabelen die logic loops regelen
         int counter = 0;
         int componentCounter = 0;
-        int max = 0;
 
         //De brein MAXIMAAL 32 keer
-        while (max < 32) {
+        for (int iteration = 0; iteration < 32; ++iteration) {
             //Maximaal 3 componenten per iteratie
             if (componentCounter == 3) {
                 counter += 1;
@@ -56,8 +90,7 @@ public class BestAlgorithm {
 
             //Als de component vaak genoeg is geplaatst, ga naar de volgende component
             int countComponents = 0;
-            for (PlacedComponent PC2:PC
-            ) {
+            for (PlacedComponent PC2 : PC) {
                 if (PC.get(counter).getRegisteredComponent() == PC2.getRegisteredComponent()) {
                     countComponents+=1;
                 }
@@ -90,8 +123,7 @@ public class BestAlgorithm {
                 }
                 componentCounter = 0;
             }
-            System.out.println(ARC.toString());
-            max += 1;
+            System.out.println(ARC);
         }
 
         //Bereken goedkoopste die target haalt

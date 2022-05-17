@@ -18,6 +18,7 @@ public class Configuration {
 
     @NotNull
     private final PeachWindow peachWindow;
+    private final FixedMaximumStackContainer<String> recentFiles = new FixedMaximumStackContainer<>(15);
 
     public Configuration(@NotNull PeachWindow peachWindow) {
         this.peachWindow = peachWindow;
@@ -70,6 +71,13 @@ public class Configuration {
                         placedComponentJSON.getFloat("availability")
                 ));
             }
+
+//            JSONArray recentFilesJSON = object.getJSONArray("recentFiles");
+//            if (recentFilesJSON != null) {
+//                for (int i = 0; i < recentFilesJSON.length(); ++i) {
+//                    recentFiles.push(recentFilesJSON.getString(i));
+//                }
+//            }
 
             inputStream.close();
         } catch (Exception exception) {

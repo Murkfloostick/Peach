@@ -73,7 +73,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
                     break;
                 }
             }
-            RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()));
+            RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()) / 100);
             CR.getRegisteredComponents().add(newComponent);
             mainFrame.getPeachWindow().getConfiguration().save();
             mainFrame.getComponPanel().refreshPanel();
