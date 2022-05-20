@@ -42,7 +42,6 @@ public class DPWorkPanel extends JPanel {
     Rectangle bounds;
 
     public DPWorkPanel(Design D, @NotNull DesignPage designPage, DPToevCompon toevCompon) {
-        //TODO Dynamic dim instellen
         //TODO In selectie modus alle andere input uit
         this.D = D;
         this.designPage = designPage;
@@ -63,13 +62,14 @@ public class DPWorkPanel extends JPanel {
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                // This is only called when the user releases the mouse button.
-                System.out.println("componentResized");
-
-                Dimension screenSize = getSize();
-                double width = screenSize.getWidth();
-                double height = screenSize.getHeight();
-                System.out.println(width + "," + height);
+//                // This is only called when the user releases the mouse button.
+//                System.out.println("componentResized");
+//
+//                Dimension screenSize = getSize();
+//                double width = screenSize.getWidth();
+//                double height = screenSize.getHeight();
+//                System.out.println(width + "," + height);
+                //^Wtf is deze size van?
 
                 keepComponentsInside();
             }
@@ -77,18 +77,13 @@ public class DPWorkPanel extends JPanel {
     }
 
     public void keepComponentsInside(){
-
-        //TODO Functie van maken om te gebruiken bij componentdragger om te verkomen dat mensen component er buiten slepen
         for (PlacedComponent PC:D.getPlacedComponents()
         ) {
-            //Haal bounds op van jpanel. Moet via andere jpanels omdat deze de bounds van de workpanel niet kloppen.
-            bounds = getBounds();
-            //WIDTH COMPONPANEL, 0, X TOEVCOMPON-WIDTH COMPONPANEL, COMPONPANELHEIGHT
+            //Haal bounds op van werkpaneel. Moet via andere jpanels omdat deze de bounds van de workpanel niet kloppen.
             bounds = new Rectangle(designPage.getComponPanel().getX(), 0, toevCompon.getX()-toevCompon.getWidth(), toevCompon.getHeight());
 
             //Check of placed component binnen NIET binnen zit
             if(!bounds.contains(PC.getPosition().getX(), PC.getPosition().getY())){
-                //Vind het verschil in x en y van border en component
                 //TODO plaats op outer border
                 Position Pos = new Position(bounds.width/2, bounds.height/2);
                 PC.setPosition(Pos);
@@ -156,12 +151,13 @@ public class DPWorkPanel extends JPanel {
             }
         });
 
-        try{
-            //Voor debug.
-            g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-        } catch (Exception E){
-            //fuck
-        }
+        //Gebruik dit code om de border te laten zien
+//        try{
+//            //Voor debug.
+//            g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+//        } catch (Exception E){
+//            //fuck
+//        }
     }
 
     private class ComponentDragger extends MouseAdapter {

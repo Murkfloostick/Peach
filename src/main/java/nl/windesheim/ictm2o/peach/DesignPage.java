@@ -32,17 +32,6 @@ public class DesignPage extends JPanel implements ActionListener {
 
         scroller.setPreferredSize(componPanel.getDim());
         //peachWindow.getContentPane().add(scroller);
-//        this.addComponentListener(new ComponentAdapter() {
-//            public void componentResized(ComponentEvent e) {
-//                // This is only called when the user releases the mouse button.
-//                System.out.println("componentResized");
-//
-//                Dimension screenSize = getSize();
-//                double width = screenSize.getWidth();
-//                double height = screenSize.getHeight();
-//                System.out.println(width + "," + height);
-//            }
-//        });
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
