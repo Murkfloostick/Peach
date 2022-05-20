@@ -39,6 +39,8 @@ public class DPWorkPanel extends JPanel {
     private final DPToevCompon toevCompon;
     private JLabel firstSelectionLabel;
 
+    Rectangle bounds;
+
     public DPWorkPanel(Design D, @NotNull DesignPage designPage, DPToevCompon toevCompon) {
         //TODO Dynamic dim instellen
         //TODO In selectie modus alle andere input uit
@@ -69,12 +71,32 @@ public class DPWorkPanel extends JPanel {
                 double height = screenSize.getHeight();
                 System.out.println(width + "," + height);
 
-                //PseudoCode
-                //Check voor elk component of het binnen het jpanel zit, als dat niet zo is. Check het verschil en probeer het terug te zetten
+                keepComponentsInside();
             }
         });
     }
 
+    public void keepComponentsInside(){
+
+        //TODO Functie van maken om te gebruiken bij componentdragger om te verkomen dat mensen component er buiten slepen
+        for (PlacedComponent PC:D.getPlacedComponents()
+        ) {
+            //Haal bounds op van jpanel. Moet via andere jpanels omdat deze de bounds van de workpanel niet kloppen.
+            bounds = getBounds();
+            //WIDTH COMPONPANEL, 0, X TOEVCOMPON-WIDTH COMPONPANEL, COMPONPANELHEIGHT
+            bounds = new Rectangle(designPage.getComponPanel().getX(), 0, toevCompon.getX()-toevCompon.getWidth(), toevCompon.getHeight());
+
+            //Check of placed component binnen NIET binnen zit
+            if(!bounds.contains(PC.getPosition().getX(), PC.getPosition().getY())){
+                //Vind het verschil in x en y van border en component
+                //TODO plaats op outer border
+                Position Pos = new Position(bounds.width/2, bounds.height/2);
+                PC.setPosition(Pos);
+            }
+        }
+        //Zodat de nieuwe posities worden geupdate
+        refreshWP();
+    }
     public void refreshWP() {
         //Alles leeghalen
         removeAll();
@@ -133,6 +155,13 @@ public class DPWorkPanel extends JPanel {
                 g.drawLine(Math.toIntExact(k.getPosition().getX()) + 30, Math.toIntExact(k.getPosition().getY()) + 30, Math.toIntExact(pc.getPosition().getX()) + 30, Math.toIntExact(pc.getPosition().getY() + 30));
             }
         });
+
+        try{
+            //Voor debug.
+            g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        } catch (Exception E){
+            //fuck
+        }
     }
 
     private class ComponentDragger extends MouseAdapter {
@@ -186,6 +215,7 @@ public class DPWorkPanel extends JPanel {
             repaint();
             target = null;
             designPage.setDesignModified();
+            keepComponentsInside();
 
             if (e.isPopupTrigger())
                 doPop(e);
