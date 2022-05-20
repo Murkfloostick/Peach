@@ -7,8 +7,11 @@ import nl.windesheim.ictm2o.peach.monitor.MonitorServer;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
 
 public class Main {
+
+    public static final Locale LOCALE = Locale.forLanguageTag("nl");
 
     public static void main(String[] args) throws Exception {
         MonitorServer.startInBackground();

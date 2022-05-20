@@ -2,6 +2,7 @@ package nl.windesheim.ictm2o.peach.design;
 
 import net.miginfocom.swing.MigLayout;
 import nl.windesheim.ictm2o.peach.DesignPage;
+import nl.windesheim.ictm2o.peach.Main;
 import nl.windesheim.ictm2o.peach.PeachWindow;
 import nl.windesheim.ictm2o.peach.algorithm.BestAlgorithm;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
@@ -12,8 +13,7 @@ import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.Locale;
 import java.util.*;
 import java.util.List;
@@ -27,6 +27,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private final JButton terugKnop;
     private final JButton optimaliseren;
     private final PeachWindow m_parent;
+    private final JTextField beschikbaarheidField;
 
     JTable table = null;
     JScrollPane scrollPane = new JScrollPane();
@@ -43,8 +44,27 @@ public class DPToevCompon extends JPanel implements ActionListener {
         //OG: 200-550
         setPreferredSize(new Dimension(350, 600));
 
-        JTextField beschikbaarheidField = new JTextField();
-        beschikbaarheidField.setText("99,99%");
+        beschikbaarheidField = new JTextField();
+        fillBeschikbaarheidFieldWithValueFromDesign();
+        beschikbaarheidField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent event) {
+                String value = beschikbaarheidField.getText().trim();
+                if (value.endsWith("%"))
+                    value = value.substring(0, value.length() - 1).trim();
+                value = value.replace(',', '.');
+                try {
+                    D.setTargetAvailability(Float.parseFloat(value));
+                    // Make the value look pretty
+                    fillBeschikbaarheidFieldWithValueFromDesign();
+                    refreshGegevens();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(DPToevCompon.this, "We begrijpen dit getal niet. Probeer het opnieuw alstublieft.");
+                    beschikbaarheidField.grabFocus();
+                }
+            }
+        });
         add(beschikbaarheidField);
 
         toevoegen = new JButton("Component toevoegen");
@@ -165,5 +185,8 @@ public class DPToevCompon extends JPanel implements ActionListener {
 
     }
 
+    private void fillBeschikbaarheidFieldWithValueFromDesign() {
+        beschikbaarheidField.setText(String.format(Main.LOCALE, "%.02f %%", D.getTargetAvailability()));
+    }
 
 }
