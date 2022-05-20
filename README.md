@@ -1,5 +1,5 @@
 # PeachOS - A Linux Ontwerp Systeem
-
+[![Java CI with Gradle](https://github.com/Murkfloostick/Peach/actions/workflows/gradle.yml/badge.svg)](https://github.com/Murkfloostick/Peach/actions/workflows/gradle.yml)
 
 "PeachOS, made by people with divine intellect".
 -Terry A Davis
