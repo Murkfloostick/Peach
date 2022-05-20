@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -34,7 +36,21 @@ public class PeachWindow extends JFrame {
             setIcon();
         }
 
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                // This is only called when the user releases the mouse button.
+//                System.out.println("componentResized");
+//
+                Dimension screenSize = getSize();
+                double width = screenSize.getWidth();
+                double height = screenSize.getHeight();
+                System.out.println(width + "," + height);
+
+            }
+        });
+
         setSize(1280, 720);
+        setMinimumSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

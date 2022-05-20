@@ -15,6 +15,7 @@ import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
+import java.beans.EventHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +39,9 @@ public class DPWorkPanel extends JPanel {
     private final DPToevCompon toevCompon;
     private JLabel firstSelectionLabel;
 
+    Rectangle bounds;
+
     public DPWorkPanel(Design D, @NotNull DesignPage designPage, DPToevCompon toevCompon) {
-        //TODO Dynamic dim instellen
         //TODO In selectie modus alle andere input uit
         this.D = D;
         this.designPage = designPage;
@@ -57,8 +59,39 @@ public class DPWorkPanel extends JPanel {
         this.setTransferHandler(new ValueImportTransferHandler());
         refreshWP();
         setVisible(true);
+
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+//                // This is only called when the user releases the mouse button.
+//                System.out.println("componentResized");
+//
+//                Dimension screenSize = getSize();
+//                double width = screenSize.getWidth();
+//                double height = screenSize.getHeight();
+//                System.out.println(width + "," + height);
+                //^Wtf is deze size van?
+
+                keepComponentsInside();
+            }
+        });
     }
 
+    public void keepComponentsInside(){
+        for (PlacedComponent PC:D.getPlacedComponents()
+        ) {
+            //Haal bounds op van werkpaneel. Moet via andere jpanels omdat deze de bounds van de workpanel niet kloppen.
+            bounds = new Rectangle(designPage.getComponPanel().getX(), 0, toevCompon.getX()-toevCompon.getWidth(), toevCompon.getHeight());
+
+            //Check of placed component binnen NIET binnen zit
+            if(!bounds.contains(PC.getPosition().getX(), PC.getPosition().getY())){
+                //TODO plaats op outer border
+                Position Pos = new Position(bounds.width/2, bounds.height/2);
+                PC.setPosition(Pos);
+            }
+        }
+        //Zodat de nieuwe posities worden geupdate
+        refreshWP();
+    }
     public void refreshWP() {
         //Alles leeghalen
         removeAll();
@@ -117,6 +150,14 @@ public class DPWorkPanel extends JPanel {
                 g.drawLine(Math.toIntExact(k.getPosition().getX()) + 30, Math.toIntExact(k.getPosition().getY()) + 30, Math.toIntExact(pc.getPosition().getX()) + 30, Math.toIntExact(pc.getPosition().getY() + 30));
             }
         });
+
+        //Gebruik dit code om de border te laten zien
+//        try{
+//            //Voor debug.
+//            g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+//        } catch (Exception E){
+//            //fuck
+//        }
     }
 
     private class ComponentDragger extends MouseAdapter {
@@ -151,6 +192,7 @@ public class DPWorkPanel extends JPanel {
 
                 designPage.setDesignModified();
             }
+
         }
 
         /**
@@ -169,6 +211,7 @@ public class DPWorkPanel extends JPanel {
             repaint();
             target = null;
             designPage.setDesignModified();
+            keepComponentsInside();
 
             if (e.isPopupTrigger())
                 doPop(e);
