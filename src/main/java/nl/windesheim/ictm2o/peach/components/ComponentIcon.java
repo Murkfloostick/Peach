@@ -7,8 +7,6 @@ public enum ComponentIcon {
     SERVER_WEB("Webserver"),
     SERVER_DATABASE("Database Server"),
     FIREWALL("Firewall"),
-    ROUTER("Router"),
-    GENERIC("Generic"),
     ;
 
 

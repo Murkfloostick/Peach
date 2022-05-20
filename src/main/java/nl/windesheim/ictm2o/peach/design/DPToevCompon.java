@@ -17,6 +17,8 @@ import java.awt.event.*;
 import java.util.Locale;
 import java.util.*;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 public class DPToevCompon extends JPanel implements ActionListener {
@@ -113,7 +115,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         }
 
         table = new JTable(data, columnNames);
-        panel.add(table, "wrap");
+        panel.add(new JScrollPane(table), "wrap");
 
         JPanel totalPanel = new JPanel();
         totalPanel.setBackground(Color.gray);
@@ -148,7 +150,11 @@ public class DPToevCompon extends JPanel implements ActionListener {
         labelTmp.setFont(rightLabelFont);
         if (stats.getTotalAvailability() * 100.0f < D.getTargetAvailability())
             labelTmp.setForeground(Color.RED);
-        else
+        else if (IntStream.range(0, stats.getAvailabilityPerCategory().length)
+                .mapToDouble(i -> stats.getAvailabilityPerCategory()[i])
+                .anyMatch(val -> val * 100.0f < D.getTargetAvailability())) {
+            labelTmp.setForeground(Color.ORANGE);
+        } else
             labelTmp.setForeground(Color.GREEN);
         totalPanel.add(labelTmp, "wrap");
 

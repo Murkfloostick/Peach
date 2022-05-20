@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import java.util.UUID;
 
 public class DPToevDialog extends JDialog implements ActionListener {
@@ -65,14 +66,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == toevoegen) {
             UUID uuid = UUID.randomUUID();
-            ComponentIcon CI = ComponentIcon.GENERIC;
-            for (ComponentIcon IC : ComponentIcon.values()
-            ) {
-                if (IC.name().equals(options.getSelectedItem())) {
-                    CI = IC;
-                    break;
-                }
-            }
+            ComponentIcon CI = ComponentIcon.valueOf(Objects.requireNonNull(options.getSelectedItem()).toString());
             RegisteredComponent newComponent = new RegisteredComponent(uuid, naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()) / 100);
             CR.getRegisteredComponents().add(newComponent);
             mainFrame.getPeachWindow().getConfiguration().save();
