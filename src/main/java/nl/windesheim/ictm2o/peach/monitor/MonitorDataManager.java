@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.net.Socket;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,11 @@ public class MonitorDataManager {
         public final List<MonitorData> newData = new ArrayList<>();
 
         public String address = "onbekend";
+
+        public Instant lastHeartbeat = null;
+
+        public int ticksAvailable = 0;
+        public int totalTicksSinceSubscription = 0;
     }
 
     @NotNull
@@ -34,6 +40,21 @@ public class MonitorDataManager {
         data.allData.add(monitorData);
         synchronized(data.newData) {
             data.newData.add(monitorData);
+            data.lastHeartbeat = Instant.now();
+        }
+    }
+
+    // Should be called every second.
+    public static void tick() {
+        final var now = Instant.now();
+
+        for (@NotNull Instance instance : DATA.values()) {
+            if (instance.lastHeartbeat == null)
+                continue;
+
+            if (now.getEpochSecond() - instance.lastHeartbeat.getEpochSecond() < 3)
+                ++instance.ticksAvailable;
+            ++instance.totalTicksSinceSubscription;
         }
     }
 
