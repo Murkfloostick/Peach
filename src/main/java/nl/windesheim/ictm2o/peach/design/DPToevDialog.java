@@ -65,7 +65,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == toevoegen) {
             UUID uuid = UUID.randomUUID();
-            ComponentIcon CI = ComponentIcon.GENERIC;
+            ComponentIcon CI = ComponentIcon.ROUTER;
             for (ComponentIcon IC : ComponentIcon.values()
             ) {
                 if (IC.name().equals(options.getSelectedItem())) {

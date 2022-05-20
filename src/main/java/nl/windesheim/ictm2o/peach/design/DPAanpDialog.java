@@ -78,7 +78,7 @@ public class DPAanpDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == toevoegen){
-            ComponentIcon CI = ComponentIcon.GENERIC;
+            ComponentIcon CI = ComponentIcon.ROUTER;
 
             for (ComponentIcon IC:ComponentIcon.values()
             ) {
