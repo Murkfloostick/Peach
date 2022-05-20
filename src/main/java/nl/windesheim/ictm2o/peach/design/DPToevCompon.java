@@ -8,12 +8,15 @@ import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 
 import nl.windesheim.ictm2o.peach.components.Design;
+import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
+import java.util.*;
+import java.util.List;
 
 
 public class DPToevCompon extends JPanel implements ActionListener {
@@ -151,8 +154,9 @@ public class DPToevCompon extends JPanel implements ActionListener {
             //Algorithm hieronder
             //Zie nieuwe aangemaakte class voor toekomstige uitwerking
             BestAlgorithm BA = new BestAlgorithm(D);
-            BA.vindAv();
+            //BA.vindAv(); OUD ALGORITME
 
+            BA.optiMalisatie();
             //Update alles
             refreshGegevens();
             mainFrame.getComponPanel().refreshPanel();

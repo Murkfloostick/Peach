@@ -88,7 +88,7 @@ public class DPAanpDialog extends JDialog implements ActionListener {
                 }
             }
             //Pas component aan
-            RC.editComponent(naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()));
+            RC.editComponent(naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText())/100);
 
             mainFrame.getPeachWindow().getConfiguration().save();
             mainFrame.getComponPanel().refreshPanel();
