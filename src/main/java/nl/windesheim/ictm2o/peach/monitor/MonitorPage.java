@@ -83,7 +83,8 @@ public class MonitorPage extends JPanel {
             otherInformationLabel.setFont(labelFont);
             add(otherInformationLabel, "wrap");
 
-            otherInformationArea.setFont(new Font(labelFont.getName(), Font.PLAIN, 16));
+            otherInformationArea.setFont(new Font(labelFont.getName(), Font.PLAIN, 18));
+            otherInformationArea.setEditable(false);
             add(otherInformationArea, "wrap");
         }
 
@@ -110,13 +111,16 @@ public class MonitorPage extends JPanel {
             diskGraphLabel.setText(String.format("Schijfruimteverbruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getDiskUsed()), formatBytes(monitorData.getDiskTotal()),
                     ((double)monitorData.getDiskUsed() / (double)monitorData.getDiskTotal() * 100.0)));
 
-            otherInformationArea.setText("IP-Adres: " + instance.address + "\n"
+            final var otherInformation = "IP-Adres: " + instance.address + "\n"
                     + "\n"
                     + "Processen: " + monitorData.getProcessCount() + "\n"
                     + "Windows Services: " + monitorData.getWindowsServicesCount() + "\n"
                     + "\n"
                     + "Bytes Verzonden: " + formatBytes(monitorData.getBytesSentCount()) + "\n"
-                    + "Bytes Ontvangen: " + formatBytes(monitorData.getBytesReceivedCount()) + "\n");
+                    + "Bytes Ontvangen: " + formatBytes(monitorData.getBytesReceivedCount()) + "\n";
+
+            if (!otherInformationArea.getText().equals(otherInformation))
+                otherInformationArea.setText(otherInformation);
         }
     }
 
