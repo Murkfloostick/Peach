@@ -35,9 +35,13 @@ public class MonitorPage extends JPanel {
 
         private final JProgressBar availabilityProgressBar = new JProgressBar();
         private final JTextArea otherInformationArea = new JTextArea();
+        private final JLabel uptimeTitleLabel = new JLabel("Uptime:");
+        private final JLabel uptimeValueLabel = new JLabel("");
+        private final JLabel downtimeTitleLabel = new JLabel("Downtime:");
+        private final JLabel downtimeValueLabel = new JLabel("");
 
         public Tab() {
-            setLayout(new MigLayout("", "[grow,fill]", "[grow,fill]"));
+            setLayout(new MigLayout("left", "[grow,fill]", "[grow,fill]"));
 
             addAvailabilityBar();
             addCPUGraph();
@@ -50,6 +54,18 @@ public class MonitorPage extends JPanel {
             availabilityLabel.setFont(labelFont);
             availabilityLabel.setBorder(new EmptyBorder(new Insets(5, 0, 5, 0)));
             add(availabilityLabel, "wrap");
+
+            uptimeTitleLabel.setFont(new Font(labelFont.getName(), Font.BOLD, 18));
+            uptimeValueLabel.setFont(new Font(labelFont.getName(), Font.PLAIN, 18));
+            downtimeTitleLabel.setFont(new Font(labelFont.getName(), Font.BOLD, 18));
+            downtimeValueLabel.setFont(new Font(labelFont.getName(), Font.PLAIN, 18));
+            JPanel panel = new JPanel();
+            panel.setLayout(new MigLayout());
+            panel.add(uptimeTitleLabel);
+            panel.add(uptimeValueLabel, "wrap");
+            panel.add(downtimeTitleLabel);
+            panel.add(downtimeValueLabel);
+            add(panel, "wrap");
 
             availabilityProgressBar.setMaximum(100);
             add(availabilityProgressBar, "span");
@@ -110,6 +126,9 @@ public class MonitorPage extends JPanel {
 
             diskGraphLabel.setText(String.format("Schijfruimteverbruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getDiskUsed()), formatBytes(monitorData.getDiskTotal()),
                     ((double)monitorData.getDiskUsed() / (double)monitorData.getDiskTotal() * 100.0)));
+
+            uptimeValueLabel.setText(formatElapsedSeconds(instance.ticksAvailable));
+            downtimeValueLabel.setText(formatElapsedSeconds(instance.ticksUnavailable));
 
             final var otherInformation = "IP-Adres: " + instance.address + "\n"
                     + "\n"
@@ -249,6 +268,55 @@ public class MonitorPage extends JPanel {
                         entry.getValue());
             }
         }
+    }
+
+    @NotNull
+    private static String formatElapsedSeconds(int value) {
+        final int MINUTE = 60;
+        final int HOUR = MINUTE * 60;
+        final int DAY = HOUR * 24;
+        final int WEEK = DAY * 7;
+        String result = "";
+
+        if (value >= WEEK) {
+            if (value < 2 * WEEK)
+                result += "1 week, ";
+            else
+                result += (value / WEEK) + " weken, ";
+            value %= WEEK;
+        }
+
+        if (value >= DAY) {
+            if (value < 2 * DAY)
+                result += "1 dag, ";
+            else
+                result += (value / DAY) + " dagen, ";
+            value %= DAY;
+        }
+
+        if (value >= HOUR) {
+            if (value < 2 * HOUR)
+                result += "1 uur, ";
+            else
+                result += (value / HOUR) + " uren, ";
+            value %= HOUR;
+        }
+
+        if (value >= MINUTE) {
+            if (value < 2 * MINUTE)
+                result += "1 minuut, ";
+            else
+                result += (value / MINUTE) + " minuten, ";
+            value %= MINUTE;
+        }
+
+        if (value == 0)
+            if (result.isEmpty())
+                return "0 seconden";
+            else
+                return result.substring(0, result.length() - 2);
+
+        return result + value + " seconde" + (value == 1 ? "" : "n");
     }
 
 }

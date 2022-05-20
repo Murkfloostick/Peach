@@ -22,9 +22,9 @@ public class MonitorDataManager {
         public boolean offlineAcknowledged = true;
         public boolean onlineAcknowledged = false;
 
-        public int ticksAvailable = 0;
+        public int ticksAvailable = 3590;
         public int ticksUnavailable = 0;
-        public int totalTicksSinceSubscription = 0;
+        public int totalTicksSinceSubscription = 3591;
     }
 
     public interface InstanceAlertListener {
@@ -81,7 +81,8 @@ public class MonitorDataManager {
                 instance.onlineAcknowledged = false;
                 if (instanceOfflineAlert != null)
                     instanceOfflineAlert.onAlert(identifier, instance);
-            }
+            } else
+                ++instance.ticksUnavailable;
             ++instance.totalTicksSinceSubscription;
         }
     }
