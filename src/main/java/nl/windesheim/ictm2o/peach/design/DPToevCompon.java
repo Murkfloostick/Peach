@@ -164,4 +164,6 @@ public class DPToevCompon extends JPanel implements ActionListener {
         }
 
     }
+
+
 }

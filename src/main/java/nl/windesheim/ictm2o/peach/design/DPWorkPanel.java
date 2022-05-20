@@ -15,6 +15,7 @@ import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
+import java.beans.EventHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +58,21 @@ public class DPWorkPanel extends JPanel {
         this.setTransferHandler(new ValueImportTransferHandler());
         refreshWP();
         setVisible(true);
+
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                // This is only called when the user releases the mouse button.
+                System.out.println("componentResized");
+
+                Dimension screenSize = getSize();
+                double width = screenSize.getWidth();
+                double height = screenSize.getHeight();
+                System.out.println(width + "," + height);
+
+                //PseudoCode
+                //Check voor elk component of het binnen het jpanel zit, als dat niet zo is. Check het verschil en probeer het terug te zetten
+            }
+        });
     }
 
     public void refreshWP() {
@@ -151,6 +167,7 @@ public class DPWorkPanel extends JPanel {
 
                 designPage.setDesignModified();
             }
+
         }
 
         /**
