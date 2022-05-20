@@ -92,60 +92,47 @@ public class Design {
         placedComponents = NPC;
     }
 
-    public float getAvailbility(List<PlacedComponent> placedComponents) {
-        float[] array = {0, 0, 0, 0, 0};
-        float total = 0;
+    public static float[] calculateStatisticsPerCategory(@NotNull final List<PlacedComponent> placedComponents,
+                                                         @NotNull ComponentIcon category) {
+        float availability = 1;
+        float costs = 0;
 
-        for (PlacedComponent PC : placedComponents
-        ) {
-            if (PC.getRegisteredComponent().getIcon().toString().equals("GENERIC")) {
-                if (array[4] != 0) {
-                    array[4] = array[4] * PC.getRegisteredComponent().getAvailability();
-                } else {
-                    array[4] = array[4] + PC.getRegisteredComponent().getAvailability();
-                }
-            }
-            if (PC.getRegisteredComponent().getIcon().toString().equals("ROUTER")) {
-                if (array[3] != 0) {
-                    array[3] = array[3] * PC.getRegisteredComponent().getAvailability();
-                } else {
-                    array[3] = array[3] + PC.getRegisteredComponent().getAvailability();
-                }
-            }
-            if (PC.getRegisteredComponent().getIcon().toString().equals("FIREWALL")) {
-                if (array[2] != 0) {
-                    array[2] = array[2] * PC.getRegisteredComponent().getAvailability();
-                } else {
-                    array[2] = array[2] + PC.getRegisteredComponent().getAvailability();
-                }
-            }
-            if (PC.getRegisteredComponent().getIcon().toString().equals("SERVER_DATABASE")) {
-                if (array[1] != 0) {
-                    array[1] = array[1] * PC.getRegisteredComponent().getAvailability();
-                } else {
-                    array[1] = array[1] + PC.getRegisteredComponent().getAvailability();
-                }
-            }
-            if (PC.getRegisteredComponent().getIcon().toString().equals("SERVER_WEB")) {
-                if (array[0] != 0) {
-                    array[0] = array[0] * PC.getRegisteredComponent().getAvailability();
-                } else {
-                    array[0] = array[0] + PC.getRegisteredComponent().getAvailability();
-                }
-            }
+        for (@NotNull PlacedComponent placedComponent : placedComponents) {
+            if (placedComponent.getRegisteredComponent().getIcon() != category)
+                continue;
+
+            System.out.println(placedComponent.getRegisteredComponent().getAvailability());
+            availability *= 1 - placedComponent.getRegisteredComponent().getAvailability();
+            costs += placedComponent.getRegisteredComponent().getCost();
         }
 
-        for (float av : array
-        ) {
-            if (av != 0) {
-                if (total != 0) {
-                    total *= av;
-                } else {
-                    total += av;
-                }
+        return new float[]{1 - availability, costs};
+    }
+
+    @NotNull
+    public ComponentsStatistics getStatistics() {
+        float[] availabilities = new float[ComponentIcon.values().length];
+        Float totalAvailability = null;
+
+        float[] costs = new float[ComponentIcon.values().length];
+        float totalCosts = 0;
+
+        for (ComponentIcon componentIcon : ComponentIcon.values()) {
+            final var categoryStats = calculateStatisticsPerCategory(placedComponents, componentIcon);
+
+            availabilities[componentIcon.ordinal()] = categoryStats[0];
+            if (categoryStats[0] != 0.0f) {
+                if (totalAvailability == null)
+                    totalAvailability = categoryStats[0];
+                else
+                    totalAvailability *= categoryStats[0];
             }
+
+            costs[componentIcon.ordinal()] = categoryStats[1];
+            totalCosts += categoryStats[1];
         }
-        return total;
+
+        return new ComponentsStatistics(availabilities, totalAvailability == null ? 0.0f : totalAvailability, costs, totalCosts);
     }
 
     public float[] getKosten(List<PlacedComponent> placedComponents){

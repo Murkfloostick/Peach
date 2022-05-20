@@ -1,8 +1,10 @@
 package nl.windesheim.ictm2o.peach.design;
 
+import net.miginfocom.swing.MigLayout;
 import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.PeachWindow;
 import nl.windesheim.ictm2o.peach.algorithm.BestAlgorithm;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 
 import nl.windesheim.ictm2o.peach.components.Design;
@@ -11,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 
 
 public class DPToevCompon extends JPanel implements ActionListener {
@@ -22,20 +25,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private final JButton optimaliseren;
     private final PeachWindow m_parent;
 
-    private final JLabel beschikbaarheid = new JLabel("Beschikbaarheid: 0%");
-
-    private final String[] columnNames = {
-            "SERVER_WEB",
-            "SERVER_DATABASE",
-            "FIREWALL",
-            "ROUTER",
-            "GENERIC",
-            "TOTAAL"};
-    private Object[][] data = {
-            {0,0,0,0,0,0},
-    };
-
-    JTable table = new JTable(data, columnNames);
+    JTable table = null;
     JScrollPane scrollPane = new JScrollPane();
 
     Font font1 = new Font("Inter", Font.BOLD, 15);
@@ -70,31 +60,76 @@ public class DPToevCompon extends JPanel implements ActionListener {
         terugKnop.addActionListener(this);
         optimaliseren.addActionListener(this);
 
-        beschikbaarheid.setFont(font1);
-        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility(D.getPlacedComponents()) + "%");
-        add(beschikbaarheid);
+        refreshGegevens();
 
         scrollPane.setViewportView(table);
-        scrollPane.setPreferredSize(new Dimension(400,50));
+//        scrollPane.setPreferredSize(new Dimension(400,100));
+        scrollPane.setBackground(null);
         add(scrollPane);
-
     }
 
     public void refreshGegevens(){
-        beschikbaarheid.setText("Beschikbaarheid: " + 100*D.getAvailbility(D.getPlacedComponents()) + "%");
+        final var stats = D.getStatistics();
 
-        data = new Object[][]{
-                {D.getKosten(D.getPlacedComponents())[0],
-                        D.getKosten(D.getPlacedComponents())[1],
-                        D.getKosten(D.getPlacedComponents())[2],
-                        D.getKosten(D.getPlacedComponents())[3],
-                        D.getKosten(D.getPlacedComponents())[4],
-                        D.getKosten(D.getPlacedComponents())[5]}
-        };
-        remove(table);
-        JTable table = new JTable(data, columnNames);
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.gray);
+        panel.setLayout(new MigLayout("", "[grow,fill]", "[grow,fill]"));
 
-        scrollPane.setViewportView(table);
+        var data = new Object[2][1 + stats.getAvailabilityPerCategory().length];
+        var columnNames = new String[1 + stats.getAvailabilityPerCategory().length];
+
+        data[0][0] = "Kosten";
+        data[1][0] = "Beschikbaarheid";
+        columnNames[0] = "";
+
+        for (int i = 0; i < stats.getAvailabilityPerCategory().length; ++i) {
+            columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
+
+            data[0][1 + i] = String.format(Locale.ITALIAN, "€ %.02f", stats.getCostsPerCategory()[i]);
+            data[1][1 + i] = String.format(Locale.ITALIAN, "%.2f %%",stats.getAvailabilityPerCategory()[i] * 100.0f);
+        }
+
+        table = new JTable(data, columnNames);
+        panel.add(table, "wrap");
+
+        JPanel totalPanel = new JPanel();
+        totalPanel.setBackground(Color.gray);
+        totalPanel.setLayout(new MigLayout("", "", "[grow,fill]"));
+        panel.add(totalPanel);
+
+        Font leftLabelFont = new Font("Inter", Font.BOLD, 18);
+        Font rightLabelFont = new Font("Inter", Font.PLAIN, 18);
+
+        //
+        // Totale Kosten
+        //
+        JLabel labelTmp = new JLabel("Totale Kosten: ");
+        labelTmp.setFont(leftLabelFont);
+        labelTmp.setForeground(Color.WHITE);
+        totalPanel.add(labelTmp);
+
+        labelTmp = new JLabel(String.format(Locale.ITALIAN, "€ %.02f", stats.getTotalCosts()));
+        labelTmp.setFont(rightLabelFont);
+        labelTmp.setForeground(Color.WHITE);
+        totalPanel.add(labelTmp, "wrap");
+
+        //
+        // Totale Beschikbaarheid
+        //
+        labelTmp = new JLabel("Totale Beschikbaarheid: ");
+        labelTmp.setFont(leftLabelFont);
+        labelTmp.setForeground(Color.WHITE);
+        totalPanel.add(labelTmp);
+
+        labelTmp = new JLabel(String.format(Locale.ITALIAN, "%.2f %%", stats.getTotalAvailability() * 100.0f));
+        labelTmp.setFont(rightLabelFont);
+        if (stats.getTotalAvailability() * 100.0f < D.getTargetAvailability())
+            labelTmp.setForeground(Color.RED);
+        else
+            labelTmp.setForeground(Color.GREEN);
+        totalPanel.add(labelTmp, "wrap");
+
+        scrollPane.setViewportView(panel);
     }
 
     @Override

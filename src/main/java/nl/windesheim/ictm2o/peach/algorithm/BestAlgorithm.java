@@ -108,7 +108,8 @@ public class BestAlgorithm {
             componentCounter += 1;
 
             //Check dan of target availbility wordt gehaald
-            CA = D.getAvailbility(ARC) * 100;
+//            CA = D.getAvailbility(ARC) * 100;
+            // TODO
             if (CA >= TA) {
                 System.out.println("SOLUTION FOUND");
                 masterARC.add(ARC);
