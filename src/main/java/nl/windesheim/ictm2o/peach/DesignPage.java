@@ -15,7 +15,6 @@ import java.io.File;
 
 public class DesignPage extends JPanel implements ActionListener {
     private final DPComponPanel componPanel;
-    private final JMenuItem menu1;
     private final PeachWindow m_parent;
     private final DPWorkPanel workPanel;
     private Design D;
@@ -95,12 +94,6 @@ public class DesignPage extends JPanel implements ActionListener {
         menuItem.addActionListener(ev -> saveDesign(true));
         menu.add(menuItem);
 
-        //Terug knop
-        menu1 = new JMenuItem("Terug");
-        menuBar.add(menu1);
-        menu1.addActionListener(this);
-
-        menu1.addActionListener(e -> System.exit(0));
         peachWindow.setJMenuBar(menuBar);
         setVisible(true);
     }
@@ -110,12 +103,6 @@ public class DesignPage extends JPanel implements ActionListener {
         if (ev.getActionCommand().equals("Terug")) {
             System.exit(0);
         }
-
-        menu1.addActionListener(e -> {
-            System.exit(0);
-            setVisible(false);
-        });
-
     }
 
     public void setDesignModified() {
