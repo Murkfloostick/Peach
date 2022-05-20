@@ -2,6 +2,8 @@ plugins {
     id 'java'
 }
 
+def peachMainClass = 'nl.windesheim.ictm2o.peach.Main'
+
 group 'nl.windesheim.ictm2o'
 version '0.2'
 
@@ -39,9 +41,21 @@ task generateJava(type:Copy) {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'nl.windesheim.ictm2o.peach.Main'
+                'Main-Class': "${peachMainClass}"
         )
     }
+}
+
+// Een 'fat' JAR is een JAR (Java Executable, soort van EXE) die alle libraries
+// bevat die we in dit project gebruiken. Zo hoeven we dus maar een enkel bestand
+// te shippen.
+task fatJar(type: Jar) {
+    manifest.attributes['Main-Class'] = "${peachMainClass}"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
 }
 
 sourceSets.main.java.srcDir "$buildDir/generated/java" // add the extra source dir

@@ -10,7 +10,14 @@ public class MonitorData {
     private final long diskTotal;
     private final long diskUsed;
 
-    public MonitorData(int cpuPercentage, long memoryTotal, long memoryUsed, long diskTotal, long diskUsed) {
+    private final long processCount;
+    private final long windowsServicesCount;
+
+    private final long bytesSentCount;
+    private final long bytesReceivedCount;
+
+    public MonitorData(int cpuPercentage, long memoryTotal, long memoryUsed, long diskTotal, long diskUsed,
+                       long processCount, long windowsServicesCount, long bytesSentCount, long bytesReceivedCount) {
         this.cpuPercentage = cpuPercentage;
 
         this.memoryTotal = memoryTotal;
@@ -18,6 +25,12 @@ public class MonitorData {
 
         this.diskTotal = diskTotal;
         this.diskUsed = diskUsed;
+
+        this.processCount = processCount;
+        this.windowsServicesCount = windowsServicesCount;
+
+        this.bytesSentCount = bytesSentCount;
+        this.bytesReceivedCount = bytesReceivedCount;
     }
 
     public int getCPUPercentage() {
@@ -38,5 +51,21 @@ public class MonitorData {
 
     public long getDiskUsed() {
         return diskUsed;
+    }
+
+    public long getProcessCount() {
+        return processCount;
+    }
+
+    public long getWindowsServicesCount() {
+        return windowsServicesCount;
+    }
+
+    public long getBytesSentCount() {
+        return bytesSentCount;
+    }
+
+    public long getBytesReceivedCount() {
+        return bytesReceivedCount;
     }
 }
