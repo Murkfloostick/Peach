@@ -138,7 +138,7 @@ public class BestAlgorithm {
 
     //Checkt of de ARC die wordt meegegeven voldoet aan target availbility en dan toevoegen aan masterArc.
     private void checkAndAdd(List<PlacedComponent> ARC){
-        CA = D.getAvailbility(ARC);
+        //CA = D.getAvailbility(ARC);
         if(CA >= TA){
             masterARC.add(ARC);
         }
