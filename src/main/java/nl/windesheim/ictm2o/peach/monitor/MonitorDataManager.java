@@ -10,8 +10,6 @@ import java.util.List;
 public class MonitorDataManager {
 
     public static class Instance {
-        public boolean isNew = true;
-
         public final List<MonitorData> allData = new ArrayList<>();
         public final List<MonitorData> newData = new ArrayList<>();
     }

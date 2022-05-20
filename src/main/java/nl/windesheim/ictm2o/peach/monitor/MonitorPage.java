@@ -4,6 +4,7 @@ import net.miginfocom.swing.MigLayout;
 import nl.windesheim.ictm2o.peach.Graph;
 import nl.windesheim.ictm2o.peach.PeachWindow;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,6 +14,9 @@ import java.util.Map;
 import java.util.Random;
 
 public class MonitorPage extends JPanel {
+
+    @Nullable
+    public static MonitorPage instance = null;
 
     private class Tab extends JPanel {
         private final Graph cpuGraph = new Graph(30, Color.green, 1000);
@@ -54,12 +58,37 @@ public class MonitorPage extends JPanel {
 
             add(diskGraph, "wrap");
         }
+
+        public void updateLabels(@NotNull MonitorData monitorData) {
+            cpuGraphLabel.setText(String.format("Processorgebruik: %.1f%%", monitorData.getCPUPercentage() / 10f));
+
+            memoryGraphLabel.setText(String.format("Werkgeheugengebruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getMemoryUsed()), formatBytes(monitorData.getMemoryTotal()),
+                    ((double)monitorData.getMemoryUsed() / (double)monitorData.getMemoryTotal() * 100.0)));
+
+            diskGraphLabel.setText(String.format("Schijfruimteverbruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getDiskUsed()), formatBytes(monitorData.getDiskTotal()),
+                    ((double)monitorData.getDiskUsed() / (double)monitorData.getDiskTotal() * 100.0)));
+        }
     }
 
     private final HashMap<String, Tab> tabs = new HashMap<>();
     private final JTabbedPane tabbedPane = new JTabbedPane();
 
-    public MonitorPage(PeachWindow m_parent) {
+    @NotNull
+    private final PeachWindow m_parent;
+
+    @NotNull
+    private final Timer m_timer;
+
+    public MonitorPage(@NotNull PeachWindow parent) {
+        if (instance != null)
+            throw new IllegalStateException("Instance is already set!");
+
+        instance = this;
+        m_parent = parent;
+
+        if (!MonitorServer.getInstance().isStarted())
+            MonitorServer.startInBackground();
+
         setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]", "[grow,fill]"));
         setBorder(new EmptyBorder(new Insets(0, 30, 0, 30)));
 
@@ -79,7 +108,7 @@ public class MonitorPage extends JPanel {
 
         final var backButton = new JButton("Terug");
         backButton.setFont(new Font("Inter", Font.BOLD, 20));
-        backButton.addActionListener(ev -> m_parent.openStartPage(this));
+        backButton.addActionListener(ev -> backToStartPage());
         backButton.setToolTipText("Terug naar de hoofdpagina");
         buttonPanel.add(backButton);
 
@@ -91,48 +120,14 @@ public class MonitorPage extends JPanel {
 
         add(buttonPanel);
 
-//        Random random = new Random();
-
-        Timer timer = new Timer(100, (ev) -> {
-//            cpuGraph.pushBack(random.nextInt(0, 100));
-//            memoryGraph.pushBack(random.nextInt(0, 100));
-//            diskGraph.pushBack(random.nextInt(8, 16));
-//
-            for (Map.Entry<String, MonitorDataManager.Instance> entry : MonitorDataManager.getData().entrySet()) {
-                var tab = tabs.get(entry.getKey());
-                if (tab == null) {
-                    tab = new Tab();
-                    tabs.put(entry.getKey(), tab);
-                    tabbedPane.add(entry.getKey(), tab);
-                }
-
-                if (entry.getValue().newData.isEmpty())
-                    continue;
-
-                synchronized(entry.getValue().newData) {
-                    for (MonitorData dataEntry : entry.getValue().newData) {
-                        tab.cpuGraph.pushBack(dataEntry.getCPUPercentage());
-                        tab.memoryGraph.pushBack((int) ((double)dataEntry.getMemoryUsed() / (double)dataEntry.getMemoryTotal() * 100.0));
-                        tab.diskGraph.pushBack((int) ((double)dataEntry.getDiskUsed() / (double)dataEntry.getDiskTotal() * 100.0));
-                    }
-
-                    final var lastEntry = entry.getValue().newData.get(entry.getValue().newData.size() - 1);
-                    tab.cpuGraphLabel.setText(String.format("Processorgebruik: %.1f%%", lastEntry.getCPUPercentage() / 10f));
-
-                    tab.memoryGraphLabel.setText(String.format("Werkgeheugengebruik: %s van %s (%.1f%%)" , formatBytes(lastEntry.getMemoryUsed()), formatBytes(lastEntry.getMemoryTotal()),
-                            ((double)lastEntry.getMemoryUsed() / (double)lastEntry.getMemoryTotal() * 100.0)));
-
-                    tab.diskGraphLabel.setText(String.format("Schijfruimteverbruik: %s van %s (%.1f%%)" , formatBytes(lastEntry.getDiskUsed()), formatBytes(lastEntry.getDiskTotal()),
-                            ((double)lastEntry.getDiskUsed() / (double)lastEntry.getDiskTotal() * 100.0)));
-
-                    entry.getValue().newData.clear();
-                }
-            }
-
+        m_timer = new Timer(100, (ev) -> {
+            System.out.println("TIMER: " + ev.getID());
+            tick();
             this.repaint();
         });
 
-        timer.start();
+        fillInitialTabs();
+        m_timer.start();
     }
 
     @NotNull
@@ -148,12 +143,64 @@ public class MonitorPage extends JPanel {
         return input + " bytes";
     }
 
-//    private static void fillGraphWithRandomValues(@NotNull Graph graph, int min, int max) {
-//        Random random = new Random();
-//
-//        for (int i = 0; i < graph.getMaxItems(); ++i) {
-//            graph.pushBack(random.nextInt(min, max));
-//        }
-//    }
+    public void backToStartPage() {
+        m_timer.stop();
+        m_parent.openStartPage(this);
+        instance = null;
+    }
+
+    @NotNull
+    private Tab getTabByIdentifier(@NotNull String identifier) {
+        var tab = tabs.get(identifier);
+        if (tab != null)
+            return tab;
+
+        tab = new Tab();
+        tabs.put(identifier, tab);
+        tabbedPane.add(identifier, tab);
+        return tab;
+    }
+
+    private void tick() {
+        for (Map.Entry<String, MonitorDataManager.Instance> entry : MonitorDataManager.getData().entrySet()) {
+            final var tab = getTabByIdentifier(entry.getKey());
+
+            if (entry.getValue().newData.isEmpty())
+                continue;
+
+            synchronized(entry.getValue().newData) {
+                for (MonitorData dataEntry : entry.getValue().newData) {
+                    tab.cpuGraph.pushBack(dataEntry.getCPUPercentage());
+                    tab.memoryGraph.pushBack((int) ((double)dataEntry.getMemoryUsed() / (double)dataEntry.getMemoryTotal() * 100.0));
+                    tab.diskGraph.pushBack((int) ((double)dataEntry.getDiskUsed() / (double)dataEntry.getDiskTotal() * 100.0));
+                }
+
+                tab.updateLabels(entry.getValue().newData.get(entry.getValue().newData.size() - 1));
+                entry.getValue().newData.clear();
+            }
+        }
+    }
+
+    // Als er al MonitorData is, wat hoogst waarschijnlijk het geval is, moeten
+    // we ervoor zorgen dat deze dat al gevuld is voordat de pagina zichtbaar
+    // wordt.
+    private void fillInitialTabs() {
+        for (Map.Entry<String, MonitorDataManager.Instance> entry : MonitorDataManager.getData().entrySet()) {
+            final var tab = getTabByIdentifier(entry.getKey());
+
+            if (entry.getValue().newData.isEmpty())
+                continue;
+
+            synchronized(entry.getValue().allData) {
+                for (MonitorData dataEntry : entry.getValue().allData) {
+                    tab.cpuGraph.pushBack(dataEntry.getCPUPercentage());
+                    tab.memoryGraph.pushBack((int) ((double)dataEntry.getMemoryUsed() / (double)dataEntry.getMemoryTotal() * 100.0));
+                    tab.diskGraph.pushBack((int) ((double)dataEntry.getDiskUsed() / (double)dataEntry.getDiskTotal() * 100.0));
+                }
+
+                tab.updateLabels(entry.getValue().allData.get(entry.getValue().allData.size() - 1));
+            }
+        }
+    }
 
 }
