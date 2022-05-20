@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class DPAanpDialog extends JDialog implements ActionListener {
 
@@ -78,15 +79,8 @@ public class DPAanpDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == toevoegen){
-            ComponentIcon CI = ComponentIcon.ROUTER;
+            ComponentIcon CI = ComponentIcon.valueOf(Objects.requireNonNull(options.getSelectedItem()).toString());
 
-            for (ComponentIcon IC:ComponentIcon.values()
-            ) {
-                if(IC.name().equals(options.getSelectedItem())){
-                    CI = IC;
-                    break;
-                }
-            }
             //Pas component aan
             RC.editComponent(naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText())/100);
 
