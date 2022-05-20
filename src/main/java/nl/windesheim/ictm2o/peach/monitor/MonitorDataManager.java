@@ -3,6 +3,7 @@ package nl.windesheim.ictm2o.peach.monitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,18 +13,23 @@ public class MonitorDataManager {
     public static class Instance {
         public final List<MonitorData> allData = new ArrayList<>();
         public final List<MonitorData> newData = new ArrayList<>();
+
+        public String address = "onbekend";
     }
 
     @NotNull
     private static final HashMap<String, Instance> DATA = new HashMap<>();
 
-    public static void append(@NotNull String identifier, @NotNull MonitorData monitorData) {
+    public static void append(@NotNull String identifier, @NotNull MonitorData monitorData, @Nullable Socket origin) {
         @Nullable var data = DATA.get(identifier);
 
         if (data == null) {
             data = new Instance();
             DATA.put(identifier, data);
         }
+
+        if (origin != null)
+            data.address = origin.getInetAddress().getHostAddress() + ":" + origin.getPort();
 
         data.allData.add(monitorData);
         synchronized(data.newData) {

@@ -23,9 +23,15 @@ public class MonitorPage extends JPanel {
         private final Graph memoryGraph = new Graph(30, Color.red, 100);
         private final Graph diskGraph = new Graph(30, Color.blue, 100);
 
+
+        private final Font labelFont = new Font("Inter", Font.BOLD, 26);
+
         private final JLabel cpuGraphLabel = new JLabel("Processorgebruik");
         private final JLabel memoryGraphLabel = new JLabel("Werkgeheugengebruik");
         private final JLabel diskGraphLabel = new JLabel("Schijfruimteverbruik");
+        private final JLabel otherInformationLabel = new JLabel("Overige Gegevens:");
+
+        private final JTextArea otherInformationArea = new JTextArea();
 
         public Tab() {
             setLayout(new MigLayout("", "[grow,fill]", "[grow,fill]"));
@@ -33,10 +39,11 @@ public class MonitorPage extends JPanel {
             addCPUGraph();
             addMemoryGraph();
             addDiskGraph();
+            addOtherInformationArea();
         }
 
         private void addCPUGraph() {
-            cpuGraphLabel.setFont(new Font("Inter", Font.BOLD, 26));
+            cpuGraphLabel.setFont(labelFont);
             cpuGraphLabel.setBorder(new EmptyBorder(new Insets(5, 0, 5, 0)));
             add(cpuGraphLabel, "wrap");
 
@@ -44,7 +51,7 @@ public class MonitorPage extends JPanel {
         }
 
         private void addMemoryGraph() {
-            memoryGraphLabel.setFont(new Font("Inter", Font.BOLD, 26));
+            memoryGraphLabel.setFont(labelFont);
             memoryGraphLabel.setBorder(new EmptyBorder(new Insets(25, 0, 5, 0)));
             add(memoryGraphLabel, "wrap");
 
@@ -52,14 +59,22 @@ public class MonitorPage extends JPanel {
         }
 
         private void addDiskGraph() {
-            diskGraphLabel.setFont(new Font("Inter", Font.BOLD, 26));
+            diskGraphLabel.setFont(labelFont);
             diskGraphLabel.setBorder(new EmptyBorder(new Insets(25, 0, 5, 0)));
             add(diskGraphLabel, "wrap");
 
             add(diskGraph, "wrap");
         }
 
-        public void updateLabels(@NotNull MonitorData monitorData) {
+        private void addOtherInformationArea() {
+            otherInformationLabel.setFont(labelFont);
+            add(otherInformationLabel, "wrap");
+
+            otherInformationArea.setFont(new Font(labelFont.getName(), Font.PLAIN, 16));
+            add(otherInformationArea, "wrap");
+        }
+
+        public void updateLabels(@NotNull MonitorData monitorData, @NotNull String address) {
             cpuGraphLabel.setText(String.format("Processorgebruik: %.1f%%", monitorData.getCPUPercentage() / 10f));
 
             memoryGraphLabel.setText(String.format("Werkgeheugengebruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getMemoryUsed()), formatBytes(monitorData.getMemoryTotal()),
@@ -67,6 +82,14 @@ public class MonitorPage extends JPanel {
 
             diskGraphLabel.setText(String.format("Schijfruimteverbruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getDiskUsed()), formatBytes(monitorData.getDiskTotal()),
                     ((double)monitorData.getDiskUsed() / (double)monitorData.getDiskTotal() * 100.0)));
+
+            otherInformationArea.setText("IP-Adres: " + address + "\n"
+                    + "\n"
+                    + "Processen: " + monitorData.getProcessCount() + "\n"
+                    + "Windows Services: " + monitorData.getWindowsServicesCount() + "\n"
+                    + "\n"
+                    + "Bytes Verzonden: " + formatBytes(monitorData.getBytesSentCount()) + "\n"
+                    + "Bytes Ontvangen: " + formatBytes(monitorData.getBytesReceivedCount()) + "\n");
         }
     }
 
@@ -97,10 +120,6 @@ public class MonitorPage extends JPanel {
         titleLabel.setBorder(new EmptyBorder(new Insets(10, 0, 10, 0)));
         add(titleLabel, "wrap");
 
-//        fillGraphWithRandomValues(cpuGraph, 0, 100);
-//        fillGraphWithRandomValues(memoryGraph, 0, 100);
-//        fillGraphWithRandomValues(diskGraph, 8, 16);
-
         add(tabbedPane, "wrap");
 
         JPanel buttonPanel = new JPanel();
@@ -121,7 +140,6 @@ public class MonitorPage extends JPanel {
         add(buttonPanel);
 
         m_timer = new Timer(100, (ev) -> {
-            System.out.println("TIMER: " + ev.getID());
             tick();
             this.repaint();
         });
@@ -138,7 +156,7 @@ public class MonitorPage extends JPanel {
 
         final long megaByte = 1048576;
         if (input > megaByte * 2)
-            return String.format("%.1f MB", (float)input / (float)gigaByte);
+            return String.format("%.1f MB", (float)input / (float)megaByte);
 
         return input + " bytes";
     }
@@ -175,7 +193,8 @@ public class MonitorPage extends JPanel {
                     tab.diskGraph.pushBack((int) ((double)dataEntry.getDiskUsed() / (double)dataEntry.getDiskTotal() * 100.0));
                 }
 
-                tab.updateLabels(entry.getValue().newData.get(entry.getValue().newData.size() - 1));
+                tab.updateLabels(entry.getValue().newData.get(entry.getValue().newData.size() - 1),
+                        entry.getValue().address);
                 entry.getValue().newData.clear();
             }
         }
@@ -198,7 +217,8 @@ public class MonitorPage extends JPanel {
                     tab.diskGraph.pushBack((int) ((double)dataEntry.getDiskUsed() / (double)dataEntry.getDiskTotal() * 100.0));
                 }
 
-                tab.updateLabels(entry.getValue().allData.get(entry.getValue().allData.size() - 1));
+                tab.updateLabels(entry.getValue().allData.get(entry.getValue().allData.size() - 1),
+                        entry.getValue().address);
             }
         }
     }

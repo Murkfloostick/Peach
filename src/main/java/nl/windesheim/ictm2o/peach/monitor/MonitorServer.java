@@ -149,14 +149,19 @@ public class MonitorServer {
                     final var cpu = object.getJSONObject("cpu");
                     final var memory = object.getJSONObject("memory");
                     final var disk = object.getJSONObject("disk");
+                    final var io = object.getJSONObject("io");
 
                     MonitorDataManager.append(identifier, new MonitorData(
                             cpu.getInt("percent"),
                             memory.getLong("total"),
                             memory.getLong("used"),
                             disk.getLong("total"),
-                            disk.getLong("used")
-                    ));
+                            disk.getLong("used"),
+                            cpu.getLong("processes"),
+                            cpu.getLong("windows-services"),
+                            io.getLong("bytes-sent"),
+                            io.getLong("bytes-received")
+                    ), client);
                 } catch (Exception exception) {
                     output.write("ERROR Invalid HEARTBEAT Syntax\n".getBytes(StandardCharsets.UTF_8));
                     exception.printStackTrace();
