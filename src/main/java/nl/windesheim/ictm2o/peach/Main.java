@@ -1,5 +1,6 @@
 package nl.windesheim.ictm2o.peach;
 
+import nl.windesheim.ictm2o.peach.monitor.MonitorDataManager;
 import nl.windesheim.ictm2o.peach.monitor.MonitorPage;
 import nl.windesheim.ictm2o.peach.monitor.MonitorServer;
 
@@ -32,6 +33,9 @@ public class Main {
                 System.exit(0);
             }
         });
+
+        Timer timer = new Timer(1000, ev -> MonitorDataManager.tick());
+        timer.start();
 
         peachWindow.run();
     }

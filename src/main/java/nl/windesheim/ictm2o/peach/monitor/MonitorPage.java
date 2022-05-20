@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -26,20 +27,32 @@ public class MonitorPage extends JPanel {
 
         private final Font labelFont = new Font("Inter", Font.BOLD, 26);
 
+        private final JLabel availabilityLabel = new JLabel("Beschikbaarheid");
         private final JLabel cpuGraphLabel = new JLabel("Processorgebruik");
         private final JLabel memoryGraphLabel = new JLabel("Werkgeheugengebruik");
         private final JLabel diskGraphLabel = new JLabel("Schijfruimteverbruik");
         private final JLabel otherInformationLabel = new JLabel("Overige Gegevens:");
 
+        private final JProgressBar availabilityProgressBar = new JProgressBar();
         private final JTextArea otherInformationArea = new JTextArea();
 
         public Tab() {
             setLayout(new MigLayout("", "[grow,fill]", "[grow,fill]"));
 
+            addAvailabilityBar();
             addCPUGraph();
             addMemoryGraph();
             addDiskGraph();
             addOtherInformationArea();
+        }
+
+        private void addAvailabilityBar() {
+            availabilityLabel.setFont(labelFont);
+            availabilityLabel.setBorder(new EmptyBorder(new Insets(5, 0, 5, 0)));
+            add(availabilityLabel, "wrap");
+
+            availabilityProgressBar.setMaximum(100);
+            add(availabilityProgressBar, "span");
         }
 
         private void addCPUGraph() {
@@ -74,8 +87,22 @@ public class MonitorPage extends JPanel {
             add(otherInformationArea, "wrap");
         }
 
-        public void updateLabels(@NotNull MonitorData monitorData, @NotNull String address) {
-            cpuGraphLabel.setText(String.format("Processorgebruik: %.1f%%", monitorData.getCPUPercentage() / 10f));
+        public void updateAvailability(@NotNull final MonitorDataManager.Instance instance) {
+            var availability = (float)instance.ticksAvailable / (float)instance.totalTicksSinceSubscription * 100.0f;
+            if (!Float.isNaN(availability)) {
+                availabilityLabel.setText(String.format(Locale.ITALIAN, "Beschikbaarheid: %.1f%%", availability));
+                availabilityProgressBar.setValue((int) availability);
+                availabilityProgressBar.setForeground(Color.GREEN);
+            } else {
+                availabilityLabel.setText("Beschikbaarheid: berekenen...");
+                availabilityProgressBar.setForeground(Color.RED);
+            }
+        }
+
+        public void updateLabels(@NotNull MonitorData monitorData, @NotNull MonitorDataManager.Instance instance) {
+            updateAvailability(instance);
+
+            cpuGraphLabel.setText(String.format("Processorgebruik: %.2f%%", monitorData.getCPUPercentage() / 10f));
 
             memoryGraphLabel.setText(String.format("Werkgeheugengebruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getMemoryUsed()), formatBytes(monitorData.getMemoryTotal()),
                     ((double)monitorData.getMemoryUsed() / (double)monitorData.getMemoryTotal() * 100.0)));
@@ -83,7 +110,7 @@ public class MonitorPage extends JPanel {
             diskGraphLabel.setText(String.format("Schijfruimteverbruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getDiskUsed()), formatBytes(monitorData.getDiskTotal()),
                     ((double)monitorData.getDiskUsed() / (double)monitorData.getDiskTotal() * 100.0)));
 
-            otherInformationArea.setText("IP-Adres: " + address + "\n"
+            otherInformationArea.setText("IP-Adres: " + instance.address + "\n"
                     + "\n"
                     + "Processen: " + monitorData.getProcessCount() + "\n"
                     + "Windows Services: " + monitorData.getWindowsServicesCount() + "\n"
@@ -183,9 +210,6 @@ public class MonitorPage extends JPanel {
         for (Map.Entry<String, MonitorDataManager.Instance> entry : MonitorDataManager.getData().entrySet()) {
             final var tab = getTabByIdentifier(entry.getKey());
 
-            if (entry.getValue().newData.isEmpty())
-                continue;
-
             synchronized(entry.getValue().newData) {
                 for (MonitorData dataEntry : entry.getValue().newData) {
                     tab.cpuGraph.pushBack(dataEntry.getCPUPercentage());
@@ -193,8 +217,8 @@ public class MonitorPage extends JPanel {
                     tab.diskGraph.pushBack((int) ((double)dataEntry.getDiskUsed() / (double)dataEntry.getDiskTotal() * 100.0));
                 }
 
-                tab.updateLabels(entry.getValue().newData.get(entry.getValue().newData.size() - 1),
-                        entry.getValue().address);
+                tab.updateLabels(entry.getValue().allData.get(entry.getValue().allData.size() - 1),
+                        entry.getValue());
                 entry.getValue().newData.clear();
             }
         }
@@ -218,7 +242,7 @@ public class MonitorPage extends JPanel {
                 }
 
                 tab.updateLabels(entry.getValue().allData.get(entry.getValue().allData.size() - 1),
-                        entry.getValue().address);
+                        entry.getValue());
             }
         }
     }
