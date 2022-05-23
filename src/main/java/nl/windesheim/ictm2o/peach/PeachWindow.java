@@ -1,40 +1,35 @@
 package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
+import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.storage.Configuration;
+import nl.windesheim.ictm2o.peach.windows.CopyrightWindow;
+import nl.windesheim.ictm2o.peach.windows.ThemedWindow;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.Objects;
 
-public class PeachWindow extends JFrame {
+public class PeachWindow extends ThemedWindow {
 
     @NotNull
     private final ComponentRegistry componentRegistry = new ComponentRegistry();
     private final Configuration configuration = new Configuration(this);
 
-    public static boolean isAppleSystem() {
-        @Nullable final String osName = System.getProperty("os.name");
-        if (osName == null)
-            return false;
-
-        return osName.toLowerCase().contains("mac");
-    }
+    private JMenuItem saveMenuItem;
+    @NotNull
+    private JPanel currentPage;
 
     public PeachWindow() throws IOException {
         super("NerdyGadgets Peach v" + BuildInfo.getVersion());
 
         setThemeToSystem();
-        if (isAppleSystem()) {
-            setAppleIcon();
-        } else {
-            setIcon();
-        }
+
+        addMenuBar();
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
@@ -56,7 +51,7 @@ public class PeachWindow extends JFrame {
 
         configuration.load();
 
-        add(new StartPage(this));
+        add(currentPage = new StartPage(this));
     }
 
     public void run() {
@@ -84,43 +79,16 @@ public class PeachWindow extends JFrame {
     }
 
     public void openPage(@NotNull JPanel origin, @NotNull String title, @NotNull JPanel panel) {
+        saveMenuItem.setEnabled(panel instanceof DesignPage);
+
         setPageTitle(title);
         remove(origin);
         add(panel);
         invalidate();
         revalidate();
         repaint();
-    }
 
-    private void setThemeToSystem() {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if (info.getClassName().equals("com.sun.java.swing.plaf.gtk.GTKLookAndFeel")) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    return;
-                }
-            }
-
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
-
-    private void setIcon() {
-        try {
-            setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Peach.png"))).getImage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setAppleIcon() {
-        final Taskbar taskbar = Taskbar.getTaskbar();
-        taskbar.setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
-        setIconImage(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
+        currentPage = panel;
     }
 
     private void setMenuBar() {
@@ -142,6 +110,52 @@ public class PeachWindow extends JFrame {
         file.add(item3);
         file.add(afsluiten);
         menuBar.add(file);
+        setJMenuBar(menuBar);
+    }
+
+    private void addMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menu = new JMenu("Bestand");
+
+//    menu.setMnemonic(KeyEvent.VK_S);
+        menu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
+        menuBar.add(menu);
+
+        JMenuItem menuItem = new JMenuItem("Nieuw", KeyEvent.VK_N);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        menuItem.addActionListener(ev -> {
+            if (currentPage instanceof DesignPage designPage && !designPage.getDesign().isDesignSavedToFile())
+                designPage.saveDesign(false);
+            openPage(currentPage, "Nieuw Ontwerp", new DesignPage(this, this, new Design(null)));
+        });
+        menu.add(menuItem);
+
+//a group of JMenuItems
+        menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
+        saveMenuItem = menuItem;
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+//    menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
+        menuItem.addActionListener(ev -> {
+            if (currentPage instanceof DesignPage designPage)
+                designPage.saveDesign(false);
+        });
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Opslaan Als", KeyEvent.VK_T);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
+        menuItem.addActionListener(ev -> {
+            if (currentPage instanceof DesignPage designPage)
+                designPage.saveDesign(true);
+        });
+        menu.add(menuItem);
+
+        menu = new JMenu("Help");
+        menuItem = new JMenuItem("Auteursrecht");
+        menuItem.addActionListener(ev -> CopyrightWindow.open());
+        menu.add(menuItem);
+        menuBar.add(menu);
+
         setJMenuBar(menuBar);
     }
 

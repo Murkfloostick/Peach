@@ -16,7 +16,7 @@ public class Design {
     @NotNull
     private List<PlacedComponent> placedComponents;
 
-    private boolean isDesignSavedToFile = false;
+    private boolean isDesignSavedToFile = true;
 
     public Design(@Nullable String filePath) {
         this.filePath = filePath;

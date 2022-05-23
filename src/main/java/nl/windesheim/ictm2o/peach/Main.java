@@ -3,6 +3,7 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.monitor.MonitorDataManager;
 import nl.windesheim.ictm2o.peach.monitor.MonitorPage;
 import nl.windesheim.ictm2o.peach.monitor.MonitorServer;
+import nl.windesheim.ictm2o.peach.windows.CopyrightWindow;
 
 import javax.swing.*;
 import java.awt.*;
