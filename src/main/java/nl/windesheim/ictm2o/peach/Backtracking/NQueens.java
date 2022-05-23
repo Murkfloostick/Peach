@@ -8,7 +8,7 @@ public class NQueens {
     }
 
     private static void nQueens(int noOfQueens) {
-        int [] board = new int[noOfQueens];
+        int[] board = new int[noOfQueens];
         placeQueen(board, 0, noOfQueens);
     }
 
@@ -45,7 +45,7 @@ public class NQueens {
         System.out.print("\n");
 
         for (int value : board)
-            System.out.printf(value + "%3s" ," ");
+            System.out.printf(value + "%3s", " ");
 
         System.out.print("\n\n");
 

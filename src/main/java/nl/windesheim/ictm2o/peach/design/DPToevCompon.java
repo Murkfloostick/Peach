@@ -72,25 +72,35 @@ public class DPToevCompon extends JPanel implements ActionListener {
         toevoegen = new JButton("Component toevoegen");
         toevoegen.setFont(font1);
         toevoegen.setContentAreaFilled(true);
-        add(toevoegen);
+        //add(toevoegen);
         terugKnop = new JButton("Terug");
         terugKnop.setFont(font1);
         terugKnop.setContentAreaFilled(true);
-        add(terugKnop);
+        //add(terugKnop);
         afsluiten = new JButton("Afsluiten");
         afsluiten.setFont(font1);
         afsluiten.setContentAreaFilled(true);
-        add(afsluiten);
+        //add(afsluiten);
         optimaliseren = new JButton("Optimaliseren");
         optimaliseren.setFont(font1);
         optimaliseren.setContentAreaFilled(true);
-        add(optimaliseren);
+        //add(optimaliseren);
         toevoegen.addActionListener(this);
         terugKnop.addActionListener(this);
         afsluiten.addActionListener(this);
         optimaliseren.addActionListener(this);
 
         refreshGegevens();
+
+        JPanel paneel1 = new JPanel();
+        paneel1.setLayout(new GridLayout(2,2));
+        paneel1.add(toevoegen);
+        paneel1.add(optimaliseren);
+        paneel1.add(terugKnop);
+        paneel1.add(afsluiten);
+        paneel1.setVisible(true);
+
+        add(paneel1);
 
         scrollPane.setViewportView(table);
 //        scrollPane.setPreferredSize(new Dimension(400,100));

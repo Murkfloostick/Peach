@@ -25,7 +25,7 @@ public class DPWorkPanel extends JPanel {
     private final Design D;
     private final Map<JLabel, PlacedComponent> map = new HashMap<>();
     private final Map<PlacedComponent, ArrayList<PlacedComponent>> lineMap = new HashMap<>();
-    private final Dimension dim = new Dimension(500, 550);//Workplace
+    private final Dimension dim = new Dimension(500, 550); //Workplace
     private static boolean accept = false;
 
     private boolean selectieModus = false;
@@ -305,8 +305,7 @@ public class DPWorkPanel extends JPanel {
             ArrayList<PlacedComponent> v = lineMap.get(PC);
             AtomicBoolean lijnGevonden = new AtomicBoolean(false); //Intellij wou dit
             if (v != null) {
-                for (PlacedComponent pc : v
-                ) {
+                for (PlacedComponent pc : v) {
                     map.forEach((key, value) -> {
                         if (value.equals(pc)) {
                             lijnGevonden.set(true);
@@ -324,7 +323,7 @@ public class DPWorkPanel extends JPanel {
                 }
             }
             add(anItem);
-            anItem.addActionListener(ev -> verwijderComponent());
+            anItem.addActionListener(e -> verwijderComponent());
             selecteren.addActionListener(ev -> selectieModusAan());
 
         }
@@ -333,6 +332,8 @@ public class DPWorkPanel extends JPanel {
             //Haal component op die verwijdert wilt worden
             PlacedComponent PC;
             PC = map.get(target);
+
+
 
             //En dat component verwijderen
             D.delPlacComponent(PC);
@@ -351,8 +352,7 @@ public class DPWorkPanel extends JPanel {
             verwijderModus = true;
             ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
             //TODO Functie van maken
-            for (PlacedComponent pc : v
-            ) {
+            for (PlacedComponent pc : v) {
                 map.forEach((key, value) -> {
                     if (value.equals(pc)) {
                         key.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
