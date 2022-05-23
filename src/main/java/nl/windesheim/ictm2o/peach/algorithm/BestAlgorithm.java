@@ -138,6 +138,10 @@ public class BestAlgorithm {
             //Haal het leeg
             ARC = null;
             ARC = new ArrayList<>(tempArc);
+
+            if(maxtemp > max){
+                break;
+            }
         }
 
         //Tijd om met de gegevens de goedkoopste te vinden en op het werkpaneel te zetten
@@ -177,14 +181,17 @@ public class BestAlgorithm {
         //Bereken goedkoopste die target haalt
 
         float beste = 0;
+        boolean firstTime = true;
         List besteList = new ArrayList<>();
         float inkomende;
         for (List ARK:masterARC
         ) {
             inkomende = D.getKosten(ARK)[5];
-            if(beste < inkomende){
-                beste = inkomende;
+            if(inkomende < beste || firstTime){
+                float now = inkomende;
+                beste = now;
                 besteList = ARK;
+                firstTime = false;
             }
         }
 
