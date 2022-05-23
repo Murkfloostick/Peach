@@ -14,6 +14,8 @@ public class Toast extends JDialog {
     private static final int FADE_STEPS = 30;
     private static final int PAUSE_BETWEEN_ANIMATIONS = 60;
 
+    private static final int NON_TRANSLUCENT_TIMEOUT = (FADE_DELAY + PAUSE_BETWEEN_ANIMATIONS + FADE_DELAY) * FADE_STEPS;
+
     private final Timer fadeOutTimer = new Timer(FADE_DELAY, new ActionListener() {
         private int fadeInCount = 0;
 
@@ -49,6 +51,11 @@ public class Toast extends JDialog {
         }
     });
 
+    private final Timer nonTranslucentTimer = new Timer(NON_TRANSLUCENT_TIMEOUT, e -> {
+        Toast.this.nonTranslucentTimer.stop();
+        dispose();
+    });
+
     public Toast(@NotNull JFrame window, @NotNull String message) {
         setUndecorated(true);
         setAlwaysOnTop(true);
@@ -75,8 +82,7 @@ public class Toast extends JDialog {
             setOpacity(0.0f);
             fadeInTimer.start();
         } else {
-            JOptionPane.showMessageDialog(window, message);
-            dispose();
+            nonTranslucentTimer.start();
         }
 
         setVisible(true);
@@ -85,6 +91,6 @@ public class Toast extends JDialog {
     private boolean isOpacitySupported() {
         return GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice()
-                .isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.PERPIXEL_TRANSPARENT);
+                .isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT);
     }
 }
