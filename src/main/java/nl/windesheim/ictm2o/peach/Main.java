@@ -5,6 +5,7 @@ import nl.windesheim.ictm2o.peach.monitor.MonitorPage;
 import nl.windesheim.ictm2o.peach.monitor.MonitorServer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
@@ -15,6 +16,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         MonitorServer.startInBackground();
+
+        final var ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        final var fonts = new String[]{"Black", "Bold", "ExtraBold", "ExtraLight", "Light", "Medium", "Regular", "SemiBold", "Thin"};
+        for (String string : fonts) {
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/Inter/static/Inter-" + string + ".ttf")));
+        }
 
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Test");
