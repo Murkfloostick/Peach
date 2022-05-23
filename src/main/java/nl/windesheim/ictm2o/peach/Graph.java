@@ -50,7 +50,7 @@ public class Graph extends JPanel {
             return;
 
         final int increaseX = size.width / (maxItems - 2);
-        final float yScale = (size.height - bottomBorderWidth) / ((float)pointScale);
+        final float yScale = (size.height - bottomBorderWidth) / ((float) pointScale);
 
         Integer previousY = null;
         int x = 0;

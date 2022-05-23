@@ -35,9 +35,9 @@ public class Main {
         peachWindow.setVisible(true);
 
         MonitorDataManager.attachInstanceOfflineAlertCallback((identifier, instance) ->
-            new Toast(peachWindow, identifier + " is offline!"));
+                new Toast(peachWindow, identifier + " is offline!"));
         MonitorDataManager.attachInstanceOnlineAlertCallback((identifier, instance) ->
-            new Toast(peachWindow, identifier + " is online!"));
+                new Toast(peachWindow, identifier + " is online!"));
 
         peachWindow.addWindowStateListener(new WindowAdapter() {
             @Override

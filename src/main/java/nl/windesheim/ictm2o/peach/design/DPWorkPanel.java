@@ -76,22 +76,23 @@ public class DPWorkPanel extends JPanel {
         });
     }
 
-    public void keepComponentsInside(){
-        for (PlacedComponent PC:D.getPlacedComponents()
+    public void keepComponentsInside() {
+        for (PlacedComponent PC : D.getPlacedComponents()
         ) {
             //Haal bounds op van werkpaneel. Moet via andere jpanels omdat deze de bounds van de workpanel niet kloppen.
-            bounds = new Rectangle(designPage.getComponPanel().getX(), 0, toevCompon.getX()-toevCompon.getWidth(), toevCompon.getHeight());
+            bounds = new Rectangle(designPage.getComponPanel().getX(), 0, toevCompon.getX() - toevCompon.getWidth(), toevCompon.getHeight());
 
             //Check of placed component binnen NIET binnen zit
-            if(!bounds.contains(PC.getPosition().getX(), PC.getPosition().getY())){
+            if (!bounds.contains(PC.getPosition().getX(), PC.getPosition().getY())) {
                 //TODO plaats op outer border
-                Position Pos = new Position(bounds.width/2, bounds.height/2);
+                Position Pos = new Position(bounds.width / 2, bounds.height / 2);
                 PC.setPosition(Pos);
             }
         }
         //Zodat de nieuwe posities worden geupdate
         refreshWP();
     }
+
     public void refreshWP() {
         //Alles leeghalen
         removeAll();

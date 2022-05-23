@@ -28,7 +28,7 @@ public class Toast extends JDialog {
             }
 
             ++fadeInCount;
-            setOpacity(1.0f - (float)fadeInCount / (float) FADE_STEPS);
+            setOpacity(1.0f - (float) fadeInCount / (float) FADE_STEPS);
         }
     });
 
@@ -47,7 +47,7 @@ public class Toast extends JDialog {
                 return;
             }
 
-            setOpacity((float)fadeInCount / (float) FADE_STEPS);
+            setOpacity((float) fadeInCount / (float) FADE_STEPS);
         }
     });
 
@@ -73,8 +73,8 @@ public class Toast extends JDialog {
 
 //        int xcoord = window.getLocationOnScreen().x + window.getWidth() / 2 - getWidth() / 2;
 //        int ycoord = window.getLocationOnScreen().y + (int)((double)window.getHeight() * 0.75) - getHeight() / 2;
-        int xcoord = window.getLocationOnScreen().x + window.getWidth() - (int)(getWidth() * 1.5f);
-        int ycoord = window.getLocationOnScreen().y + window.getHeight() - (int)(getHeight() * 1.5f);
+        int xcoord = window.getLocationOnScreen().x + window.getWidth() - (int) (getWidth() * 1.5f);
+        int ycoord = window.getLocationOnScreen().y + window.getHeight() - (int) (getHeight() * 1.5f);
         setLocation(xcoord, ycoord);
         setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 15, 15));
 

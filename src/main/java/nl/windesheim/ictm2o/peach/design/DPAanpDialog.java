@@ -66,30 +66,30 @@ public class DPAanpDialog extends JDialog implements ActionListener {
             if (RC.getIcon().toString().equals(IC)) {
                 break;
             }
-            counter2+=1;
+            counter2 += 1;
         }
-            options.setSelectedIndex(counter2);
-            naam.setText(RC.getName());
-            prijs.setText(String.valueOf(RC.getCost()));
-            beschikbaarheid.setText(String.valueOf(RC.getAvailability()*100));
+        options.setSelectedIndex(counter2);
+        naam.setText(RC.getName());
+        prijs.setText(String.valueOf(RC.getCost()));
+        beschikbaarheid.setText(String.valueOf(RC.getAvailability() * 100));
 
-            setVisible(true);
-        }
+        setVisible(true);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == toevoegen){
+        if (e.getSource() == toevoegen) {
             ComponentIcon CI = ComponentIcon.valueOf(Objects.requireNonNull(options.getSelectedItem()).toString());
 
             //Pas component aan
-            RC.editComponent(naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText())/100);
+            RC.editComponent(naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()) / 100);
 
             mainFrame.getPeachWindow().getConfiguration().save();
             mainFrame.getComponPanel().refreshPanel();
             dispose();
             mainFrame.setDesignModified();
         }
-        if(e.getSource() == cancel){
+        if (e.getSource() == cancel) {
             dispose();
         }
     }

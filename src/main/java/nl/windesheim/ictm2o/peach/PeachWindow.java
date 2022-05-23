@@ -154,4 +154,5 @@ public class PeachWindow extends JFrame {
     public Configuration getConfiguration() {
         return configuration;
     }
+
 }

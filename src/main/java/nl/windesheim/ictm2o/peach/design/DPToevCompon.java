@@ -15,11 +15,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Locale;
+import java.util.stream.IntStream;
 import java.util.*;
 import java.util.List;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 
 public class DPToevCompon extends JPanel implements ActionListener {
     private final JButton toevoegen;
@@ -27,6 +26,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private final DesignPage mainFrame;
     private final Design D;
     private final JButton terugKnop;
+    private final JButton afsluiten;
     private final JButton optimaliseren;
     private final PeachWindow m_parent;
     private final JTextField beschikbaarheidField;
@@ -77,12 +77,17 @@ public class DPToevCompon extends JPanel implements ActionListener {
         terugKnop.setFont(font1);
         terugKnop.setContentAreaFilled(true);
         add(terugKnop);
+        afsluiten = new JButton("Afsluiten");
+        afsluiten.setFont(font1);
+        afsluiten.setContentAreaFilled(true);
+        add(afsluiten);
         optimaliseren = new JButton("Optimaliseren");
         optimaliseren.setFont(font1);
         optimaliseren.setContentAreaFilled(true);
         add(optimaliseren);
         toevoegen.addActionListener(this);
         terugKnop.addActionListener(this);
+        afsluiten.addActionListener(this);
         optimaliseren.addActionListener(this);
 
         refreshGegevens();
@@ -93,7 +98,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         add(scrollPane);
     }
 
-    public void refreshGegevens(){
+    public void refreshGegevens() {
         final var stats = D.getStatistics();
 
         JPanel panel = new JPanel();
@@ -111,7 +116,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
 
             data[0][1 + i] = String.format(Locale.ITALIAN, "€ %.02f", stats.getCostsPerCategory()[i]);
-            data[1][1 + i] = String.format(Locale.ITALIAN, "%.2f %%",stats.getAvailabilityPerCategory()[i] * 100.0f);
+            data[1][1 + i] = String.format(Locale.ITALIAN, "%.2f %%", stats.getAvailabilityPerCategory()[i] * 100.0f);
         }
 
         table = new JTable(data, columnNames);
@@ -166,17 +171,20 @@ public class DPToevCompon extends JPanel implements ActionListener {
         if (e.getSource() == toevoegen) {
             //DPToevDialog dialoog = new DPToevDialog(this, true);
             //Anders werkt hij niet, dialoog moet op parent frame worden attached
+
             Window parentWindow = SwingUtilities.windowForComponent(this);
             JFrame parentFrame = null;
             if (parentWindow instanceof Frame) {
                 parentFrame = (JFrame) parentWindow;
             }
+
             DPToevDialog dialoog = new DPToevDialog(parentFrame, true, CR, mainFrame);
             dialoog.setLocationRelativeTo(null);
-
         } else if (e.getSource() == terugKnop) {
             m_parent.openStartPage(mainFrame);
-        } else if(e.getSource() == optimaliseren){
+        } else if (e.getSource() == afsluiten) {
+            System.exit(0);
+        } else if (e.getSource() == optimaliseren) {
             //Algorithm hieronder
             //Zie nieuwe aangemaakte class voor toekomstige uitwerking
             BestAlgorithm BA = new BestAlgorithm(D);

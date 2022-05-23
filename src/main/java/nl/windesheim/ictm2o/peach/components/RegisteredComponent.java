@@ -43,7 +43,7 @@ public class RegisteredComponent {
         return availability;
     }
 
-    public void editComponent(@NotNull String name, @NotNull ComponentIcon icon, float cost, float availability){
+    public void editComponent(@NotNull String name, @NotNull ComponentIcon icon, float cost, float availability) {
         this.name = name;
         this.icon = icon;
         this.cost = cost;

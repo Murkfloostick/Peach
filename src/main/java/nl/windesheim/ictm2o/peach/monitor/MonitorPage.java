@@ -105,7 +105,7 @@ public class MonitorPage extends JPanel {
         }
 
         public void updateAvailability(@NotNull final MonitorDataManager.Instance instance) {
-            var availability = (float)instance.ticksAvailable / (float)instance.totalTicksSinceSubscription * 100.0f;
+            var availability = (float) instance.ticksAvailable / (float) instance.totalTicksSinceSubscription * 100.0f;
             if (!Float.isNaN(availability)) {
                 availabilityLabel.setText(String.format(Locale.ITALIAN, "Beschikbaarheid: %.1f%%", availability));
                 availabilityProgressBar.setValue((int) availability);
@@ -121,11 +121,11 @@ public class MonitorPage extends JPanel {
 
             cpuGraphLabel.setText(String.format("Processorgebruik: %.2f%%", monitorData.getCPUPercentage() / 10f));
 
-            memoryGraphLabel.setText(String.format("Werkgeheugengebruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getMemoryUsed()), formatBytes(monitorData.getMemoryTotal()),
-                    ((double)monitorData.getMemoryUsed() / (double)monitorData.getMemoryTotal() * 100.0)));
+            memoryGraphLabel.setText(String.format("Werkgeheugengebruik: %s van %s (%.1f%%)", formatBytes(monitorData.getMemoryUsed()), formatBytes(monitorData.getMemoryTotal()),
+                    ((double) monitorData.getMemoryUsed() / (double) monitorData.getMemoryTotal() * 100.0)));
 
-            diskGraphLabel.setText(String.format("Schijfruimteverbruik: %s van %s (%.1f%%)" , formatBytes(monitorData.getDiskUsed()), formatBytes(monitorData.getDiskTotal()),
-                    ((double)monitorData.getDiskUsed() / (double)monitorData.getDiskTotal() * 100.0)));
+            diskGraphLabel.setText(String.format("Schijfruimteverbruik: %s van %s (%.1f%%)", formatBytes(monitorData.getDiskUsed()), formatBytes(monitorData.getDiskTotal()),
+                    ((double) monitorData.getDiskUsed() / (double) monitorData.getDiskTotal() * 100.0)));
 
             uptimeValueLabel.setText(formatElapsedSeconds(instance.ticksAvailable));
             downtimeValueLabel.setText(formatElapsedSeconds(instance.ticksUnavailable));
@@ -202,11 +202,11 @@ public class MonitorPage extends JPanel {
     private static String formatBytes(long input) {
         final long gigaByte = 1073741824;
         if (input > gigaByte * 2)
-            return String.format("%.1f GB", (float)input / (float)gigaByte);
+            return String.format("%.1f GB", (float) input / (float) gigaByte);
 
         final long megaByte = 1048576;
         if (input > megaByte * 2)
-            return String.format("%.1f MB", (float)input / (float)megaByte);
+            return String.format("%.1f MB", (float) input / (float) megaByte);
 
         return input + " bytes";
     }
@@ -233,11 +233,11 @@ public class MonitorPage extends JPanel {
         for (Map.Entry<String, MonitorDataManager.Instance> entry : MonitorDataManager.getData().entrySet()) {
             final var tab = getTabByIdentifier(entry.getKey());
 
-            synchronized(entry.getValue().newData) {
+            synchronized (entry.getValue().newData) {
                 for (MonitorData dataEntry : entry.getValue().newData) {
                     tab.cpuGraph.pushBack(dataEntry.getCPUPercentage());
-                    tab.memoryGraph.pushBack((int) ((double)dataEntry.getMemoryUsed() / (double)dataEntry.getMemoryTotal() * 100.0));
-                    tab.diskGraph.pushBack((int) ((double)dataEntry.getDiskUsed() / (double)dataEntry.getDiskTotal() * 100.0));
+                    tab.memoryGraph.pushBack((int) ((double) dataEntry.getMemoryUsed() / (double) dataEntry.getMemoryTotal() * 100.0));
+                    tab.diskGraph.pushBack((int) ((double) dataEntry.getDiskUsed() / (double) dataEntry.getDiskTotal() * 100.0));
                 }
 
                 tab.updateLabels(entry.getValue().allData.get(entry.getValue().allData.size() - 1),
@@ -257,11 +257,11 @@ public class MonitorPage extends JPanel {
             if (entry.getValue().newData.isEmpty())
                 continue;
 
-            synchronized(entry.getValue().allData) {
+            synchronized (entry.getValue().allData) {
                 for (MonitorData dataEntry : entry.getValue().allData) {
                     tab.cpuGraph.pushBack(dataEntry.getCPUPercentage());
-                    tab.memoryGraph.pushBack((int) ((double)dataEntry.getMemoryUsed() / (double)dataEntry.getMemoryTotal() * 100.0));
-                    tab.diskGraph.pushBack((int) ((double)dataEntry.getDiskUsed() / (double)dataEntry.getDiskTotal() * 100.0));
+                    tab.memoryGraph.pushBack((int) ((double) dataEntry.getMemoryUsed() / (double) dataEntry.getMemoryTotal() * 100.0));
+                    tab.diskGraph.pushBack((int) ((double) dataEntry.getDiskUsed() / (double) dataEntry.getDiskTotal() * 100.0));
                 }
 
                 tab.updateLabels(entry.getValue().allData.get(entry.getValue().allData.size() - 1),

@@ -38,7 +38,7 @@ public class BestAlgorithm {
     //
     //TODO Backtracking toevoegen. (Is dit een vereiste?)
 
-    public void optiMalisatie(){
+    public void optiMalisatie() {
         //Variabelen initalisatie
         CA = 0;
         TA = D.getTargetAvailability();
@@ -55,8 +55,8 @@ public class BestAlgorithm {
         int maxtemp = 1; // begin hier
 
         //Plaats eerst alle componenten
-        for (PlacedComponent PC:PC
-             ) {
+        for (PlacedComponent PC : PC
+        ) {
             ARC.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
             tempArc.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
         }
@@ -64,7 +64,7 @@ public class BestAlgorithm {
         checkAndAdd(ARC);//Dit is een oplossing
 
         //Voor elk element in de componenten die zijn geplaatst
-        for (int counter = 0; counter <= PC.size()-1; counter++) {
+        for (int counter = 0; counter <= PC.size() - 1; counter++) {
             //De eerste waar we het mee gaan doen
             main = PC.get(counter);
 
@@ -77,7 +77,7 @@ public class BestAlgorithm {
 
             //En dan de rest 1 keer plaatsen
             for (int count = 0; count <= PC.size() - 1; count++) {
-                if(count != counter){ //Voorkom dat we Main weer plaatsen
+                if (count != counter) { //Voorkom dat we Main weer plaatsen
                     ARC.add(new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition()));
                 }
             }
@@ -94,12 +94,12 @@ public class BestAlgorithm {
             }
             //Dan de tweede, terug, derde enzovoort zodat we iedereen langs gaan
             for (int count = 0; count <= PC.size() - 1; count++) {
-                if(count != counter) { //Voorkom dat we Main weer plaatsen
+                if (count != counter) { //Voorkom dat we Main weer plaatsen
                     main2 = PC.get(count);//Hou de tweede vast en doe de volgende componenten eerst
 
                     //Plaats max keer, dan minder tot er maar 1 is en dan volgende component die main2 wordt
                     //MAX begint bij 2 tot de echte max
-                    if(main != main2){//Main is al maximaal geplaatst
+                    if (main != main2) {//Main is al maximaal geplaatst
                         for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
                             PlacedComponent plaats = new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition());
                             ARC.add(plaats);
@@ -108,9 +108,9 @@ public class BestAlgorithm {
                     }
 
                     //Nu de volgende component steeds tot max en dan verwijderen
-                    for (PlacedComponent PC:PC
-                         ) {
-                        if(PC != main && PC != main2){
+                    for (PlacedComponent PC : PC
+                    ) {
+                        if (PC != main && PC != main2) {
                             for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
                                 //dan for elk ander component dat niet main en main2 is plaatsen
                                 PlacedComponent plaats = new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition());
@@ -118,7 +118,7 @@ public class BestAlgorithm {
                                 checkAndAdd(ARC);
                             }
                             //Verwijder nu maxtemp keer
-                            for (int maxremover = 1; maxremover <= maxtemp; maxremover++){
+                            for (int maxremover = 1; maxremover <= maxtemp; maxremover++) {
                                 ARC.remove(ARC.size() - maxremover);
                             }
                         }
@@ -137,24 +137,24 @@ public class BestAlgorithm {
     }
 
     //Checkt of de ARC die wordt meegegeven voldoet aan target availbility en dan toevoegen aan masterArc.
-    private void checkAndAdd(List<PlacedComponent> ARC){
+    private void checkAndAdd(List<PlacedComponent> ARC) {
         //CA = D.getAvailbility(ARC);
-        if(CA >= TA){
+        if (CA >= TA) {
             masterARC.add(ARC);
         }
     }
 
     //Vind de goedkoopste en zet het op het werkpaneel
-    private void costsAndRefresh(){
+    private void costsAndRefresh() {
         //Bereken goedkoopste die target haalt
 
         float beste = 0;
         List besteList = new ArrayList<>();
         float inkomende;
-        for (List ARK:masterARC
+        for (List ARK : masterARC
         ) {
             inkomende = D.getKosten(ARK)[5];
-            if(beste < inkomende){
+            if (beste < inkomende) {
                 beste = inkomende;
                 besteList = ARK;
             }
@@ -164,6 +164,6 @@ public class BestAlgorithm {
         D.deletePlacComponentList();
         D.newPlacComponentList(besteList);
     }
-        }
+}
 
 

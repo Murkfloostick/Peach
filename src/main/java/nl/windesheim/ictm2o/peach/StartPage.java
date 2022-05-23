@@ -10,19 +10,22 @@ import org.jetbrains.annotations.NotNull;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.applet.Applet;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
-public class StartPage extends JPanel {
+public class StartPage extends JPanel implements ActionListener {
 
     private final PeachWindow m_parent;
     private final Button monitorServicesButton;
     private final Button newDesignButton;
     private final Button openDesignButton;
+    private final JButton logoImageLabel;
+
 
     private static class Button extends JPanel {
 
@@ -38,7 +41,6 @@ public class StartPage extends JPanel {
         public Button(@NotNull Dimension windowDimensions, @NotNull String title, @NotNull BufferedImage image) {
 //            setLayout(new MigLayout("al center center, wrap, gapy 20"));
             setLayout(new MigLayout("", "[grow,fill]"));
-
 
 
             jButton = new JButton(getResizedImage(image, windowDimensions.width / 3));
@@ -58,19 +60,30 @@ public class StartPage extends JPanel {
     public StartPage(PeachWindow parent) throws IOException {
         m_parent = parent;
 
-        System.out.println("StartPage: "+ parent.getSize());
+        System.out.println("StartPage: " + parent.getSize());
 
-        setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]"));
+        //setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]"));
 
         JPanel logoPanel = new JPanel();
         logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
 
-        JLabel logoImageLabel = new JLabel(loadIcon());
+//        JLabel logoImageLabel = new JLabel(loadIcon());
+//        logoPanel.add(logoImageLabel);
+//
+//        JLabel logoTextLabel = new JLabel("Peach");
+//        logoTextLabel.setFont(new Font("Inter", Font.BOLD, 60));
+//        logoPanel.add(logoTextLabel);
+
+
+        logoImageLabel = new JButton(loadIcon());
+        logoImageLabel.setContentAreaFilled(true);
+        logoImageLabel.addActionListener(this);
         logoPanel.add(logoImageLabel);
 
         JLabel logoTextLabel = new JLabel("Peach");
         logoTextLabel.setFont(new Font("Inter", Font.BOLD, 60));
         logoPanel.add(logoTextLabel);
+
 
         add(logoPanel, "wrap");
 
@@ -80,7 +93,7 @@ public class StartPage extends JPanel {
         openDesignButton = new Button(dimensions, "Ontwerp Openen", ImageIO.read(ResourceManager.load("IconPack/OpenIcon.png")));
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new MigLayout("", "[grow,fill]"));
+        buttonPanel.setLayout(new MigLayout("center", "[grow,fill]"));
 
         buttonPanel.add(monitorServicesButton);
         buttonPanel.add(newDesignButton);
@@ -90,6 +103,8 @@ public class StartPage extends JPanel {
 
         installMouseListeners();
     }
+
+
 
     private void installMouseListeners() {
         StartPage startPage = this;
@@ -148,4 +163,10 @@ public class StartPage extends JPanel {
         return new ImageIcon(scaledImage);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == logoImageLabel){
+            System.exit(0);
+        }
+    }
 }

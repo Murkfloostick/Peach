@@ -55,7 +55,7 @@ public class MonitorDataManager {
         }
 
         data.allData.add(monitorData);
-        synchronized(data.newData) {
+        synchronized (data.newData) {
             data.newData.add(monitorData);
             data.lastHeartbeat = Instant.now();
             data.offlineAcknowledged = false;

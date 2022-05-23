@@ -95,7 +95,7 @@ public class Configuration {
             return;
 
         try {
-            if (!file.exists() &&!file.createNewFile()) {
+            if (!file.exists() && !file.createNewFile()) {
                 JOptionPane.showMessageDialog(peachWindow, "Kon de configuratie niet opslaan omdat we geen rechten hebben om een nieuw bestand aan te maken in \"" + file.getAbsolutePath() + "\"", "NerdyGadgets Peach", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -138,7 +138,6 @@ public class Configuration {
         @NotNull final List<RegisteredComponent> components = peachWindow.getComponentRegistry().getRegisteredComponents();
 
         components.add(new RegisteredComponent(UUID.fromString("803b7358-6e5e-4074-8b0b-cb4bd669d57f"), "pfSense", ComponentIcon.FIREWALL, 4000, 0.99998f));
-
         components.add(new RegisteredComponent(UUID.fromString("b21f6b2b-8a40-4706-b35f-11a139da2669"), "HAL9001DB", ComponentIcon.SERVER_DATABASE, 5100, 0.90f));
         components.add(new RegisteredComponent(UUID.fromString("d5db3806-e0d1-4b2f-af99-3bc4f1fcbf04"), "HAL9002DB", ComponentIcon.SERVER_DATABASE, 7700, 0.95f));
         components.add(new RegisteredComponent(UUID.fromString("a06795be-388b-45ec-9bf6-c5074f7bc0a4"), "HAL9003DB", ComponentIcon.SERVER_DATABASE, 12200, 0.98f));
