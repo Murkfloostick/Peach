@@ -8,6 +8,9 @@ import nl.windesheim.ictm2o.peach.Main;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.Main;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
+import net.miginfocom.swing.MigLayout;
+import nl.windesheim.ictm2o.peach.Main;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
