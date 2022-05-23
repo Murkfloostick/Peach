@@ -1,9 +1,17 @@
 package nl.windesheim.ictm2o.peach.algorithm;
 
+import net.miginfocom.swing.MigLayout;
+import nl.windesheim.ictm2o.peach.Main;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
+import nl.windesheim.ictm2o.peach.Main;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class BestAlgorithm {
     private final Design D;
@@ -137,9 +145,25 @@ public class BestAlgorithm {
     }
 
     //Checkt of de ARC die wordt meegegeven voldoet aan target availbility en dan toevoegen aan masterArc.
-    private void checkAndAdd(List<PlacedComponent> ARC) {
-        //CA = D.getAvailbility(ARC);
-        if (CA >= TA) {
+    private void checkAndAdd(List<PlacedComponent> ARC){
+        final var stats = D.getStatistics();
+
+        var data = new Object[2][1 + stats.getAvailabilityPerCategory().length];
+        var columnNames = new String[1 + stats.getAvailabilityPerCategory().length];
+
+        data[0][0] = "Kosten";
+        data[1][0] = "Beschikbaarheid";
+        columnNames[0] = "";
+
+        for (int i = 0; i < stats.getAvailabilityPerCategory().length; ++i) {
+            columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
+
+            data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.getCostsPerCategory()[i]);
+            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.getAvailabilityPerCategory()[i] * 100.0f);
+        }
+
+        CA = stats.getTotalAvailability() * 100.0f;
+        if(CA >= TA){
             masterARC.add(ARC);
         }
     }

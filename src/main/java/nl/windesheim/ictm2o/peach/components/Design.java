@@ -10,7 +10,7 @@ public class Design {
     @Nullable
     private String filePath;
 
-    private float targetAvailability = 70.00f;
+    private float targetAvailability = 20.00f;
     private float totalCost = 0;
 
     @NotNull
