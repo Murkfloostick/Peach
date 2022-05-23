@@ -26,12 +26,22 @@ public class StartPage extends JPanel {
 
     private static class Button extends JPanel {
 
+        @NotNull
+        public static ImageIcon getResizedImage(@NotNull BufferedImage bufferedImage, int size) {
+            final var loadedImage = new ImageIcon(bufferedImage);
+            final var scaledImage = loadedImage.getImage().getScaledInstance(size, size, Image.SCALE_DEFAULT);
+            return new ImageIcon(scaledImage);
+        }
+
         private final JButton jButton;
 
-        public Button(@NotNull String title, @NotNull BufferedImage image) {
-            setLayout(new MigLayout("al center center, wrap, gapy 20"));
+        public Button(@NotNull Dimension windowDimensions, @NotNull String title, @NotNull BufferedImage image) {
+//            setLayout(new MigLayout("al center center, wrap, gapy 20"));
+            setLayout(new MigLayout("", "[grow,fill]"));
 
-            jButton = new JButton(new ImageIcon(image));
+
+
+            jButton = new JButton(getResizedImage(image, windowDimensions.width / 3));
             add(jButton, "wrap");
 
             JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
@@ -48,7 +58,9 @@ public class StartPage extends JPanel {
     public StartPage(PeachWindow parent) throws IOException {
         m_parent = parent;
 
-        setLayout(new MigLayout("insets 0 10% 0 10%"));
+        System.out.println("StartPage: "+ parent.getSize());
+
+        setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]"));
 
         JPanel logoPanel = new JPanel();
         logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
@@ -62,13 +74,19 @@ public class StartPage extends JPanel {
 
         add(logoPanel, "wrap");
 
-        monitorServicesButton = new Button("Monitor Services", ImageIO.read(ResourceManager.load("IconPack/Monitor.png")));
-        newDesignButton = new Button("Nieuw Ontwerp", ImageIO.read(ResourceManager.load("IconPack/Setting.png")));
-        openDesignButton = new Button("Ontwerp Openen", ImageIO.read(ResourceManager.load("IconPack/OpenIcon.png")));
+        final var dimensions = parent.getSize();
+        monitorServicesButton = new Button(dimensions, "Monitor Services", ImageIO.read(ResourceManager.load("IconPack/Monitor.png")));
+        newDesignButton = new Button(dimensions, "Nieuw Ontwerp", ImageIO.read(ResourceManager.load("IconPack/Setting.png")));
+        openDesignButton = new Button(dimensions, "Ontwerp Openen", ImageIO.read(ResourceManager.load("IconPack/OpenIcon.png")));
 
-        add(monitorServicesButton);
-        add(newDesignButton);
-        add(openDesignButton);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new MigLayout("", "[grow,fill]"));
+
+        buttonPanel.add(monitorServicesButton);
+        buttonPanel.add(newDesignButton);
+        buttonPanel.add(openDesignButton);
+
+        add(buttonPanel);
 
         installMouseListeners();
     }
