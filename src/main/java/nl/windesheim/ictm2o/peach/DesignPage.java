@@ -77,6 +77,9 @@ public class DesignPage extends JPanel implements ActionListener {
     public void saveDesign(boolean forceFileDialog) {
         DesignFile designFile;
 
+        if (!forceFileDialog && D.isDesignSavedToFile())
+            return;
+
         if (forceFileDialog || D.getFilePath() == null) {
             var fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Ontwerp opslaan als");

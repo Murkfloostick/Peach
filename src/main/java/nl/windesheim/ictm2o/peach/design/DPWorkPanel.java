@@ -201,6 +201,9 @@ public class DPWorkPanel extends JPanel {
          */
         @Override
         public void mouseReleased(MouseEvent e) {
+            if (target == null)
+                return;
+
             JLabel jl = (JLabel) target;
             PlacedComponent PC;
 

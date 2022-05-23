@@ -2,17 +2,17 @@ package nl.windesheim.ictm2o.peach;
 
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.Design;
+import nl.windesheim.ictm2o.peach.monitor.MonitorPage;
+import nl.windesheim.ictm2o.peach.monitor.MonitorServer;
 import nl.windesheim.ictm2o.peach.storage.Configuration;
 import nl.windesheim.ictm2o.peach.windows.CopyrightWindow;
 import nl.windesheim.ictm2o.peach.windows.ThemedWindow;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.Objects;
 
 public class PeachWindow extends ThemedWindow {
 
@@ -20,7 +20,10 @@ public class PeachWindow extends ThemedWindow {
     private final ComponentRegistry componentRegistry = new ComponentRegistry();
     private final Configuration configuration = new Configuration(this);
 
-    private JMenuItem saveMenuItem;
+    private JMenuItem startPageMenuBarItem;
+    private JMenuItem saveMenuBarItem;
+    private JMenuItem serviceMonitorBarItem;
+
     @NotNull
     private JPanel currentPage;
 
@@ -66,9 +69,10 @@ public class PeachWindow extends ThemedWindow {
         super.setTitle("NerdyGadgets Peach v" + BuildInfo.getVersion());
 
         remove(originPanel);
+        startPageMenuBarItem.setEnabled(false);
 
         try {
-            add(new StartPage(this));
+            add(currentPage = new StartPage(this));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,7 +83,9 @@ public class PeachWindow extends ThemedWindow {
     }
 
     public void openPage(@NotNull JPanel origin, @NotNull String title, @NotNull JPanel panel) {
-        saveMenuItem.setEnabled(panel instanceof DesignPage);
+        saveMenuBarItem.setEnabled(!(panel instanceof DesignPage));
+        serviceMonitorBarItem.setEnabled(!(panel instanceof MonitorPage));
+        startPageMenuBarItem.setEnabled(true);
 
         setPageTitle(title);
         remove(origin);
@@ -91,36 +97,28 @@ public class PeachWindow extends ThemedWindow {
         currentPage = panel;
     }
 
-    private void setMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
-        JMenu file = new JMenu("Bestand");
-        JMenuItem item = new JMenuItem("Nieuw Model");
-        JMenuItem item1 = new JMenuItem("Opslaan");
-        JMenuItem item2 = new JMenuItem("Opslaan Als");
-        JMenuItem item3 = new JMenuItem("Dienstmonitoring");
-        JMenuItem afsluiten = new JMenuItem("Afsluiten");
-        afsluiten.addActionListener(e -> {
-            // TODO check of het ontwerp is opgeslagen.
-            System.exit(0);
-        });
-
-        file.add(item);
-        file.add(item1);
-        file.add(item2);
-        file.add(item3);
-        file.add(afsluiten);
-        menuBar.add(file);
-        setJMenuBar(menuBar);
-    }
-
     private void addMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu menu = new JMenu("Bestand");
+        JMenu fileMenu = new JMenu("Bestand");
 
-//    menu.setMnemonic(KeyEvent.VK_S);
-        menu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
-        menuBar.add(menu);
+//    fileMenu.setMnemonic(KeyEvent.VK_S);
+        fileMenu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
+        menuBar.add(fileMenu);
+
+        startPageMenuBarItem = new JMenuItem("Hoofdmenu");
+        startPageMenuBarItem.setEnabled(false);
+        startPageMenuBarItem.addActionListener(ev -> {
+            if (currentPage instanceof StartPage)
+                return;
+
+            if (currentPage instanceof DesignPage designPage)
+                designPage.saveDesign(false);
+            openStartPage(currentPage);
+        });
+
+        fileMenu.add(startPageMenuBarItem);
+        fileMenu.add(new JSeparator());
 
         JMenuItem menuItem = new JMenuItem("Nieuw", KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -129,18 +127,18 @@ public class PeachWindow extends ThemedWindow {
                 designPage.saveDesign(false);
             openPage(currentPage, "Nieuw Ontwerp", new DesignPage(this, this, new Design(null)));
         });
-        menu.add(menuItem);
+        fileMenu.add(menuItem);
 
 //a group of JMenuItems
         menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
-        saveMenuItem = menuItem;
+        saveMenuBarItem = menuItem;
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 //    menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
         menuItem.addActionListener(ev -> {
             if (currentPage instanceof DesignPage designPage)
                 designPage.saveDesign(false);
         });
-        menu.add(menuItem);
+        fileMenu.add(menuItem);
 
         menuItem = new JMenuItem("Opslaan Als", KeyEvent.VK_T);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
@@ -148,13 +146,33 @@ public class PeachWindow extends ThemedWindow {
             if (currentPage instanceof DesignPage designPage)
                 designPage.saveDesign(true);
         });
-        menu.add(menuItem);
+        fileMenu.add(menuItem);
 
-        menu = new JMenu("Help");
+        serviceMonitorBarItem = new JMenuItem("Dienstmonitoring");
+        serviceMonitorBarItem.addActionListener(ev -> {
+            if (currentPage instanceof DesignPage designPage)
+                designPage.saveDesign(false);
+            openPage(currentPage, "Dienstmonitoring", new MonitorPage(this));
+        });
+
+        JMenuItem quitItem = new JMenuItem("Afsluiten");
+        quitItem.addActionListener(ev -> {
+            if (currentPage instanceof DesignPage designPage)
+                designPage.saveDesign(false);
+            MonitorServer.getInstance().stop();
+            System.exit(0);
+        });
+
+        fileMenu.add(new JSeparator());
+        fileMenu.add(serviceMonitorBarItem);
+        fileMenu.add(quitItem);
+        menuBar.add(fileMenu);
+
+        final var helpMenu = new JMenu("Help");
         menuItem = new JMenuItem("Auteursrecht");
         menuItem.addActionListener(ev -> CopyrightWindow.open());
-        menu.add(menuItem);
-        menuBar.add(menu);
+        helpMenu.add(menuItem);
+        menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
     }
