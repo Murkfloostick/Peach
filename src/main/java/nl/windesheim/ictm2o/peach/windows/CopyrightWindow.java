@@ -83,8 +83,8 @@ public class CopyrightWindow extends ThemedWindow {
         JPanel logoPanel = new JPanel();
         logoPanel.setBorder(new EmptyBorder(new Insets(0, 0, 18, 0)));
 
-        JLabel logoImageLabel = new JLabel(StartPage.loadIcon(60));
-        logoPanel.add(logoImageLabel);
+        //JLabel logoImageLabel = new JLabel(StartPage.loadIcon(60));
+        //logoPanel.add(logoImageLabel);
 
         JLabel logoTextLabel = new JLabel("Peach - Auteursrecht");
         logoTextLabel.setFont(new Font("Inter", Font.BOLD, 50));

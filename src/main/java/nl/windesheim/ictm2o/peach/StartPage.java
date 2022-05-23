@@ -165,7 +165,7 @@ public class StartPage extends JPanel implements ActionListener {
     }
 
     @NotNull
-    private ImageIcon loadIcon() throws IOException {
+    private static ImageIcon loadIcon() throws IOException {
         final var loadedImage = new ImageIcon(ImageIO.read(ResourceManager.load("Peach.png")));
         final var scaledImage = loadedImage.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
         return new ImageIcon(scaledImage);
