@@ -6,6 +6,7 @@ import nl.windesheim.ictm2o.peach.monitor.MonitorServer;
 import nl.windesheim.ictm2o.peach.windows.CopyrightWindow;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -14,6 +15,7 @@ import java.util.Locale;
 public class Main {
 
     public static final Locale LOCALE = Locale.forLanguageTag("nl");
+
 
     public static void main(String[] args) throws Exception {
         MonitorServer.startInBackground();
@@ -53,6 +55,8 @@ public class Main {
         Timer timer = new Timer(1000, ev -> MonitorDataManager.tick());
         timer.start();
 
+        
+        
         peachWindow.run();
     }
 }

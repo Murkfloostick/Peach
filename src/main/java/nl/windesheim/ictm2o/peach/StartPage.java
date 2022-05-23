@@ -9,13 +9,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.io.File;
+import javax.swing.border.EmptyBorder;
 
 public class StartPage extends JPanel implements ActionListener {
 
@@ -24,7 +24,6 @@ public class StartPage extends JPanel implements ActionListener {
     private final Button newDesignButton;
     private final Button openDesignButton;
     private final JButton logoImageLabel;
-
 
     private static class Button extends JPanel {
 
@@ -64,9 +63,9 @@ public class StartPage extends JPanel implements ActionListener {
         //setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]"));
 
         JPanel logoPanel = new JPanel();
-        //logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
+        logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 1325)));
 
-        logoImageLabel = new JButton(loadIcon(90));
+        logoImageLabel = new JButton(loadIcon());
         logoImageLabel.setContentAreaFilled(true);
         logoImageLabel.addActionListener(this);
         logoPanel.add(logoImageLabel);
@@ -75,15 +74,12 @@ public class StartPage extends JPanel implements ActionListener {
         logoTextLabel.setFont(new Font("Inter", Font.BOLD, 60));
         logoPanel.add(logoTextLabel);
 
-
-        //add(logoPanel, "wrap");
+        //logoPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         add(logoPanel, "wrap");
-        setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
-        setLayout(new FlowLayout(FlowLayout.LEFT));
 
-
-
-
+//        add(logoPanel, "wrap");
+//        setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
+//        setLayout(new FlowLayout(FlowLayout.LEFT));
 
 //        .setHorizontalAlignment(SwingConstants.LEFT);
 //        pan1 = new JPanel( new FlowLayout(FlowLayout.LEFT) );
@@ -98,8 +94,9 @@ public class StartPage extends JPanel implements ActionListener {
 
 
 
-        final var dimensions = parent.getSize();
+        final var dimensions = new Dimension(1500,1500);
         monitorServicesButton = new Button(dimensions, "Monitor Services", ImageIO.read(ResourceManager.load("IconPack/Monitor.png")));
+
         newDesignButton = new Button(dimensions, "Nieuw Ontwerp", ImageIO.read(ResourceManager.load("IconPack/Setting.png")));
         openDesignButton = new Button(dimensions, "Ontwerp Openen", ImageIO.read(ResourceManager.load("IconPack/OpenIcon.png")));
 
@@ -112,11 +109,10 @@ public class StartPage extends JPanel implements ActionListener {
 
         add(buttonPanel, "wrap");
 
-        /*
-        Bij 1X iets openen en dan terug naar 'Startpage', worden de icoontjes groter? Dit moet worden gefixt
-         */
         installMouseListeners();
     }
+
+
 
     private void installMouseListeners() {
         StartPage startPage = this;
@@ -169,9 +165,9 @@ public class StartPage extends JPanel implements ActionListener {
     }
 
     @NotNull
-    public static ImageIcon loadIcon(int size) throws IOException {
+    private ImageIcon loadIcon() throws IOException {
         final var loadedImage = new ImageIcon(ImageIO.read(ResourceManager.load("Peach.png")));
-        final var scaledImage = loadedImage.getImage().getScaledInstance(size, size, Image.SCALE_DEFAULT);
+        final var scaledImage = loadedImage.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
         return new ImageIcon(scaledImage);
     }
 
