@@ -58,14 +58,12 @@ public class StartPage extends JPanel {
     public StartPage(PeachWindow parent) throws IOException {
         m_parent = parent;
 
-        System.out.println("StartPage: "+ parent.getSize());
-
         setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]"));
 
         JPanel logoPanel = new JPanel();
         logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
 
-        JLabel logoImageLabel = new JLabel(loadIcon());
+        JLabel logoImageLabel = new JLabel(loadIcon(90));
         logoPanel.add(logoImageLabel);
 
         JLabel logoTextLabel = new JLabel("Peach");
@@ -142,9 +140,9 @@ public class StartPage extends JPanel {
     }
 
     @NotNull
-    private ImageIcon loadIcon() throws IOException {
+    public static ImageIcon loadIcon(int size) throws IOException {
         final var loadedImage = new ImageIcon(ImageIO.read(ResourceManager.load("Peach.png")));
-        final var scaledImage = loadedImage.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
+        final var scaledImage = loadedImage.getImage().getScaledInstance(size, size, Image.SCALE_DEFAULT);
         return new ImageIcon(scaledImage);
     }
 

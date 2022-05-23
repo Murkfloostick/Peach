@@ -6,6 +6,7 @@ import nl.windesheim.ictm2o.peach.design.DPComponPanel;
 import nl.windesheim.ictm2o.peach.design.DPToevCompon;
 import nl.windesheim.ictm2o.peach.design.DPWorkPanel;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
+import nl.windesheim.ictm2o.peach.windows.CopyrightWindow;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -17,6 +18,8 @@ public class DesignPage extends JPanel implements ActionListener {
     private final DPComponPanel componPanel;
     private final PeachWindow m_parent;
     private final DPWorkPanel workPanel;
+
+    @NotNull
     private Design D;
 
     public DesignPage(PeachWindow peachWindow, PeachWindow m_parent, @NotNull Design design) {
@@ -53,37 +56,6 @@ public class DesignPage extends JPanel implements ActionListener {
         c.weightx = 0.5;
         c.weighty = 1;
         add(toevCompon, c);
-
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu menu = new JMenu("Bestand");
-
-//    menu.setMnemonic(KeyEvent.VK_S);
-        menu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
-        menuBar.add(menu);
-
-        JMenuItem menuItem = new JMenuItem("Nieuw", KeyEvent.VK_N);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        menuItem.addActionListener(ev -> {
-            if (!D.isDesignSavedToFile())
-                saveDesign(false);
-            D = new Design(null);
-        });
-        menu.add(menuItem);
-
-//a group of JMenuItems
-        menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-//    menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
-        menuItem.addActionListener(ev -> saveDesign(false));
-        menu.add(menuItem);
-
-        menuItem = new JMenuItem("Opslaan Als", KeyEvent.VK_T);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
-        menuItem.addActionListener(ev -> saveDesign(true));
-        menu.add(menuItem);
-
-        peachWindow.setJMenuBar(menuBar);
         setVisible(true);
     }
 
@@ -125,6 +97,7 @@ public class DesignPage extends JPanel implements ActionListener {
         }
 
         designFile.save(D);
+        D.setSavedToFile();
         m_parent.setPageTitle("Ontwerper - " + D.getFilePath());
     }
 
@@ -139,5 +112,14 @@ public class DesignPage extends JPanel implements ActionListener {
 
     public DPWorkPanel getWorkPanel() {
         return workPanel;
+    }
+
+    @NotNull
+    public Design getDesign() {
+        return D;
+    }
+
+    public void setDesign(@NotNull final Design d) {
+        D = d;
     }
 }
