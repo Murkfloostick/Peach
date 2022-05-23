@@ -110,8 +110,8 @@ public class DPToevCompon extends JPanel implements ActionListener {
         for (int i = 0; i < stats.getAvailabilityPerCategory().length; ++i) {
             columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
 
-            data[0][1 + i] = String.format(Locale.ITALIAN, "€ %.02f", stats.getCostsPerCategory()[i]);
-            data[1][1 + i] = String.format(Locale.ITALIAN, "%.2f %%",stats.getAvailabilityPerCategory()[i] * 100.0f);
+            data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.getCostsPerCategory()[i]);
+            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.getAvailabilityPerCategory()[i] * 100.0f);
         }
 
         table = new JTable(data, columnNames);
@@ -133,7 +133,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         labelTmp.setForeground(Color.WHITE);
         totalPanel.add(labelTmp);
 
-        labelTmp = new JLabel(String.format(Locale.ITALIAN, "€ %.02f", stats.getTotalCosts()));
+        labelTmp = new JLabel(String.format(Main.LOCALE, "€ %.02f", stats.getTotalCosts()));
         labelTmp.setFont(rightLabelFont);
         labelTmp.setForeground(Color.WHITE);
         totalPanel.add(labelTmp, "wrap");
@@ -146,7 +146,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         labelTmp.setForeground(Color.WHITE);
         totalPanel.add(labelTmp);
 
-        labelTmp = new JLabel(String.format(Locale.ITALIAN, "%.2f %%", stats.getTotalAvailability() * 100.0f));
+        labelTmp = new JLabel(String.format(Main.LOCALE, "%.2f %%", stats.getTotalAvailability() * 100.0f));
         labelTmp.setFont(rightLabelFont);
         if (stats.getTotalAvailability() * 100.0f < D.getTargetAvailability())
             labelTmp.setForeground(Color.RED);
@@ -181,7 +181,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             //Zie nieuwe aangemaakte class voor toekomstige uitwerking
             BestAlgorithm BA = new BestAlgorithm(D);
             //BA.vindAv(); OUD ALGORITME
-
+            //D.setTargetAvailability(Float.parseFloat(beschikbaarheidField.getText()));
             BA.optiMalisatie();
             //Update alles
             refreshGegevens();
@@ -192,7 +192,8 @@ public class DPToevCompon extends JPanel implements ActionListener {
     }
 
     private void fillBeschikbaarheidFieldWithValueFromDesign() {
-        beschikbaarheidField.setText(String.format(Main.LOCALE, "%.02f %%", D.getTargetAvailability()));
+        beschikbaarheidField.setText(String.format(Locale.getDefault(), "%.02f %%", D.getTargetAvailability()));
+        System.out.println(Locale.getDefault());
     }
 
 }
