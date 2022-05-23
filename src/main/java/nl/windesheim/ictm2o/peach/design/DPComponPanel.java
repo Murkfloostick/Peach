@@ -129,7 +129,7 @@ public class DPComponPanel extends JPanel {
                             JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
-
+                        refreshPanel();
                     }
                     //En anders verwijden van de ComponentRegistry
                     CR.delComponent(RC);

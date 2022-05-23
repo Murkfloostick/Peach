@@ -8,8 +8,7 @@ public class ResourceManager {
 
     /**
      * Example:
-     *     For src/main/resources/Peach.png use ResourceManager.load("Peach.png");
-     *
+     * For src/main/resources/Peach.png use ResourceManager.load("Peach.png");
      */
     @NotNull
     public static InputStream load(@NotNull String path) {
