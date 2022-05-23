@@ -66,7 +66,7 @@ public class StartPage extends JPanel implements ActionListener {
         JPanel logoPanel = new JPanel();
         //logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
 
-        logoImageLabel = new JButton(loadIcon());
+        logoImageLabel = new JButton(loadIcon(90));
         logoImageLabel.setContentAreaFilled(true);
         logoImageLabel.addActionListener(this);
         logoPanel.add(logoImageLabel);
@@ -169,9 +169,9 @@ public class StartPage extends JPanel implements ActionListener {
     }
 
     @NotNull
-    private ImageIcon loadIcon() throws IOException {
+    public static ImageIcon loadIcon(int size) throws IOException {
         final var loadedImage = new ImageIcon(ImageIO.read(ResourceManager.load("Peach.png")));
-        final var scaledImage = loadedImage.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT);
+        final var scaledImage = loadedImage.getImage().getScaledInstance(size, size, Image.SCALE_DEFAULT);
         return new ImageIcon(scaledImage);
     }
 
