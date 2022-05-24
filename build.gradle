@@ -11,9 +11,14 @@ repositories {
     mavenCentral()
 }
 
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 compileJava {
-    sourceCompatibility = '17'
-    targetCompatibility = '17'
+    sourceCompatibility = '18'
+    targetCompatibility = '18'
 }
 
 dependencies {

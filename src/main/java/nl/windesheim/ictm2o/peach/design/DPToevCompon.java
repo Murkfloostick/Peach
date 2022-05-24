@@ -1,5 +1,6 @@
 package nl.windesheim.ictm2o.peach.design;
 
+import com.sun.source.tree.TryTree;
 import net.miginfocom.swing.MigLayout;
 import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.Main;
@@ -14,6 +15,8 @@ import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.stream.IntStream;
 import java.util.*;

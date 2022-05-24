@@ -67,7 +67,7 @@ public class Splashscreen extends JPanel {
                 SwingUtilities.invokeLater(() -> {
                     j.updateBar(percent);
                 });
-                java.lang.Thread.sleep(50);
+                java.lang.Thread.sleep(20);
                 if (i == MY_MAXIMUM){
                     frame.dispose();
                     PeachWindow peachWindow = new PeachWindow();
