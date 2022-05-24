@@ -194,6 +194,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             DPToevDialog dialoog = new DPToevDialog(parentFrame, true, CR, mainFrame);
             dialoog.setLocationRelativeTo(null);
         } else if (e.getSource() == terugKnop) {
+            mainFrame.saveDesign(false);
             m_parent.openStartPage(mainFrame);
         } else if (e.getSource() == afsluiten) {
             System.exit(0);

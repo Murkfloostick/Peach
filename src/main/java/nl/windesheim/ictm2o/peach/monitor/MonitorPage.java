@@ -7,12 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 public class MonitorPage extends JPanel {
 
@@ -40,7 +39,12 @@ public class MonitorPage extends JPanel {
         private final JLabel downtimeTitleLabel = new JLabel("Downtime:");
         private final JLabel downtimeValueLabel = new JLabel("");
 
-        public Tab() {
+        @NotNull
+        private final String title;
+
+        public Tab(@NotNull String title) {
+            this.title = title;
+
             setLayout(new MigLayout("left", "[grow,fill]", "[grow,fill]"));
 
             addAvailabilityBar();
@@ -223,9 +227,14 @@ public class MonitorPage extends JPanel {
         if (tab != null)
             return tab;
 
-        tab = new Tab();
+        tab = new Tab(identifier);
         tabs.put(identifier, tab);
-        tabbedPane.add(identifier, tab);
+        final var components = tabbedPane.getComponents();
+        int i = 0;
+        for (; i < components.length; ++i)
+            if (((Tab)components[i]).title.compareTo(identifier) > 0)
+                break;
+        tabbedPane.insertTab(identifier, null, tab, null, i);
         return tab;
     }
 
