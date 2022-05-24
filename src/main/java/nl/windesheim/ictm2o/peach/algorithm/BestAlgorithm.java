@@ -50,7 +50,6 @@ public class BestAlgorithm {
     //Is misschien niet de volledige uitleg die ik mijn gedachte heeft. Misschien ook niet de goede oplossing.
     //We zullen dit grondig moeten testen!
     //
-    //TODO Backtracking toevoegen. (Is dit een vereiste?)
 
     public void optiMalisatie() {
         //Variabelen initalisatie
@@ -77,31 +76,10 @@ public class BestAlgorithm {
 
         checkAndAdd(ARC);//Dit is een oplossing
 
-        //BOVEN HIER WERKT ALLES ZOALS HET HOORT
         //Voor elk element in de componenten die zijn geplaatst
         for (int counter = 0; counter <= PC.size() - 1; counter++) {
             //De eerste waar we het mee gaan doen
             main = PC.get(counter);
-
-            //*** MOGELIJK NIET NODIG?
-            //Eerst max keer plaatsen en dan ze allemaal en dan een voor een
-//            for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
-//                ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
-//            }
-//            checkAndAdd(ARC); //Dit is een oplossing
-//
-//            //En dan de rest 1 keer plaatsen
-//            for (int count = 0; count <= PC.size() - 1; count++) {
-//                if(count != counter){ //Voorkom dat we Main weer plaatsen
-//                    ARC.add(new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition()));
-//                }
-//            }
-//            checkAndAdd(ARC); //Dit is een oplossing
-
-//            //Haal het leeg en terug naar begin
-//            ARC = null;
-//            ARC = new ArrayList<>(tempArc);
-//            //***
 
             //Plaats de main, Begin bij max 2 en dan 3...
             for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
