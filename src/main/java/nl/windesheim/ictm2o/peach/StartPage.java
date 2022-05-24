@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.awt.BorderLayout;
 import java.lang.reflect.Method;
 import java.io.File;
 import javax.swing.border.EmptyBorder;
@@ -37,9 +38,8 @@ public class StartPage extends JPanel implements ActionListener {
         private final JButton jButton;
 
         public Button(@NotNull Dimension windowDimensions, @NotNull String title, @NotNull BufferedImage image) {
-//            setLayout(new MigLayout("al center center, wrap, gapy 20"));
+            //setLayout(new MigLayout("al center center, wrap, gapy 20"));
             setLayout(new MigLayout("", "[grow,fill]"));
-
 
             jButton = new JButton(getResizedImage(image, windowDimensions.width / 3));
             add(jButton, "wrap");
@@ -60,10 +60,12 @@ public class StartPage extends JPanel implements ActionListener {
 
         System.out.println("StartPage: " + parent.getSize());
 
-        //setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]"));
+        setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]"));
 
         JPanel logoPanel = new JPanel();
-        logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 1325)));
+        logoPanel.setLayout(new MigLayout());
+        //logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
+        //logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 1325)));
 
         logoImageLabel = new JButton(loadIcon());
         logoImageLabel.setContentAreaFilled(true);
@@ -76,14 +78,15 @@ public class StartPage extends JPanel implements ActionListener {
 
         //logoPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         add(logoPanel, "wrap");
+        //add(logoPanel);
 
 //        add(logoPanel, "wrap");
 //        setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
 //        setLayout(new FlowLayout(FlowLayout.LEFT));
-
+//
 //        .setHorizontalAlignment(SwingConstants.LEFT);
 //        pan1 = new JPanel( new FlowLayout(FlowLayout.LEFT) );
-
+//
 //        JLabel logoImageLabel = new JLabel(loadIcon());
 //        logoPanel.add(logoImageLabel);
 //
@@ -92,9 +95,7 @@ public class StartPage extends JPanel implements ActionListener {
 //        logoPanel.add(logoTextLabel);
 
 
-
-
-        final var dimensions = new Dimension(1500,1500);
+        final var dimensions = new Dimension(1500, 1500);
         monitorServicesButton = new Button(dimensions, "Monitor Services", ImageIO.read(ResourceManager.load("IconPack/Monitor.png")));
 
         newDesignButton = new Button(dimensions, "Nieuw Ontwerp", ImageIO.read(ResourceManager.load("IconPack/Setting.png")));
@@ -111,7 +112,6 @@ public class StartPage extends JPanel implements ActionListener {
 
         installMouseListeners();
     }
-
 
 
     private void installMouseListeners() {
@@ -173,7 +173,7 @@ public class StartPage extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == logoImageLabel){
+        if (e.getSource() == logoImageLabel) {
             System.exit(0);
         }
     }
