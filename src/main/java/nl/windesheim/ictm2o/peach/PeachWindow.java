@@ -49,7 +49,7 @@ public class PeachWindow extends ThemedWindow {
 
         //OG:
         //setSize(1280, 720);
-        //setMinimumSize(new Dimension(1280, 720));
+        setMinimumSize(new Dimension(1280, 720));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(false);
