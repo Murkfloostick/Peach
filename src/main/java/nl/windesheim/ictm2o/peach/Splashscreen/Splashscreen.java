@@ -4,10 +4,13 @@ import nl.windesheim.ictm2o.peach.PeachWindow;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import org.jetbrains.annotations.Nullable;
 
+import java.net.URL;
+import java.util.Objects;
+import org.jetbrains.annotations.Nullable;
 import nl.windesheim.ictm2o.peach.windows.ThemedWindow;
 import org.jetbrains.annotations.NotNull;
+import static nl.windesheim.ictm2o.peach.windows.ThemedWindow.setThemeToSystem;
 
 
 public class Splashscreen extends JPanel {
@@ -15,14 +18,16 @@ public class Splashscreen extends JPanel {
     static JLabel logo;
     static JProgressBar progressBar;
 
+    static ImageIcon logoVenster;
+
     static final int MY_MINIMUM = 0;
     static final int MY_MAXIMUM = 100;
     
     public Splashscreen() {
+        //super("Launching PeachOS V" + BuildInfo.getVersion());
+        //setThemeToSystem();
+        
         try {
-            //super(String.valueOf(Boolean.parseBoolean("Launching PeachOS V" + BuildInfo.getVersion())));
-            //setThemeToSystem();
-
             UIManager.put("ProgressBar.background", (new Color(255, 255, 255)));
             UIManager.put("ProgressBar.foreground", (new Color(230, 155, 134)));
             UIManager.put("ProgressBar.selectionBackground", (new Color(0, 0, 0)));
@@ -34,6 +39,7 @@ public class Splashscreen extends JPanel {
             progressBar.setMaximum(MY_MAXIMUM);
             progressBar.setBorderPainted(false);
             progressBar.setStringPainted(true);
+            progressBar.setFont(new Font("Inter", Font.BOLD, 15)); //Font percentage
 
             logo = new JLabel(new ImageIcon("src/main/resources/Peach.png"));
             JLabel tekst = new JLabel("PeachOS V0.2");
@@ -60,9 +66,12 @@ public class Splashscreen extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(j);
         frame.pack();
-        frame.setSize(300,450);
+        frame.setSize(350,450);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        logoVenster = new ImageIcon("src/main/resources/Peach.png");
+        frame.setIconImage(logoVenster.getImage());
 
         for (int i = MY_MINIMUM; i <= MY_MAXIMUM; i++) {
             final int percent = i;
@@ -78,20 +87,10 @@ public class Splashscreen extends JPanel {
                     peachWindow.setUndecorated(false);
                     peachWindow.setVisible(true);
                 }
-            } catch (InterruptedException e) {
-                System.out.println(e);
-            } catch (IOException e) {
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
         }
     }
-    public static boolean isAppleSystem() {
-        @Nullable final String osName = System.getProperty("os.name");
-        if (osName == null)
-            return false;
-
-        return osName.toLowerCase().contains("mac");
-    }
-
 
 }

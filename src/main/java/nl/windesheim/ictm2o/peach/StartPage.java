@@ -29,32 +29,16 @@ public class StartPage extends JPanel implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e){ System.exit(0);}
-
-
-
     @Override
-    public void mousePressed(MouseEvent e) {
-        //Onnodig
-    }
-
-
+    public void mousePressed(MouseEvent e) { }  //Onnodig
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
+    public void mouseReleased(MouseEvent e) { } //Onnodig
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
+    public void mouseEntered(MouseEvent e) { }  //Onnodig
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) { }   //Onnodig
 
     private static class Button extends JPanel {
-
         @NotNull
         public static ImageIcon getResizedImage(@NotNull BufferedImage bufferedImage, int size) {
             final var loadedImage = new ImageIcon(bufferedImage);
@@ -96,7 +80,7 @@ public class StartPage extends JPanel implements ActionListener, MouseListener {
 
         logoImageLabel = new JLabel(loadIcon());
         //logoImageLabel.setContentAreaFilled(true);
-       // logoImageLabel.addActionListener(this);
+        //logoImageLabel.addActionListener(this);
         logoPanel.addMouseListener((MouseListener) this);
         logoPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         logoPanel.add(logoImageLabel);
