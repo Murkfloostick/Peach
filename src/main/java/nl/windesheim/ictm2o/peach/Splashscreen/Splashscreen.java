@@ -1,41 +1,45 @@
 package nl.windesheim.ictm2o.peach.Splashscreen;
-import nl.windesheim.ictm2o.peach.Main;
 import nl.windesheim.ictm2o.peach.PeachWindow;
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import nl.windesheim.ictm2o.peach.Main;
+import java.awt.image.BufferedImage;
+import java.awt.image.RGBImageFilter;
+import java.io.File;
 import nl.windesheim.ictm2o.peach.StartPage;
 import nl.windesheim.ictm2o.peach.storage.ResourceManager;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 public class Splashscreen extends JPanel {
 
-    JLabel logo;
-    JLabel percentage;
-    JProgressBar progressBar;
+    static JLabel logo;
+    static JProgressBar progressBar;
 
     static final int MY_MINIMUM = 0;
     static final int MY_MAXIMUM = 100;
+    
+    public Splashscreen() {
+        UIManager.put("ProgressBar.background", (new Color(255,255,255)));
+        UIManager.put("ProgressBar.foreground", (new Color(230,155,134)));
+        UIManager.put("ProgressBar.selectionBackground",(new Color(0,0,0)));
+        UIManager.put("ProgressBar.selectionForeground",(new Color(255,255,255)));
 
-
-
-
-    public Splashscreen() throws IOException {
         //Initializing
         progressBar = new JProgressBar();
         progressBar.setMinimum(MY_MINIMUM);
         progressBar.setMaximum(MY_MAXIMUM);
+        progressBar.setBorderPainted(false);
+        progressBar.setStringPainted(true);
+
 
         logo = new JLabel(new ImageIcon("src/main/resources/Peach.png"));
+        JLabel tekst = new JLabel("PeachOS V0.3");
+        tekst.setFont(new Font("Inter", Font.BOLD, 25));
 
+        add(tekst);
         add(logo);
-//        percentage = new JLabel("%0");
-//        for (int i = 0; i <= 100; i++) {
-//            percentage.setText("%"+i);
-//            add(percentage);
-//        }
         add(progressBar);
 
     }
@@ -44,7 +48,8 @@ public class Splashscreen extends JPanel {
         progressBar.setValue(newValue);
     }
 
-    public static void main(String args[]) throws IOException {
+
+    public static void main(String[] args) {
 
         final Splashscreen j = new Splashscreen();
 
@@ -59,12 +64,10 @@ public class Splashscreen extends JPanel {
         for (int i = MY_MINIMUM; i <= MY_MAXIMUM; i++) {
             final int percent = i;
             try {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        j.updateBar(percent);
-                    }
+                SwingUtilities.invokeLater(() -> {
+                    j.updateBar(percent);
                 });
-                java.lang.Thread.sleep(100);
+                java.lang.Thread.sleep(50);
                 if (i == MY_MAXIMUM){
                     frame.dispose();
                     PeachWindow peachWindow = new PeachWindow();
