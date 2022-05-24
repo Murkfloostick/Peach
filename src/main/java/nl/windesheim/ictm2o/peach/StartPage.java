@@ -13,18 +13,45 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import java.awt.BorderLayout;
 import java.lang.reflect.Method;
 import java.io.File;
 import javax.swing.border.EmptyBorder;
 
-public class StartPage extends JPanel implements ActionListener {
+public class StartPage extends JPanel implements ActionListener, MouseListener {
 
     private final PeachWindow m_parent;
     private final Button monitorServicesButton;
     private final Button newDesignButton;
     private final Button openDesignButton;
-    private final JButton logoImageLabel;
+    private final JLabel logoImageLabel;
+
+    @Override
+    public void mouseClicked(MouseEvent e){ System.exit(0);}
+
+
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        //Onnodig
+    }
+
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 
     private static class Button extends JPanel {
 
@@ -67,9 +94,11 @@ public class StartPage extends JPanel implements ActionListener {
         //logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
         //logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 1325)));
 
-        logoImageLabel = new JButton(loadIcon());
-        logoImageLabel.setContentAreaFilled(true);
-        logoImageLabel.addActionListener(this);
+        logoImageLabel = new JLabel(loadIcon());
+        //logoImageLabel.setContentAreaFilled(true);
+       // logoImageLabel.addActionListener(this);
+        logoPanel.addMouseListener((MouseListener) this);
+        logoPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         logoPanel.add(logoImageLabel);
 
         JLabel logoTextLabel = new JLabel("Peach");
