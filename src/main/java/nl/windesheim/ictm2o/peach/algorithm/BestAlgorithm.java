@@ -1,9 +1,23 @@
 package nl.windesheim.ictm2o.peach.algorithm;
 
+import net.miginfocom.swing.MigLayout;
+import nl.windesheim.ictm2o.peach.Main;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
+import net.miginfocom.swing.MigLayout;
+import nl.windesheim.ictm2o.peach.Main;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
+import nl.windesheim.ictm2o.peach.Main;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
+import net.miginfocom.swing.MigLayout;
+import nl.windesheim.ictm2o.peach.Main;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class BestAlgorithm {
     private final Design D;
@@ -63,6 +77,7 @@ public class BestAlgorithm {
 
         checkAndAdd(ARC);//Dit is een oplossing
 
+        //BOVEN HIER WERKT ALLES ZOALS HET HOORT
         //Voor elk element in de componenten die zijn geplaatst
         for (int counter = 0; counter <= PC.size() - 1; counter++) {
             //De eerste waar we het mee gaan doen
@@ -70,37 +85,38 @@ public class BestAlgorithm {
 
             //*** MOGELIJK NIET NODIG?
             //Eerst max keer plaatsen en dan ze allemaal en dan een voor een
-            for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
+//            for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
+//                ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
+//            }
+//            checkAndAdd(ARC); //Dit is een oplossing
+//
+//            //En dan de rest 1 keer plaatsen
+//            for (int count = 0; count <= PC.size() - 1; count++) {
+//                if(count != counter){ //Voorkom dat we Main weer plaatsen
+//                    ARC.add(new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition()));
+//                }
+//            }
+//            checkAndAdd(ARC); //Dit is een oplossing
+
+//            //Haal het leeg en terug naar begin
+//            ARC = null;
+//            ARC = new ArrayList<>(tempArc);
+//            //***
+
+            //Plaats de main, Begin bij max 2 en dan 3...
+            for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
                 ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
             }
-            checkAndAdd(ARC); //Dit is een oplossing
 
-            //En dan de rest 1 keer plaatsen
-            for (int count = 0; count <= PC.size() - 1; count++) {
-                if (count != counter) { //Voorkom dat we Main weer plaatsen
-                    ARC.add(new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition()));
-                }
-            }
-            checkAndAdd(ARC); //Dit is een oplossing
-            //***
-
-            //Haal het leeg en terug naar begin
-            ARC = null;
-            ARC = new ArrayList<>(tempArc);
-
-            //Plaats de eerste, Begin bij max 2 en dan 3...
-            for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
-                ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
-            }
-            //Dan de tweede, terug, derde enzovoort zodat we iedereen langs gaan
+            //Dan de tweede component, terug, derde enzovoort zodat we iedereen langs gaan
             for (int count = 0; count <= PC.size() - 1; count++) {
                 if (count != counter) { //Voorkom dat we Main weer plaatsen
                     main2 = PC.get(count);//Hou de tweede vast en doe de volgende componenten eerst
 
                     //Plaats max keer, dan minder tot er maar 1 is en dan volgende component die main2 wordt
                     //MAX begint bij 2 tot de echte max
-                    if (main != main2) {//Main is al maximaal geplaatst
-                        for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
+                    if(main != main2){//Main is al maximaal geplaatst
+                        for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
                             PlacedComponent plaats = new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition());
                             ARC.add(plaats);
                             checkAndAdd(ARC);
@@ -108,10 +124,10 @@ public class BestAlgorithm {
                     }
 
                     //Nu de volgende component steeds tot max en dan verwijderen
-                    for (PlacedComponent PC : PC
-                    ) {
-                        if (PC != main && PC != main2) {
-                            for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
+                    for (PlacedComponent PC:PC
+                         ) {
+                        if(PC != main && PC != main2){
+                            for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
                                 //dan for elk ander component dat niet main en main2 is plaatsen
                                 PlacedComponent plaats = new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition());
                                 ARC.add(plaats);
@@ -130,6 +146,10 @@ public class BestAlgorithm {
             //Haal het leeg
             ARC = null;
             ARC = new ArrayList<>(tempArc);
+
+            if(maxtemp > max){
+                break;
+            }
         }
 
         //Tijd om met de gegevens de goedkoopste te vinden en op het werkpaneel te zetten
@@ -137,9 +157,25 @@ public class BestAlgorithm {
     }
 
     //Checkt of de ARC die wordt meegegeven voldoet aan target availbility en dan toevoegen aan masterArc.
-    private void checkAndAdd(List<PlacedComponent> ARC) {
-        //CA = D.getAvailbility(ARC);
-        if (CA >= TA) {
+    private void checkAndAdd(List<PlacedComponent> ARC){
+        final var stats = D.getStatistics();
+
+        var data = new Object[2][1 + stats.getAvailabilityPerCategory().length];
+        var columnNames = new String[1 + stats.getAvailabilityPerCategory().length];
+
+        data[0][0] = "Kosten";
+        data[1][0] = "Beschikbaarheid";
+        columnNames[0] = "";
+
+        for (int i = 0; i < stats.getAvailabilityPerCategory().length; ++i) {
+            columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
+
+            data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.getCostsPerCategory()[i]);
+            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.getAvailabilityPerCategory()[i] * 100.0f);
+        }
+
+        CA = stats.getTotalAvailability() * 100.0f;
+        if(CA >= TA){
             masterARC.add(ARC);
         }
     }
@@ -149,14 +185,17 @@ public class BestAlgorithm {
         //Bereken goedkoopste die target haalt
 
         float beste = 0;
+        boolean firstTime = true;
         List besteList = new ArrayList<>();
         float inkomende;
         for (List ARK : masterARC
         ) {
             inkomende = D.getKosten(ARK)[5];
-            if (beste < inkomende) {
-                beste = inkomende;
+            if(inkomende < beste || firstTime){
+                float now = inkomende;
+                beste = now;
                 besteList = ARK;
+                firstTime = false;
             }
         }
 
