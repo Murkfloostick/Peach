@@ -36,7 +36,7 @@ public class BestAlgorithm {
     //Dit genereert alle combinaties
     //De werking zal zo moeten werken:
     //
-    //       ABC    AB     A C
+    //       A      AB     ABC
     //ABC -> ABC -> ABC -> ABC
     //
     //En dan zo door met B en C als de 'hoofd' component in dat loop. (main)
@@ -182,5 +182,3 @@ public class BestAlgorithm {
         D.newPlacComponentList(besteList);
     }
 }
-
-
