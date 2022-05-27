@@ -164,7 +164,7 @@ public class BestAlgorithm {
 
         float beste = 0;
         boolean firstTime = true;
-        List besteList = new ArrayList<>();
+        List besteList = null;
         float inkomende;
         for (List ARK : masterARC
         ) {
@@ -177,8 +177,14 @@ public class BestAlgorithm {
             }
         }
 
-        //Zet het in Design
-        D.deletePlacComponentList();
-        D.newPlacComponentList(besteList);
+
+
+        if(besteList == null){
+            JOptionPane.showMessageDialog(null, "Het is niet mogelijk om de beste setup te vinden met deze componenten.", "Ho daar: Optimalisatie niet gelukt", JOptionPane.INFORMATION_MESSAGE);
+        } else{
+            //Zet het in Design
+            D.deletePlacComponentList();
+            D.newPlacComponentList(besteList);
+        }
     }
 }
