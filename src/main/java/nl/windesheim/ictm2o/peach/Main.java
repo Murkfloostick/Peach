@@ -3,14 +3,13 @@ package nl.windesheim.ictm2o.peach;
 import nl.windesheim.ictm2o.peach.monitor.MonitorDataManager;
 import nl.windesheim.ictm2o.peach.monitor.MonitorPage;
 import nl.windesheim.ictm2o.peach.monitor.MonitorServer;
-import nl.windesheim.ictm2o.peach.windows.CopyrightWindow;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Main {
 
@@ -23,7 +22,7 @@ public class Main {
         final var ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         final var fonts = new String[]{"Black", "Bold", "ExtraBold", "ExtraLight", "Light", "Medium", "Regular", "SemiBold", "Thin"};
         for (String string : fonts) {
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/Inter/static/Inter-" + string + ".ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Main.class.getResourceAsStream("/Inter/static/Inter-" + string + ".ttf"))));
         }
 
         System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -37,9 +36,9 @@ public class Main {
         peachWindow.setUndecorated(false);
         peachWindow.setVisible(true);
 
-        MonitorDataManager.attachInstanceOfflineAlertCallback((identifier, instance) ->
+        MonitorDataManager.attachInstanceOfflineAlertCallback((identifier) ->
                 new Toast(peachWindow, identifier + " is offline!"));
-        MonitorDataManager.attachInstanceOnlineAlertCallback((identifier, instance) ->
+        MonitorDataManager.attachInstanceOnlineAlertCallback((identifier) ->
                 new Toast(peachWindow, identifier + " is online!"));
 
         peachWindow.addWindowStateListener(new WindowAdapter() {

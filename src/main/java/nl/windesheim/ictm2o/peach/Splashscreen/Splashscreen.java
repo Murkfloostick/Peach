@@ -57,7 +57,7 @@ public class Splashscreen extends JPanel {
         progressBar.setValue(newValue);
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         final Splashscreen j = new Splashscreen();
 
@@ -76,9 +76,7 @@ public class Splashscreen extends JPanel {
         for (int i = MY_MINIMUM; i <= MY_MAXIMUM; i++) {
             final int percent = i;
             try {
-                SwingUtilities.invokeLater(() -> {
-                    j.updateBar(percent);
-                });
+                SwingUtilities.invokeLater(() -> j.updateBar(percent));
                 java.lang.Thread.sleep(20);
                 if (i == MY_MAXIMUM){
                     frame.dispose();

@@ -13,7 +13,7 @@ public class Design {
     private float targetAvailability = 20.00f;
     private float totalCost = 0;
 
-    @NotNull
+    @Nullable
     private List<PlacedComponent> placedComponents;
 
     private boolean isDesignSavedToFile = true;
@@ -23,7 +23,7 @@ public class Design {
         this.placedComponents = new ArrayList<>();
     }
 
-    public Design(@Nullable String filePath, float targetAvailability, @NotNull List<PlacedComponent> placedComponents) {
+    public Design(@Nullable String filePath, float targetAvailability, @Nullable List<PlacedComponent> placedComponents) {
         this.filePath = filePath;
         this.targetAvailability = targetAvailability;
         this.placedComponents = placedComponents;
@@ -42,27 +42,13 @@ public class Design {
         return targetAvailability;
     }
 
-    public float getTotalCost() {
-        return totalCost;
-    }
-
-    @NotNull
+    @Nullable
     public List<PlacedComponent> getPlacedComponents() {
         return placedComponents;
     }
 
     public void setTargetAvailability(float targetAvailability) {
         this.targetAvailability = targetAvailability;
-    }
-
-    public void setTotalCost(float totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public void calculateTotalCost() {
-        this.totalCost = 0;
-        for (PlacedComponent placedComponent : placedComponents)
-            this.totalCost += placedComponent.getRegisteredComponent().getCost();
     }
 
     public boolean isDesignSavedToFile() {
@@ -78,6 +64,7 @@ public class Design {
     }
 
     public void delPlacComponent(PlacedComponent PC) {
+        assert placedComponents != null;
         placedComponents.remove(PC);
     }
 
@@ -86,7 +73,7 @@ public class Design {
         placedComponents = null;
     }
 
-    public void newPlacComponentList(List NPC) {
+    public void newPlacComponentList(@NotNull List<PlacedComponent> NPC) {
         placedComponents = NPC;
     }
 
@@ -136,8 +123,7 @@ public class Design {
     public float[] getKosten(List<PlacedComponent> placedComponents) {
         float[] array = {0, 0, 0, 0, 0, 0};
 
-        for (PlacedComponent PC : placedComponents
-        ) {
+        for (PlacedComponent PC : placedComponents) {
             if (PC.getRegisteredComponent().getIcon().toString().equals("GENERIC")) {
                 array[4] = array[4] + PC.getRegisteredComponent().getCost();
             }

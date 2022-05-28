@@ -100,6 +100,7 @@ public class MonitorServer {
         var scanner = new Scanner(client.getInputStream());
         var output = client.getOutputStream();
 
+        label:
         while (true) {
             while (!scanner.hasNextLine())
                 Thread.yield();
@@ -111,67 +112,73 @@ public class MonitorServer {
             }
 
             final var parts = line.split(" ", 2);
-            if (parts[0].equals("IDENTIFY")) {
-                if (identifier != null) {
-                    output.write("ERROR Already Identified".getBytes(StandardCharsets.UTF_8));
-                    output.write("GOODBYE\n".getBytes(StandardCharsets.UTF_8));
-                    break;
-                }
-                identifier = parts[1];
-            } else if (parts[0].equals("LOGOUT")) {
-                output.write("GOODBYE\n".getBytes(StandardCharsets.UTF_8));
-            } else if (parts[0].equals("LOGIN")) {
-                if (authenticated)
-                    output.write("OK\n".getBytes(StandardCharsets.UTF_8));
-                else if (identifier == null) {
-                    output.write("ERROR Please Identify Yourself\n".getBytes(StandardCharsets.UTF_8));
-                } else {
-                    if (parts[1].equals("uFMCSYau1vq7IvhZdWl5OTszlHk8WKdQqoQLi3S4HdbnTdZYMTqyjByeA9Vdwd8ebQ5j5zRf1DSjdRBpwafB3TOKhB4FdCP25p6MuIwJq0Ps8THiHQOfTtZ9dF9OgBKZ")) {
-                        output.write("ACCESS GRANTED\n".getBytes(StandardCharsets.UTF_8));
-                        authenticated = true;
-                    } else {
-                        output.write("ACCESS DENIED\n".getBytes(StandardCharsets.UTF_8));
+            switch (parts[0]) {
+                case "IDENTIFY":
+                    if (identifier != null) {
+                        output.write("ERROR Already Identified".getBytes(StandardCharsets.UTF_8));
                         output.write("GOODBYE\n".getBytes(StandardCharsets.UTF_8));
-                        break;
+                        break label;
                     }
-                }
-            } else if (parts[0].equals("HEARTBEAT")) {
-                if (!authenticated) {
-                    output.write("ERROR Not Authenticated\n".getBytes(StandardCharsets.UTF_8));
+                    identifier = parts[1];
+                    break;
+                case "LOGOUT":
                     output.write("GOODBYE\n".getBytes(StandardCharsets.UTF_8));
                     break;
-                }
-
-                try {
-                    var tokener = new JSONTokener(parts[1]);
-                    var object = new JSONObject(tokener);
-
-                    final var cpu = object.getJSONObject("cpu");
-                    final var memory = object.getJSONObject("memory");
-                    final var disk = object.getJSONObject("disk");
-                    final var io = object.getJSONObject("io");
-
-                    MonitorDataManager.append(identifier, new MonitorData(
-                            cpu.getInt("percent"),
-                            memory.getLong("total"),
-                            memory.getLong("used"),
-                            disk.getLong("total"),
-                            disk.getLong("used"),
-                            cpu.getLong("processes"),
-                            cpu.getLong("windows-services"),
-                            io.getLong("bytes-sent"),
-                            io.getLong("bytes-received")
-                    ), client);
-                } catch (Exception exception) {
-                    output.write("ERROR Invalid HEARTBEAT Syntax\n".getBytes(StandardCharsets.UTF_8));
-                    exception.printStackTrace();
-                }
-            } else {
-                output.write("ERROR Unknown Command\n".getBytes(StandardCharsets.UTF_8));
-                if (!authenticated) {
-                    output.write("GOODBYE\n".getBytes(StandardCharsets.UTF_8));
+                case "LOGIN":
+                    if (authenticated)
+                        output.write("OK\n".getBytes(StandardCharsets.UTF_8));
+                    else if (identifier == null) {
+                        output.write("ERROR Please Identify Yourself\n".getBytes(StandardCharsets.UTF_8));
+                    } else {
+                        if (parts[1].equals("uFMCSYau1vq7IvhZdWl5OTszlHk8WKdQqoQLi3S4HdbnTdZYMTqyjByeA9Vdwd8ebQ5j5zRf1DSjdRBpwafB3TOKhB4FdCP25p6MuIwJq0Ps8THiHQOfTtZ9dF9OgBKZ")) {
+                            output.write("ACCESS GRANTED\n".getBytes(StandardCharsets.UTF_8));
+                            authenticated = true;
+                        } else {
+                            output.write("ACCESS DENIED\n".getBytes(StandardCharsets.UTF_8));
+                            output.write("GOODBYE\n".getBytes(StandardCharsets.UTF_8));
+                            break label;
+                        }
+                    }
                     break;
-                }
+                case "HEARTBEAT":
+                    if (!authenticated) {
+                        output.write("ERROR Not Authenticated\n".getBytes(StandardCharsets.UTF_8));
+                        output.write("GOODBYE\n".getBytes(StandardCharsets.UTF_8));
+                        break label;
+                    }
+
+                    try {
+                        var tokener = new JSONTokener(parts[1]);
+                        var object = new JSONObject(tokener);
+
+                        final var cpu = object.getJSONObject("cpu");
+                        final var memory = object.getJSONObject("memory");
+                        final var disk = object.getJSONObject("disk");
+                        final var io = object.getJSONObject("io");
+
+                        MonitorDataManager.append(identifier, new MonitorData(
+                                cpu.getInt("percent"),
+                                memory.getLong("total"),
+                                memory.getLong("used"),
+                                disk.getLong("total"),
+                                disk.getLong("used"),
+                                cpu.getLong("processes"),
+                                cpu.getLong("windows-services"),
+                                io.getLong("bytes-sent"),
+                                io.getLong("bytes-received")
+                        ), client);
+                    } catch (Exception exception) {
+                        output.write("ERROR Invalid HEARTBEAT Syntax\n".getBytes(StandardCharsets.UTF_8));
+                        exception.printStackTrace();
+                    }
+                    break;
+                default:
+                    output.write("ERROR Unknown Command\n".getBytes(StandardCharsets.UTF_8));
+                    if (!authenticated) {
+                        output.write("GOODBYE\n".getBytes(StandardCharsets.UTF_8));
+                        break label;
+                    }
+                    break;
             }
 
             output.flush();

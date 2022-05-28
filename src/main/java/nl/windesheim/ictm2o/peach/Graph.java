@@ -70,8 +70,4 @@ public class Graph extends JPanel {
             x += increaseX;
         }
     }
-
-    public int getMaxItems() {
-        return maxItems;
-    }
 }
