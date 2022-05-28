@@ -105,9 +105,7 @@ public class DesignFile {
      *               may be presented with unexpected results.
      */
     public @NotNull DesignLoadResult load(@Nullable JFrame parent, ComponentRegistry componentRegistry) {
-        try {
-            InputStream inputStream = new FileInputStream(file);
-
+        try (final var inputStream = new FileInputStream(file)) {
             JSONTokener tokener = new JSONTokener(inputStream);
             JSONObject object = new JSONObject(tokener);
 
@@ -135,7 +133,6 @@ public class DesignFile {
                         new Position(placedComponentJSON.getLong("x"), placedComponentJSON.getLong("y"))));
             }
 
-            inputStream.close();
             return new DesignLoadResult(new Design(file.getAbsolutePath(), targetAvailability, placedComponents));
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -163,10 +160,8 @@ public class DesignFile {
 
         object.put("placedComponents", placedComponentsJSON);
 
-        try {
-            FileWriter fileWriter = new FileWriter(file);
+        try (FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(object.toString());
-            fileWriter.close();
         } catch (Exception exception) {
             exception.printStackTrace();
             return FileSaveError.GENERIC;
