@@ -23,7 +23,7 @@ public class DPComponPanel extends JPanel {
     static class Button extends JLabel {
 
         @NotNull
-        public RegisteredComponent registeredComponent;
+        public final RegisteredComponent registeredComponent;
 
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
             super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
@@ -60,7 +60,6 @@ public class DPComponPanel extends JPanel {
 
         protected static class ValueExportTransferHandler extends TransferHandler {
 
-            public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
             private final String value;
             private final RegisteredComponent RC;
 
@@ -101,8 +100,8 @@ public class DPComponPanel extends JPanel {
 
 
         class PopUp extends JPopupMenu implements ActionListener {
-            JMenuItem anItem;
-            JMenuItem aanpassen;
+            private final JMenuItem anItem;
+            private final JMenuItem aanpassen;
 
             public PopUp() {
                 aanpassen = new JMenuItem("Aanpassen");
@@ -180,7 +179,7 @@ public class DPComponPanel extends JPanel {
 
         //TODO Slepen om toe te voegen
         //Dubbelklik om component toe te voegen aan sleeppaneel
-        MouseListener ml = new MouseAdapter() {
+        final MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {//double-click
                     //Voor als het fout gaat
@@ -194,6 +193,8 @@ public class DPComponPanel extends JPanel {
                     Position pos = new Position(250, 250);
                     PlacedComponent PC = new PlacedComponent(button.getRegisteredComponent(),
                             button.getRegisteredComponent().getName(), pos);
+                    if (D.getPlacedComponents() == null)
+                        throw new RuntimeException("PlacedComponents == null");
                     D.getPlacedComponents().add(PC);
                     DPWP.refreshWP();
                     designPage.setDesignModified();
@@ -203,9 +204,9 @@ public class DPComponPanel extends JPanel {
 
         public DPComponPanel(ComponentRegistry CR, Design D, DPWorkPanel DPWP, @NotNull DesignPage designPage) {
             this.CR = CR;
-            this.D = D;
-            this.DPWP = DPWP;
-            this.designPage = designPage;
+            DPComponPanel.D = D;
+            DPComponPanel.DPWP = DPWP;
+            DPComponPanel.designPage = designPage;
 
             setBackground(Color.gray);
             setLayout(new GridLayout(GLrows, 2));

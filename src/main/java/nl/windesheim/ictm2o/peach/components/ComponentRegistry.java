@@ -17,10 +17,6 @@ public class ComponentRegistry {
         //registeredComponents.add(new RegisteredComponent(UUID.randomUUID(), "Test", ComponentIcon.ROUTER, 100.0f));
     }
 
-    public ComponentRegistry(@NotNull ArrayList<RegisteredComponent> registeredComponents) {
-        this.registeredComponents = registeredComponents;
-    }
-
     @NotNull
     public List<RegisteredComponent> getRegisteredComponents() {
         return registeredComponents;
@@ -28,14 +24,6 @@ public class ComponentRegistry {
 
     public void setRegisteredComponents(@NotNull List<RegisteredComponent> registeredComponents) {
         this.registeredComponents = registeredComponents;
-    }
-
-    @Nullable
-    public RegisteredComponent findComponentByName(@NotNull String name) {
-        for (RegisteredComponent registeredComponent : this.registeredComponents)
-            if (registeredComponent.getName().equals(name))
-                return registeredComponent;
-        return null;
     }
 
     @Nullable

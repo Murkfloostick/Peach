@@ -81,7 +81,7 @@ public class StartPage extends JPanel implements ActionListener, MouseListener {
         logoImageLabel = new JLabel(loadIcon());
         //logoImageLabel.setContentAreaFilled(true);
         //logoImageLabel.addActionListener(this);
-        logoPanel.addMouseListener((MouseListener) this);
+        logoPanel.addMouseListener(this);
         logoPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         logoPanel.add(logoImageLabel);
 

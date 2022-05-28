@@ -1,21 +1,10 @@
 package nl.windesheim.ictm2o.peach.algorithm;
 
-import net.miginfocom.swing.MigLayout;
-import nl.windesheim.ictm2o.peach.Main;
-import nl.windesheim.ictm2o.peach.components.ComponentIcon;
-import net.miginfocom.swing.MigLayout;
-import nl.windesheim.ictm2o.peach.Main;
-import nl.windesheim.ictm2o.peach.components.ComponentIcon;
-import nl.windesheim.ictm2o.peach.Main;
-import nl.windesheim.ictm2o.peach.components.ComponentIcon;
-import net.miginfocom.swing.MigLayout;
 import nl.windesheim.ictm2o.peach.Main;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -58,8 +47,8 @@ public class BestAlgorithm {
         TA = D.getTargetAvailability();
         PC = D.getPlacedComponents();
 
-        ARC = new ArrayList();
-        List<PlacedComponent> tempArc = new ArrayList();
+        ARC = new ArrayList<>();
+        List<PlacedComponent> tempArc = new ArrayList<>();
         masterARC = new ArrayList<>(); //Lijst met alle oplossingen
 
         PlacedComponent main;
@@ -160,21 +149,21 @@ public class BestAlgorithm {
     private void checkAndAdd(List<PlacedComponent> ARC){
         final var stats = D.getStatistics();
 
-        var data = new Object[2][1 + stats.getAvailabilityPerCategory().length];
-        var columnNames = new String[1 + stats.getAvailabilityPerCategory().length];
+        var data = new Object[2][1 + stats.availabilityPerCategory().length];
+        var columnNames = new String[1 + stats.availabilityPerCategory().length];
 
         data[0][0] = "Kosten";
         data[1][0] = "Beschikbaarheid";
         columnNames[0] = "";
 
-        for (int i = 0; i < stats.getAvailabilityPerCategory().length; ++i) {
+        for (int i = 0; i < stats.availabilityPerCategory().length; ++i) {
             columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
 
-            data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.getCostsPerCategory()[i]);
-            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.getAvailabilityPerCategory()[i] * 100.0f);
+            data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.costsPerCategory()[i]);
+            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.availabilityPerCategory()[i] * 100.0f);
         }
 
-        CA = stats.getTotalAvailability() * 100.0f;
+        CA = stats.totalAvailability() * 100.0f;
         if(CA >= TA){
             masterARC.add(ARC);
         }
@@ -186,14 +175,12 @@ public class BestAlgorithm {
 
         float beste = 0;
         boolean firstTime = true;
-        List besteList = new ArrayList<>();
+        List<PlacedComponent> besteList = new ArrayList<>();
         float inkomende;
-        for (List ARK : masterARC
-        ) {
+        for (var ARK : masterARC) {
             inkomende = D.getKosten(ARK)[5];
             if(inkomende < beste || firstTime){
-                float now = inkomende;
-                beste = now;
+                beste = inkomende;
                 besteList = ARK;
                 firstTime = false;
             }

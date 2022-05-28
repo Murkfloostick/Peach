@@ -18,7 +18,7 @@ public class MonitorPage extends JPanel {
     @Nullable
     public static MonitorPage instance = null;
 
-    private class Tab extends JPanel {
+    private static class Tab extends JPanel {
         private final Graph cpuGraph = new Graph(30, Color.green, 1000);
         private final Graph memoryGraph = new Graph(30, Color.red, 100);
         private final Graph diskGraph = new Graph(30, Color.blue, 100);

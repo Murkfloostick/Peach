@@ -28,7 +28,7 @@ public class MonitorDataManager {
     }
 
     public interface InstanceAlertListener {
-        void onAlert(@NotNull String identifier, @NotNull Instance instance);
+        void onAlert(@NotNull String identifier);
     }
 
     @NotNull
@@ -51,7 +51,7 @@ public class MonitorDataManager {
         if (!data.onlineAcknowledged) {
             data.onlineAcknowledged = true;
             if (instanceOnlineAlert != null)
-                instanceOnlineAlert.onAlert(identifier, data);
+                instanceOnlineAlert.onAlert(identifier);
         }
 
         data.allData.add(monitorData);
@@ -80,7 +80,7 @@ public class MonitorDataManager {
                 instance.offlineAcknowledged = true;
                 instance.onlineAcknowledged = false;
                 if (instanceOfflineAlert != null)
-                    instanceOfflineAlert.onAlert(identifier, instance);
+                    instanceOfflineAlert.onAlert(identifier);
             } else
                 ++instance.ticksUnavailable;
             ++instance.totalTicksSinceSubscription;

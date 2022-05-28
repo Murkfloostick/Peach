@@ -6,7 +6,6 @@ import nl.windesheim.ictm2o.peach.design.DPComponPanel;
 import nl.windesheim.ictm2o.peach.design.DPToevCompon;
 import nl.windesheim.ictm2o.peach.design.DPWorkPanel;
 import nl.windesheim.ictm2o.peach.storage.DesignFile;
-import nl.windesheim.ictm2o.peach.windows.CopyrightWindow;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -20,17 +19,17 @@ public class DesignPage extends JPanel implements ActionListener {
     private final DPWorkPanel workPanel;
 
     @NotNull
-    private Design D;
+    private final Design design;
 
     public DesignPage(PeachWindow peachWindow, PeachWindow m_parent, @NotNull Design design) {
         this.m_parent = m_parent;
         ComponentRegistry CR = peachWindow.getComponentRegistry();
-        this.D = design;
+        this.design = design;
 
 
-        DPToevCompon toevCompon = new DPToevCompon(CR, this, this.m_parent, D);
-        workPanel = new DPWorkPanel(D, this, toevCompon);
-        componPanel = new DPComponPanel(CR, D, workPanel, this);
+        DPToevCompon toevCompon = new DPToevCompon(CR, this, this.m_parent, this.design);
+        workPanel = new DPWorkPanel(this.design, this, toevCompon);
+        componPanel = new DPComponPanel(CR, this.design, workPanel, this);
         JScrollPane scroller = new JScrollPane(componPanel);
 
         scroller.setPreferredSize(componPanel.getDim());
@@ -67,20 +66,20 @@ public class DesignPage extends JPanel implements ActionListener {
     }
 
     public void setDesignModified() {
-        D.setModified();
-        if (D.getFilePath() == null)
+        design.setModified();
+        if (design.getFilePath() == null)
             m_parent.setPageTitle("Ontwerper - Nieuw Ontwerp*");
         else
-            m_parent.setPageTitle("Ontwerper - " + D.getFilePath() + "*");
+            m_parent.setPageTitle("Ontwerper - " + design.getFilePath() + "*");
     }
 
     public void saveDesign(boolean forceFileDialog) {
         DesignFile designFile;
 
-        if (!forceFileDialog && D.isDesignSavedToFile())
+        if (!forceFileDialog && design.isDesignSavedToFile())
             return;
 
-        if (forceFileDialog || D.getFilePath() == null) {
+        if (forceFileDialog || design.getFilePath() == null) {
             var fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Ontwerp opslaan als");
             fileChooser.setFileFilter(DesignFile.getFileFilter());
@@ -93,15 +92,15 @@ public class DesignPage extends JPanel implements ActionListener {
             if (!path.endsWith(".ngio"))
                 path += ".ngio";
 
-            D.setFilePath(path);
+            design.setFilePath(path);
             designFile = new DesignFile(new File(path));
         } else {
-            designFile = new DesignFile(new File(D.getFilePath()));
+            designFile = new DesignFile(new File(design.getFilePath()));
         }
 
-        designFile.save(D);
-        D.setSavedToFile();
-        m_parent.setPageTitle("Ontwerper - " + D.getFilePath());
+        designFile.save(design);
+        design.setSavedToFile();
+        m_parent.setPageTitle("Ontwerper - " + design.getFilePath());
     }
 
     public DPComponPanel getComponPanel() {
@@ -119,10 +118,7 @@ public class DesignPage extends JPanel implements ActionListener {
 
     @NotNull
     public Design getDesign() {
-        return D;
+        return design;
     }
 
-    public void setDesign(@NotNull final Design d) {
-        D = d;
-    }
 }

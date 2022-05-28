@@ -1,8 +1,6 @@
 package nl.windesheim.ictm2o.peach.storage;
 
-import nl.windesheim.ictm2o.peach.PeachWindow;
 import nl.windesheim.ictm2o.peach.components.*;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.*;
@@ -10,11 +8,9 @@ import org.json.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -56,7 +52,7 @@ public class DesignFile {
      * Checks whether or not the given DesignFile version is compatible with
      * this file loader class.
      *
-     * @returns null if the version is compatibel, a message otherwise.
+     * @return null if the version is compatibel, a message otherwise.
      */
     public static String isVersionCompatible(@Nullable String version) {
         if (version == null)
@@ -105,9 +101,7 @@ public class DesignFile {
      *               may be presented with unexpected results.
      */
     public @NotNull DesignLoadResult load(@Nullable JFrame parent, ComponentRegistry componentRegistry) {
-        try {
-            InputStream inputStream = new FileInputStream(file);
-
+        try (final var inputStream = new FileInputStream(file)) {
             JSONTokener tokener = new JSONTokener(inputStream);
             JSONObject object = new JSONObject(tokener);
 
@@ -135,7 +129,6 @@ public class DesignFile {
                         new Position(placedComponentJSON.getLong("x"), placedComponentJSON.getLong("y"))));
             }
 
-            inputStream.close();
             return new DesignLoadResult(new Design(file.getAbsolutePath(), targetAvailability, placedComponents));
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -150,23 +143,24 @@ public class DesignFile {
         object.put("targetAvailability", design.getTargetAvailability());
 
         JSONArray placedComponentsJSON = new JSONArray();
+        if (design.getPlacedComponents() == null)
+            return FileSaveError.DESIGN_HAD_NULL_PLACED_COMPONENTS;
+
         for (PlacedComponent placedComponent : design.getPlacedComponents()) {
             JSONObject placedComponentJSON = new JSONObject();
 
             placedComponentJSON.put("name", placedComponent.getName());
             placedComponentJSON.put("uuid", placedComponent.getRegisteredComponent().getID().toString());
-            placedComponentJSON.put("x", placedComponent.getPosition().getX());
-            placedComponentJSON.put("y", placedComponent.getPosition().getY());
+            placedComponentJSON.put("x", placedComponent.getPosition().x());
+            placedComponentJSON.put("y", placedComponent.getPosition().y());
 
             placedComponentsJSON.put(placedComponentJSON);
         }
 
         object.put("placedComponents", placedComponentsJSON);
 
-        try {
-            FileWriter fileWriter = new FileWriter(file);
+        try (FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(object.toString());
-            fileWriter.close();
         } catch (Exception exception) {
             exception.printStackTrace();
             return FileSaveError.GENERIC;
