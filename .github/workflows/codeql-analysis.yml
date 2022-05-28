@@ -57,8 +57,8 @@ jobs:
     - run: |
        echo "Run, Build Application using script"
        chmod +x gradlew
-       ./gradlew --no-daemon -S -Dorg.gradle.dependency.verification=off --init-script "/tmp/semmleTempDir/init.gradle" clean
-       ./gradlew --no-daemon -S -Dorg.gradle.dependency.verification=off --init-script "/tmp/semmleTempDir/init.gradle" testClasses
+       ./gradlew --no-daemon -S -Dorg.gradle.dependency.verification=off clean
+       ./gradlew --no-daemon -S -Dorg.gradle.dependency.verification=off testClasses
        
 
     - name: Perform CodeQL Analysis
