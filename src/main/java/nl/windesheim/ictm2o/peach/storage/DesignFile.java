@@ -11,6 +11,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -54,6 +56,7 @@ public class DesignFile {
      *
      * @return null if the version is compatibel, a message otherwise.
      */
+    @Nullable
     public static String isVersionCompatible(@Nullable String version) {
         if (version == null)
             return "Dit bestand heeft geen versie. De kans is groot dat dit geen NerdyGadgets Infrastructuur Ontwerpbestand is.";
@@ -110,9 +113,9 @@ public class DesignFile {
                 return new DesignLoadResult("De versie van dit bestand is niet compatibel met deze versie van Peach. " + versionIncompatibilityMessage);
 
             float targetAvailability = object.getFloat("targetAvailability");
-            List<PlacedComponent> placedComponents = new ArrayList<>();
-
             JSONArray placedComponentsJSON = object.getJSONArray("placedComponents");
+            List<PlacedComponent> placedComponents = new ArrayList<>(placedComponentsJSON.length());
+
             for (int i = 0; i < placedComponentsJSON.length(); ++i) {
                 JSONObject placedComponentJSON = placedComponentsJSON.getJSONObject(i);
                 RegisteredComponent registeredComponent =
@@ -146,8 +149,8 @@ public class DesignFile {
         if (design.getPlacedComponents() == null)
             return FileSaveError.DESIGN_HAD_NULL_PLACED_COMPONENTS;
 
-        for (PlacedComponent placedComponent : design.getPlacedComponents()) {
-            JSONObject placedComponentJSON = new JSONObject();
+        for (@NotNull PlacedComponent placedComponent : design.getPlacedComponents()) {
+            var placedComponentJSON = new JSONObject();
 
             placedComponentJSON.put("name", placedComponent.getName());
             placedComponentJSON.put("uuid", placedComponent.getRegisteredComponent().getID().toString());
@@ -159,9 +162,9 @@ public class DesignFile {
 
         object.put("placedComponents", placedComponentsJSON);
 
-        try (FileWriter fileWriter = new FileWriter(file)) {
+        try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
             fileWriter.write(object.toString());
-        } catch (Exception exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
             return FileSaveError.GENERIC;
         }

@@ -60,36 +60,32 @@ public class DPComponPanel extends JPanel {
 
         protected static class ValueExportTransferHandler extends TransferHandler {
 
+            @NotNull
             private final String value;
             private final RegisteredComponent RC;
 
-            public ValueExportTransferHandler(String value, RegisteredComponent RC) {
+            public ValueExportTransferHandler(@NotNull String value, RegisteredComponent RC) {
                 this.value = value;
                 this.RC = RC;
             }
 
-            public String getValue() {
-                return value;
-            }
-
             @Override
-            public int getSourceActions(JComponent c) {
+            public int getSourceActions(JComponent ignored) {
                 return DnDConstants.ACTION_COPY;
             }
 
             @Override
-            protected Transferable createTransferable(JComponent c) {
-                return new StringSelection(getValue());
+            protected Transferable createTransferable(JComponent ignored) {
+                return new StringSelection(value);
             }
 
             @Override
             protected void exportDone(JComponent source, Transferable data, int action) {
                 super.exportDone(source, data, action);
                 if (DPWorkPanel.isAccept()) {
-                    Position pos = new Position(250, 250);
-                    PlacedComponent PC = new PlacedComponent(RC,
-                            RC.getName(), pos);
-                    D.getPlacedComponents().add(PC);
+                    Position pos = new Position(250L, 250L);
+                    final var placedComponent = new PlacedComponent(RC, RC.getName(), pos);
+                    D.getPlacedComponents().add(placedComponent);
                     DPWP.refreshWP();
                     designPage.setDesignModified();
                     DPWorkPanel.setAccept(false);
@@ -122,9 +118,9 @@ public class DPComponPanel extends JPanel {
 
                 if (e.getSource() == anItem) {
                     //Check of het geplaatst is op het workpanel
-                    for (PlacedComponent PC : D.getPlacedComponents()
-                    ) {
-                        if (PC.getRegisteredComponent().getID() == RC.getID()) {
+                    assert D.getPlacedComponents() != null;
+                    for (@NotNull final var placedComponent : D.getPlacedComponents()) {
+                        if (placedComponent.getRegisteredComponent().getID() == RC.getID()) {
                             JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
@@ -137,7 +133,7 @@ public class DPComponPanel extends JPanel {
                 if (e.getSource() == aanpassen) {
                     Window parentWindow = SwingUtilities.windowForComponent(this);
                     JFrame parentFrame = null;
-                    if (parentWindow instanceof Frame) {
+                    if (parentWindow instanceof JFrame) {
                         parentFrame = (JFrame) parentWindow;
                     }
                     button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));

@@ -11,7 +11,6 @@ public class Design {
     private String filePath;
 
     private float targetAvailability = 20.00f;
-    private float totalCost = 0;
 
     @Nullable
     private List<PlacedComponent> placedComponents;
