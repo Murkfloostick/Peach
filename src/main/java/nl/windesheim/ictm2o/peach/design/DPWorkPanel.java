@@ -295,6 +295,9 @@ public class DPWorkPanel extends JPanel {
 
         public PopUp(Component target) {
             this.target = (JLabel) target;
+            final var renameMenuItem = new JMenuItem("Hernoemen");
+            add(renameMenuItem);
+
             JMenuItem anItem = new JMenuItem("Verwijder");
             JMenuItem selecteren = new JMenuItem("Selecteren");
             JMenuItem verwijderLijn = new JMenuItem("Verwijder lijn(en)");
@@ -302,6 +305,16 @@ public class DPWorkPanel extends JPanel {
             add(selecteren);
             //Check of component lijnen heeft
             targetPlacedComponent = map.get(target);
+            renameMenuItem.addActionListener(ev -> {
+                final var result = JOptionPane.showInputDialog(PopUp.this, "Nieuwe naam:", targetPlacedComponent.getName());
+                if (result == null)
+                    return;
+                targetPlacedComponent.setName(result);
+                if (target instanceof JLabel label && label.isVisible())
+                    label.setText(result);
+                refreshWP();
+                setVisible(false);
+            });
             ArrayList<PlacedComponent> v = lineMap.get(targetPlacedComponent);
             AtomicBoolean lijnGevonden = new AtomicBoolean(false); //Intellij wou dit
             if (v != null) {
@@ -325,7 +338,6 @@ public class DPWorkPanel extends JPanel {
             add(anItem);
             anItem.addActionListener(e -> verwijderComponent());
             selecteren.addActionListener(ev -> selectieModusAan());
-
         }
 
         public void verwijderComponent() {
