@@ -11,7 +11,6 @@ public class Design {
     private String filePath;
 
     private float targetAvailability = 20.00f;
-    private float totalCost = 0;
 
     @Nullable
     private List<PlacedComponent> placedComponents;
@@ -56,16 +55,16 @@ public class Design {
     }
 
     public void setSavedToFile() {
-        this.isDesignSavedToFile = true;
+        isDesignSavedToFile = true;
     }
 
     public void setModified() {
-        this.isDesignSavedToFile = false;
+        isDesignSavedToFile = false;
     }
 
-    public void delPlacComponent(PlacedComponent PC) {
+    public void deletePlacedComponent(@NotNull PlacedComponent placedComponentToRemove) {
         assert placedComponents != null;
-        placedComponents.remove(PC);
+        placedComponents.remove(placedComponentToRemove);
     }
 
     //Voor optimalisatie

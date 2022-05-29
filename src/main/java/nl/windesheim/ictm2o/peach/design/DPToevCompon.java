@@ -27,7 +27,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private final PeachWindow m_parent;
     private final JTextField beschikbaarheidField;
 
-    JTable table = null;
+    JTable table;
     private final JScrollPane scrollPane = new JScrollPane();
 
     public DPToevCompon(ComponentRegistry CR, DesignPage mainFrame, PeachWindow m_parent, Design D) {
@@ -35,7 +35,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         this.CR = CR;
         this.mainFrame = mainFrame;
         this.D = D;
-        this.setVisible(true);
+        setVisible(true);
         setBackground(Color.gray);
         //OG: 200-550
         setPreferredSize(new Dimension(350, 600));
