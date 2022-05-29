@@ -5,6 +5,7 @@ import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.Color;
@@ -84,8 +85,7 @@ public class DPWorkPanel extends JPanel {
             //Check of placed component binnen NIET binnen zit
             if (!bounds.contains(PC.getPosition().x(), PC.getPosition().y())) {
                 //TODO plaats op outer border
-                Position Pos = new Position(bounds.width / 2, bounds.height / 2);
-                PC.setPosition(Pos);
+                PC.setPosition(new Position(bounds.width / 2, bounds.height / 2));
             }
         }
         //Zodat de nieuwe posities worden geupdate
@@ -112,7 +112,8 @@ public class DPWorkPanel extends JPanel {
                 icon = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
             }
 
-            JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);
+            final var label = new JLabel(PC.getName(), icon, JLabel.CENTER);
+            System.out.println(PC.getName() + ": " + label.hashCode());
             map.put(label, PC);
             add(label);
 
@@ -290,6 +291,7 @@ public class DPWorkPanel extends JPanel {
 
     class PopUp extends JPopupMenu {
         private final JLabel target;
+        private final PlacedComponent targetPlacedComponent;
 
         public PopUp(Component target) {
             this.target = (JLabel) target;
@@ -299,9 +301,8 @@ public class DPWorkPanel extends JPanel {
 
             add(selecteren);
             //Check of component lijnen heeft
-            PlacedComponent PC;
-            PC = map.get(target);
-            ArrayList<PlacedComponent> v = lineMap.get(PC);
+            targetPlacedComponent = map.get(target);
+            ArrayList<PlacedComponent> v = lineMap.get(targetPlacedComponent);
             AtomicBoolean lijnGevonden = new AtomicBoolean(false); //Intellij wou dit
             if (v != null) {
                 for (PlacedComponent pc : v) {
@@ -328,14 +329,13 @@ public class DPWorkPanel extends JPanel {
         }
 
         public void verwijderComponent() {
-            //Haal component op die verwijdert wilt worden
-            PlacedComponent PC;
-            PC = map.get(target);
-
-
+            if (targetPlacedComponent == null) {
+                JOptionPane.showMessageDialog(this, "this.targetPlacedComponent == null");
+                return;
+            }
 
             //En dat component verwijderen
-            D.delPlacComponent(PC);
+            D.deletePlacedComponent(targetPlacedComponent);
             refreshWP();
         }
 
