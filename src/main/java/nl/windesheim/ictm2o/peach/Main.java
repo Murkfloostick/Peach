@@ -1,5 +1,6 @@
 package nl.windesheim.ictm2o.peach;
 
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.monitor.MonitorDataManager;
 import nl.windesheim.ictm2o.peach.monitor.MonitorPage;
 import nl.windesheim.ictm2o.peach.monitor.MonitorServer;
@@ -8,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -23,6 +25,16 @@ public class Main {
         final var fonts = new String[]{"Black", "Bold", "ExtraBold", "ExtraLight", "Light", "Medium", "Regular", "SemiBold", "Thin"};
         for (String string : fonts) {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Main.class.getResourceAsStream("/Inter/static/Inter-" + string + ".ttf"))));
+        }
+        // pre-load images
+        for (final var componentIcon : ComponentIcon.values()) {
+            new Thread(() -> {
+                try {
+                    componentIcon.getImageIcon();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         }
 
         System.setProperty("apple.laf.useScreenMenuBar", "true");

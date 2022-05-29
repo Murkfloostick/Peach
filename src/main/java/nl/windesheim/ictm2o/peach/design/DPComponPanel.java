@@ -29,21 +29,15 @@ public class DPComponPanel extends JPanel {
             super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
             //TODO Local variable?
-            ImageIcon image;
-            try {
-                String iconnaam = registeredComponent.getIcon().name();
-                image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/" + iconnaam + ".png")));
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
-                image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/GENERIC.png")));
-            }
-            this.setIcon(image);
+
+            setIcon(registeredComponent.getIcon().getImageIcon());
 
             this.setTransferHandler(new ValueExportTransferHandler("A", registeredComponent));
 
             this.addMouseMotionListener(new MouseAdapter() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
+                    System.out.println("gaskghjaklhjsklhjasklhmjkh");
                     JLabel lbl = (JLabel) e.getSource();
                     TransferHandler handle = lbl.getTransferHandler();
                     handle.exportAsDrag(lbl, e, TransferHandler.COPY);
