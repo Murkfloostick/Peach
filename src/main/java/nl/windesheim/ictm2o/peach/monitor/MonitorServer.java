@@ -1,7 +1,6 @@
 package nl.windesheim.ictm2o.peach.monitor;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 

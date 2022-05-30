@@ -5,13 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-import java.net.URL;
-import java.util.Objects;
-import org.jetbrains.annotations.Nullable;
-import nl.windesheim.ictm2o.peach.windows.ThemedWindow;
-import org.jetbrains.annotations.NotNull;
-import static nl.windesheim.ictm2o.peach.windows.ThemedWindow.setThemeToSystem;
-
 
 public class Splashscreen extends JPanel {
 
@@ -24,9 +17,6 @@ public class Splashscreen extends JPanel {
     static final int MY_MAXIMUM = 100;
     
     public Splashscreen() {
-        //super("Launching PeachOS V" + BuildInfo.getVersion());
-        //setThemeToSystem();
-        
         try {
             UIManager.put("ProgressBar.background", (new Color(255, 255, 255)));
             UIManager.put("ProgressBar.foreground", (new Color(230, 155, 134)));
