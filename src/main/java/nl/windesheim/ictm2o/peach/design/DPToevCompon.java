@@ -98,7 +98,6 @@ public class DPToevCompon extends JPanel implements ActionListener {
         add(paneel1);
 
         scrollPane.setViewportView(table);
-//        scrollPane.setPreferredSize(new Dimension(400,100));
         scrollPane.setBackground(null);
         add(scrollPane);
     }
@@ -174,9 +173,6 @@ public class DPToevCompon extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == toevoegen) {
-            //DPToevDialog dialoog = new DPToevDialog(this, true);
-            //Anders werkt hij niet, dialoog moet op parent frame worden attached
-
             Window parentWindow = SwingUtilities.windowForComponent(this);
             JFrame parentFrame = null;
             if (parentWindow instanceof Frame) {
@@ -192,10 +188,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             System.exit(0);
         } else if (e.getSource() == optimaliseren) {
             //Algorithm hieronder
-            //Zie nieuwe aangemaakte class voor toekomstige uitwerking
             BestAlgorithm BA = new BestAlgorithm(D);
-            //BA.vindAv(); OUD ALGORITME
-            //D.setTargetAvailability(Float.parseFloat(beschikbaarheidField.getText()));
             BA.optiMalisatie();
             //Update alles
             refreshGegevens();

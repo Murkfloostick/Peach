@@ -37,9 +37,6 @@ public class BestAlgorithm {
     //ABC -> ABC -> ABC -> ABC
     //
     //Dan is C de volgende die maximaal alles heeft (main2)
-    //Is misschien niet de volledige uitleg die ik mijn gedachte heeft. Misschien ook niet de goede oplossing.
-    //We zullen dit grondig moeten testen!
-    //
 
     public void optiMalisatie() {
         //Variabelen initalisatie

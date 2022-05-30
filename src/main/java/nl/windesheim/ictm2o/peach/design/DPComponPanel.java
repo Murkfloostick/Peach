@@ -28,7 +28,6 @@ public class DPComponPanel extends JPanel {
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
             super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
-            //TODO Local variable?
             ImageIcon image;
             try {
                 String iconnaam = registeredComponent.getIcon().name();
@@ -183,7 +182,6 @@ public class DPComponPanel extends JPanel {
                     }
 
                     //Maak een placedcomponent aan met de component die wordt toegevoegd.
-                    //TODO functie van maken
                     Position pos = new Position(250, 250);
                     PlacedComponent PC = new PlacedComponent(button.getRegisteredComponent(),
                             button.getRegisteredComponent().getName(), pos);

@@ -71,8 +71,6 @@ public class Toast extends JDialog {
         add(panel);
         pack();
 
-//        int xcoord = window.getLocationOnScreen().x + window.getWidth() / 2 - getWidth() / 2;
-//        int ycoord = window.getLocationOnScreen().y + (int)((double)window.getHeight() * 0.75) - getHeight() / 2;
         int xcoord = window.getLocationOnScreen().x + window.getWidth() - (int) (getWidth() * 1.5f);
         int ycoord = window.getLocationOnScreen().y + window.getHeight() - (int) (getHeight() * 1.5f);
         setLocation(xcoord, ycoord);

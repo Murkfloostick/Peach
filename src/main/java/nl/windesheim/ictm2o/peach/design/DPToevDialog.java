@@ -34,7 +34,6 @@ public class DPToevDialog extends JDialog implements ActionListener {
         setTitle("Toevoegen component");
 
         //Haal icoontjes op
-        //Options moet worden opgehaald uit iconenlijst?
         String[] optionsToChoose = new String[ComponentIcon.values().length];
         int counter = 0;
         for (ComponentIcon IC : ComponentIcon.values()

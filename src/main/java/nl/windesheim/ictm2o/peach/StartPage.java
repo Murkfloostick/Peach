@@ -14,10 +14,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import java.awt.BorderLayout;
-import java.lang.reflect.Method;
-import java.io.File;
-import javax.swing.border.EmptyBorder;
 
 public class StartPage extends JPanel implements ActionListener, MouseListener {
 
@@ -49,7 +45,6 @@ public class StartPage extends JPanel implements ActionListener, MouseListener {
         private final JButton jButton;
 
         public Button(@NotNull Dimension windowDimensions, @NotNull String title, @NotNull BufferedImage image) {
-            //setLayout(new MigLayout("al center center, wrap, gapy 20"));
             setLayout(new MigLayout("", "[grow,fill]"));
 
             jButton = new JButton(getResizedImage(image, windowDimensions.width / 3));
@@ -75,12 +70,8 @@ public class StartPage extends JPanel implements ActionListener, MouseListener {
 
         JPanel logoPanel = new JPanel();
         logoPanel.setLayout(new MigLayout());
-        //logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
-        //logoPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 1325)));
 
         logoImageLabel = new JLabel(loadIcon());
-        //logoImageLabel.setContentAreaFilled(true);
-        //logoImageLabel.addActionListener(this);
         logoPanel.addMouseListener(this);
         logoPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         logoPanel.add(logoImageLabel);
@@ -89,24 +80,7 @@ public class StartPage extends JPanel implements ActionListener, MouseListener {
         logoTextLabel.setFont(new Font("Inter", Font.BOLD, 60));
         logoPanel.add(logoTextLabel);
 
-        //logoPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         add(logoPanel, "wrap");
-        //add(logoPanel);
-
-//        add(logoPanel, "wrap");
-//        setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
-//        setLayout(new FlowLayout(FlowLayout.LEFT));
-//
-//        .setHorizontalAlignment(SwingConstants.LEFT);
-//        pan1 = new JPanel( new FlowLayout(FlowLayout.LEFT) );
-//
-//        JLabel logoImageLabel = new JLabel(loadIcon());
-//        logoPanel.add(logoImageLabel);
-//
-//        JLabel logoTextLabel = new JLabel("Peach");
-//        logoTextLabel.setFont(new Font("Inter", Font.BOLD, 60));
-//        logoPanel.add(logoTextLabel);
-
 
         final var dimensions = new Dimension(1500, 1500);
         monitorServicesButton = new Button(dimensions, "Monitor Services", ImageIO.read(ResourceManager.load("IconPack/Monitor.png")));
