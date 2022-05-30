@@ -22,6 +22,7 @@ public class PeachWindow extends ThemedWindow {
 
     private JMenuItem startPageMenuBarItem;
     private JMenuItem saveMenuBarItem;
+    private JMenuItem saveAsMenuBarItem;
     private JMenuItem serviceMonitorBarItem;
 
     @NotNull
@@ -58,6 +59,8 @@ public class PeachWindow extends ThemedWindow {
 
         configuration.load();
 
+        saveMenuBarItem.setEnabled(false);
+        saveAsMenuBarItem.setEnabled(false);
         currentPage = new StartPage(this);
         add(currentPage);
     }
@@ -75,6 +78,8 @@ public class PeachWindow extends ThemedWindow {
 
         remove(originPanel);
         startPageMenuBarItem.setEnabled(false);
+        saveMenuBarItem.setEnabled(false);
+        serviceMonitorBarItem.setEnabled(true);
 
         try {
             currentPage = new StartPage(this);
@@ -89,7 +94,8 @@ public class PeachWindow extends ThemedWindow {
     }
 
     public void openPage(@NotNull JPanel origin, @NotNull String title, @NotNull JPanel panel) {
-        saveMenuBarItem.setEnabled(!(panel instanceof DesignPage));
+        saveMenuBarItem.setEnabled(panel instanceof DesignPage);
+        saveAsMenuBarItem.setEnabled(panel instanceof DesignPage);
         serviceMonitorBarItem.setEnabled(!(panel instanceof MonitorPage));
         startPageMenuBarItem.setEnabled(true);
 
@@ -146,13 +152,13 @@ public class PeachWindow extends ThemedWindow {
         });
         fileMenu.add(menuItem);
 
-        menuItem = new JMenuItem("Opslaan Als", KeyEvent.VK_T);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
-        menuItem.addActionListener(ev -> {
+        saveAsMenuBarItem = new JMenuItem("Opslaan Als", KeyEvent.VK_T);
+        saveAsMenuBarItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
+        saveAsMenuBarItem.addActionListener(ev -> {
             if (currentPage instanceof DesignPage designPage)
                 designPage.saveDesign(true);
         });
-        fileMenu.add(menuItem);
+        fileMenu.add(saveAsMenuBarItem);
 
         serviceMonitorBarItem = new JMenuItem("Dienstmonitoring");
         serviceMonitorBarItem.addActionListener(ev -> {

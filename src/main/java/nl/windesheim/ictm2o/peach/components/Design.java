@@ -15,14 +15,16 @@ public class Design {
     @Nullable
     private List<PlacedComponent> placedComponents;
 
-    private boolean isDesignSavedToFile = true;
+    private boolean isDesignSavedToFile;
 
     public Design(@Nullable String filePath) {
+        this.isDesignSavedToFile = false;
         this.filePath = filePath;
         this.placedComponents = new ArrayList<>();
     }
 
     public Design(@Nullable String filePath, float targetAvailability, @Nullable List<PlacedComponent> placedComponents) {
+        this.isDesignSavedToFile = true;
         this.filePath = filePath;
         this.targetAvailability = targetAvailability;
         this.placedComponents = placedComponents;
