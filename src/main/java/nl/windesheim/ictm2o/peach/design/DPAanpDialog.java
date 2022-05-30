@@ -35,7 +35,6 @@ public class DPAanpDialog extends JDialog implements ActionListener {
         setTitle("Aanpassen component");
 
         //Haal icoontjes op
-        //Options moet worden opgehaald uit iconenlijst?
         final var optionsToChoose = new String[ComponentIcon.values().length];
         int counter = 0;
         for (@NotNull final var componentIcon : ComponentIcon.values()) {

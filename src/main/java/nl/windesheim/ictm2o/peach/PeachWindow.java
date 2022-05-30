@@ -35,19 +35,6 @@ public class PeachWindow extends ThemedWindow {
 
         addMenuBar();
 
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                // This is only called when the user releases the mouse button.
-//                System.out.println("componentResized");
-//
-                Dimension screenSize = getSize();
-                double width = screenSize.getWidth();
-                double height = screenSize.getHeight();
-                System.out.println(width + "," + height);
-            }
-        });
-
         //OG:
         //setSize(1280, 720);
         setMinimumSize(new Dimension(1280, 720));
@@ -114,7 +101,6 @@ public class PeachWindow extends ThemedWindow {
 
         JMenu fileMenu = new JMenu("Bestand");
 
-//    fileMenu.setMnemonic(KeyEvent.VK_S);
         fileMenu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
         menuBar.add(fileMenu);
 
@@ -145,7 +131,6 @@ public class PeachWindow extends ThemedWindow {
         menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
         saveMenuBarItem = menuItem;
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-//    menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
         menuItem.addActionListener(ev -> {
             if (currentPage instanceof DesignPage designPage)
                 designPage.saveDesign(false);

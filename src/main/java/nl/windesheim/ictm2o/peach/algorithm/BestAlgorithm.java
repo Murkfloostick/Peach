@@ -37,9 +37,6 @@ public class BestAlgorithm {
     //ABC -> ABC -> ABC -> ABC
     //
     //Dan is C de volgende die maximaal alles heeft (main2)
-    //Is misschien niet de volledige uitleg die ik mijn gedachte heeft. Misschien ook niet de goede oplossing.
-    //We zullen dit grondig moeten testen!
-    //
 
     public void optiMalisatie() {
         //Variabelen initalisatie
@@ -56,14 +53,6 @@ public class BestAlgorithm {
 
         int max = 3; //Max aantal componenten van dezelfde RegisterdeComponent
         int maxtemp = 1; // begin hier
-
-        //Plaats eerst alle componenten
-//        for (PlacedComponent PC : PC
-//        ) {
-//            ARC.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
-//            tempArc.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
-//        }
-//        checkAndAdd(ARC);//Dit is een oplossing
 
         //Voor elk element in de componenten die zijn geplaatst
         for (int counter = 0; counter <= PC.size() - 1; counter++) {

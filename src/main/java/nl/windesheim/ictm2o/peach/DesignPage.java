@@ -33,7 +33,6 @@ public class DesignPage extends JPanel implements ActionListener {
         JScrollPane scroller = new JScrollPane(componPanel);
 
         scroller.setPreferredSize(componPanel.getDim());
-        //peachWindow.getContentPane().add(scroller);
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
