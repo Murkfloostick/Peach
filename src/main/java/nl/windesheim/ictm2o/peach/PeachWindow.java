@@ -38,8 +38,8 @@ public class PeachWindow extends ThemedWindow {
             @Override
             public void componentResized(ComponentEvent e) {
                 // This is only called when the user releases the mouse button.
-                // System.out.println("componentResized");
-
+//                System.out.println("componentResized");
+//
                 Dimension screenSize = getSize();
                 double width = screenSize.getWidth();
                 double height = screenSize.getHeight();
@@ -49,12 +49,9 @@ public class PeachWindow extends ThemedWindow {
 
         //OG:
         //setSize(1280, 720);
-        //setMinimumSize(new Dimension(1280, 720));
-
         setMinimumSize(new Dimension(1280, 720));
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setExtendedState(Frame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
