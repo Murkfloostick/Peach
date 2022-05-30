@@ -70,6 +70,7 @@ public class BestAlgorithm {
             //De eerste waar we het mee gaan doen
             main = PC.get(counter);
 
+
             //Plaats de main, Begin bij max 2 en dan 3...
             for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
                 ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
@@ -107,6 +108,11 @@ public class BestAlgorithm {
                         }
                     }
                     maxtemp += 1; //Nu worden de volgende componenten met 1 max verhoogd zodat we elk combinatie vinden
+
+                    //Zodat we maximaal enforcen
+                    if(max == maxtemp){
+                        maxtemp = 1;
+                    }
                 }
             }
 
