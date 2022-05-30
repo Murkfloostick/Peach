@@ -7,10 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class MonitorPage extends JPanel {
 
@@ -231,7 +232,7 @@ public class MonitorPage extends JPanel {
         final var components = tabbedPane.getComponents();
         int i = 0;
         for (; i < components.length; ++i)
-            if (((Tab)components[i]).title.compareTo(identifier) > 0)
+            if (((Tab) components[i]).title.compareTo(identifier) > 0)
                 break;
         tabbedPane.insertTab(identifier, null, tab, null, i);
         return tab;

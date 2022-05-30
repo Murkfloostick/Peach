@@ -1,6 +1,8 @@
 package nl.windesheim.ictm2o.peach.Splashscreen;
+
 import nl.windesheim.ictm2o.peach.BuildInfo;
 import nl.windesheim.ictm2o.peach.PeachWindow;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -15,7 +17,7 @@ public class Splashscreen extends JPanel {
 
     static final int MY_MINIMUM = 0;
     static final int MY_MAXIMUM = 100;
-    
+
     public Splashscreen() {
         try {
             UIManager.put("ProgressBar.background", (new Color(255, 255, 255)));
@@ -38,7 +40,7 @@ public class Splashscreen extends JPanel {
             add(tekst);
             add(logo);
             add(progressBar);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -51,12 +53,12 @@ public class Splashscreen extends JPanel {
 
         final Splashscreen j = new Splashscreen();
 
-        JFrame frame = new JFrame("Launching PeachOS V"+ BuildInfo.getVersion());
+        JFrame frame = new JFrame("Launching PeachOS V" + BuildInfo.getVersion());
         frame.setFont(new Font("Inter", Font.BOLD, 25));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(j);
         frame.pack();
-        frame.setSize(350,450);
+        frame.setSize(350, 450);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
@@ -68,7 +70,17 @@ public class Splashscreen extends JPanel {
             try {
                 SwingUtilities.invokeLater(() -> j.updateBar(percent));
                 java.lang.Thread.sleep(20);
-                if (i == MY_MAXIMUM){
+                if (i >= 53 && i <= 78) {
+                    java.lang.Thread.sleep(45);
+                    SwingUtilities.invokeLater(() -> j.updateBar(percent));
+
+                }
+                if (i >= 79 && i <= 84) {
+                    java.lang.Thread.sleep(200);
+                    SwingUtilities.invokeLater(() -> j.updateBar(percent));
+
+                }
+                if (i == MY_MAXIMUM) {
                     frame.dispose();
                     PeachWindow peachWindow = new PeachWindow();
                     peachWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

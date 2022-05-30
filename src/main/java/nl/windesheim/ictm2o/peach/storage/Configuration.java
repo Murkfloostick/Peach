@@ -1,7 +1,8 @@
 package nl.windesheim.ictm2o.peach.storage;
 
 import nl.windesheim.ictm2o.peach.PeachWindow;
-import nl.windesheim.ictm2o.peach.components.*;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;

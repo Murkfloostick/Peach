@@ -39,7 +39,7 @@ public class ThemedWindow extends JFrame {
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                 UnsupportedLookAndFeelException ex) {
+                UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.exit(1);
         }

@@ -7,12 +7,14 @@ import nl.windesheim.ictm2o.peach.PeachWindow;
 import nl.windesheim.ictm2o.peach.algorithm.BestAlgorithm;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
-
 import nl.windesheim.ictm2o.peach.components.Design;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.Locale;
 import java.util.stream.IntStream;
 
@@ -88,7 +90,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         refreshGegevens();
 
         JPanel paneel1 = new JPanel();
-        paneel1.setLayout(new GridLayout(2,2));
+        paneel1.setLayout(new GridLayout(2, 2));
         paneel1.add(toevoegen);
         paneel1.add(optimaliseren);
         paneel1.add(terugKnop);
@@ -120,7 +122,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
 
             data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.costsPerCategory()[i]);
-            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.availabilityPerCategory()[i] * 100.0f);
+            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%", stats.availabilityPerCategory()[i] * 100.0f);
         }
 
         table = new JTable(data, columnNames);

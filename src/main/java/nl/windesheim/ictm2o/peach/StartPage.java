@@ -24,15 +24,25 @@ public class StartPage extends JPanel implements ActionListener, MouseListener {
     private final JLabel logoImageLabel;
 
     @Override
-    public void mouseClicked(MouseEvent e){ System.exit(0);}
+    public void mouseClicked(MouseEvent e) {
+        System.exit(0);
+    }
+
     @Override
-    public void mousePressed(MouseEvent e) { }  //Onnodig
+    public void mousePressed(MouseEvent e) {
+    }  //Onnodig
+
     @Override
-    public void mouseReleased(MouseEvent e) { } //Onnodig
+    public void mouseReleased(MouseEvent e) {
+    } //Onnodig
+
     @Override
-    public void mouseEntered(MouseEvent e) { }  //Onnodig
+    public void mouseEntered(MouseEvent e) {
+    }  //Onnodig
+
     @Override
-    public void mouseExited(MouseEvent e) { }   //Onnodig
+    public void mouseExited(MouseEvent e) {
+    }   //Onnodig
 
     private static class Button extends JPanel {
         @NotNull

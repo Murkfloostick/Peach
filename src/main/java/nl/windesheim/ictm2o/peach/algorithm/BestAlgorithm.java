@@ -6,7 +6,7 @@ import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BestAlgorithm {
@@ -72,7 +72,7 @@ public class BestAlgorithm {
 
                     //Plaats max keer, dan minder tot er maar 1 is en dan volgende component die main2 wordt
                     //MAX begint bij 2 tot de echte max
-                    if(main != main2){//Main is al maximaal geplaatst
+                    if (main != main2) {//Main is al maximaal geplaatst
                         for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
                             PlacedComponent plaats = new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition());
                             ARC.add(plaats);
@@ -81,9 +81,9 @@ public class BestAlgorithm {
                     }
 
                     //Nu de volgende component steeds tot max en dan verwijderen
-                    for (PlacedComponent PC:PC
-                         ) {
-                        if(PC != main && PC != main2){
+                    for (PlacedComponent PC : PC
+                    ) {
+                        if (PC != main && PC != main2) {
                             for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
                                 //dan for elk ander component dat niet main en main2 is plaatsen
                                 PlacedComponent plaats = new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition());
@@ -99,7 +99,7 @@ public class BestAlgorithm {
                     maxtemp += 1; //Nu worden de volgende componenten met 1 max verhoogd zodat we elk combinatie vinden
 
                     //Zodat we maximaal enforcen
-                    if(max == maxtemp){
+                    if (max == maxtemp) {
                         maxtemp = 1;
                     }
                 }
@@ -109,7 +109,7 @@ public class BestAlgorithm {
             ARC = null;
             ARC = new ArrayList<>(tempArc);
 
-            if(maxtemp > max){
+            if (maxtemp > max) {
                 break;
             }
         }
@@ -119,7 +119,7 @@ public class BestAlgorithm {
     }
 
     //Checkt of de ARC die wordt meegegeven voldoet aan target availbility en dan toevoegen aan masterArc.
-    private void checkAndAdd(List<PlacedComponent> ARC){
+    private void checkAndAdd(List<PlacedComponent> ARC) {
         final var stats = D.getStatistics();
 
         var data = new Object[2][1 + stats.availabilityPerCategory().length];
@@ -133,11 +133,11 @@ public class BestAlgorithm {
             columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
 
             data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.costsPerCategory()[i]);
-            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.availabilityPerCategory()[i] * 100.0f);
+            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%", stats.availabilityPerCategory()[i] * 100.0f);
         }
 
         CA = stats.totalAvailability() * 100.0f;
-        if(CA >= TA){
+        if (CA >= TA) {
             masterARC.add(ARC);
         }
     }
@@ -152,7 +152,7 @@ public class BestAlgorithm {
         float inkomende;
         for (var ARK : masterARC) {
             inkomende = D.getKosten(ARK)[5];
-            if(inkomende < beste || firstTime){
+            if (inkomende < beste || firstTime) {
                 beste = inkomende;
                 besteList = ARK;
                 firstTime = false;
@@ -160,10 +160,9 @@ public class BestAlgorithm {
         }
 
 
-
-        if(besteList == null){
+        if (besteList == null) {
             JOptionPane.showMessageDialog(null, "Het is niet mogelijk om de beste setup te vinden met deze componenten.", "Ho daar: Optimalisatie niet gelukt", JOptionPane.INFORMATION_MESSAGE);
-        } else{
+        } else {
             //Zet het in Design
             D.deletePlacComponentList();
             D.newPlacComponentList(besteList);

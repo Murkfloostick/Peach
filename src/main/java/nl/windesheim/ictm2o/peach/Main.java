@@ -53,8 +53,7 @@ public class Main {
         Timer timer = new Timer(1000, ev -> MonitorDataManager.tick());
         timer.start();
 
-        
-        
+
         peachWindow.run();
     }
 
