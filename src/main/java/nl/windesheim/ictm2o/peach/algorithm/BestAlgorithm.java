@@ -68,13 +68,12 @@ public class BestAlgorithm {
         int maxtemp = 1; // begin hier
 
         //Plaats eerst alle componenten
-        for (PlacedComponent PC : PC
-        ) {
-            ARC.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
-            tempArc.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
-        }
-
-        checkAndAdd(ARC);//Dit is een oplossing
+//        for (PlacedComponent PC : PC
+//        ) {
+//            ARC.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
+//            tempArc.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
+//        }
+//        checkAndAdd(ARC);//Dit is een oplossing
 
         //Voor elk element in de componenten die zijn geplaatst
         for (int counter = 0; counter <= PC.size() - 1; counter++) {

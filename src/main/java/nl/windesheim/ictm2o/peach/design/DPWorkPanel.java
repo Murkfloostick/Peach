@@ -109,7 +109,7 @@ public class DPWorkPanel extends JPanel {
                 String iconnaam = PC.getRegisteredComponent().getIcon().name();
                 icon = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Ho daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
                 icon = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
             }
 
@@ -232,7 +232,6 @@ public class DPWorkPanel extends JPanel {
                 }
             }
 
-            //TODO normaal klik van maken
             if (selectieModus && !verwijderModus) {
                 PlacedComponent secondSelection = map.get(target);
                 ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
@@ -254,7 +253,6 @@ public class DPWorkPanel extends JPanel {
                 }
                 lineMap.put(firstSelection, pcList);
 
-                //TODO Functie van maken
                 firstSelectionLabel.setBorder(null);
                 selectieModus = false;
                 verwijderModus = false;
@@ -264,7 +262,6 @@ public class DPWorkPanel extends JPanel {
             } else if (verwijderModus) {
                 PlacedComponent secondSelection = map.get(target);
                 ArrayList<PlacedComponent> pcList = lineMap.get(firstSelection);
-                //TODO Functie van maken
                 ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
                 for (PlacedComponent pc : v
                 ) {
