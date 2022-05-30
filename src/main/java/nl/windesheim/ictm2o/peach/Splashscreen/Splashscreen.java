@@ -75,7 +75,7 @@ public class Splashscreen extends JPanel {
                     SwingUtilities.invokeLater(() -> j.updateBar(percent));
 
                 }
-                if (i >= 79 && i <= 84) {
+                if (i >= 78 && i <= 84) {
                     java.lang.Thread.sleep(200);
                     SwingUtilities.invokeLater(() -> j.updateBar(percent));
 
