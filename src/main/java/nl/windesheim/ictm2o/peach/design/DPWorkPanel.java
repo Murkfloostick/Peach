@@ -5,7 +5,6 @@ import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.Color;
@@ -42,7 +41,6 @@ public class DPWorkPanel extends JPanel {
     Rectangle bounds;
 
     public DPWorkPanel(Design D, @NotNull DesignPage designPage, DPToevCompon toevCompon) {
-        //TODO In selectie modus alle andere input uit
         this.D = D;
         this.designPage = designPage;
         this.toevCompon = toevCompon;
