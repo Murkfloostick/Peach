@@ -5,6 +5,7 @@ import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.List;
 
