@@ -5,6 +5,7 @@ import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.Color;
@@ -15,7 +16,6 @@ import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
-import java.beans.EventHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,10 +83,9 @@ public class DPWorkPanel extends JPanel {
             bounds = new Rectangle(designPage.getComponPanel().getX(), 0, toevCompon.getX() - toevCompon.getWidth(), toevCompon.getHeight());
 
             //Check of placed component binnen NIET binnen zit
-            if (!bounds.contains(PC.getPosition().getX(), PC.getPosition().getY())) {
+            if (!bounds.contains(PC.getPosition().x(), PC.getPosition().y())) {
                 //TODO plaats op outer border
-                Position Pos = new Position(bounds.width / 2, bounds.height / 2);
-                PC.setPosition(Pos);
+                PC.setPosition(new Position(bounds.width / 2, bounds.height / 2));
             }
         }
         //Zodat de nieuwe posities worden geupdate
@@ -113,13 +112,14 @@ public class DPWorkPanel extends JPanel {
                 icon = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
             }
 
-            JLabel label = new JLabel(PC.getName(), icon, JLabel.CENTER);
+            final var label = new JLabel(PC.getName(), icon, JLabel.CENTER);
+            System.out.println(PC.getName() + ": " + label.hashCode());
             map.put(label, PC);
             add(label);
 
             //Breedte en hoogte moet vast staan
             //Label wordt niet geplaatst omdat breedte en hoogte 0 is als het nog niet gerenderd is
-            label.setBounds(Math.toIntExact(PC.getPosition().getX()), Math.toIntExact(PC.getPosition().getY()), 150, 65);
+            label.setBounds(Math.toIntExact(PC.getPosition().x()), Math.toIntExact(PC.getPosition().y()), 150, 65);
         }
         setVisible(false);
         setVisible(true);
@@ -148,7 +148,7 @@ public class DPWorkPanel extends JPanel {
         lineMap.forEach((k, v) -> {
             for (PlacedComponent pc : v
             ) {
-                g.drawLine(Math.toIntExact(k.getPosition().getX()) + 30, Math.toIntExact(k.getPosition().getY()) + 30, Math.toIntExact(pc.getPosition().getX()) + 30, Math.toIntExact(pc.getPosition().getY() + 30));
+                g.drawLine(Math.toIntExact(k.getPosition().x()) + 30, Math.toIntExact(k.getPosition().y()) + 30, Math.toIntExact(pc.getPosition().x()) + 30, Math.toIntExact(pc.getPosition().y() + 30));
             }
         });
 
@@ -287,22 +287,32 @@ public class DPWorkPanel extends JPanel {
     }
 
     class PopUp extends JPopupMenu {
-        JMenuItem anItem;
-        JMenuItem selecteren;
-        JMenuItem verwijderLijn;
-        JLabel target;
+        private final JLabel target;
+        private final PlacedComponent targetPlacedComponent;
 
         public PopUp(Component target) {
             this.target = (JLabel) target;
-            anItem = new JMenuItem("Verwijder");
-            selecteren = new JMenuItem("Selecteren");
-            verwijderLijn = new JMenuItem("Verwijder lijn(en)");
+            final var renameMenuItem = new JMenuItem("Hernoemen");
+            add(renameMenuItem);
+
+            JMenuItem anItem = new JMenuItem("Verwijder");
+            JMenuItem selecteren = new JMenuItem("Selecteren");
+            JMenuItem verwijderLijn = new JMenuItem("Verwijder lijn(en)");
 
             add(selecteren);
             //Check of component lijnen heeft
-            PlacedComponent PC;
-            PC = map.get(target);
-            ArrayList<PlacedComponent> v = lineMap.get(PC);
+            targetPlacedComponent = map.get(target);
+            renameMenuItem.addActionListener(ev -> {
+                final var result = JOptionPane.showInputDialog(PopUp.this, "Nieuwe naam:", targetPlacedComponent.getName());
+                if (result == null)
+                    return;
+                targetPlacedComponent.setName(result);
+                if (target instanceof JLabel label && label.isVisible())
+                    label.setText(result);
+                refreshWP();
+                setVisible(false);
+            });
+            ArrayList<PlacedComponent> v = lineMap.get(targetPlacedComponent);
             AtomicBoolean lijnGevonden = new AtomicBoolean(false); //Intellij wou dit
             if (v != null) {
                 for (PlacedComponent pc : v) {
@@ -325,18 +335,16 @@ public class DPWorkPanel extends JPanel {
             add(anItem);
             anItem.addActionListener(e -> verwijderComponent());
             selecteren.addActionListener(ev -> selectieModusAan());
-
         }
 
         public void verwijderComponent() {
-            //Haal component op die verwijdert wilt worden
-            PlacedComponent PC;
-            PC = map.get(target);
-
-
+            if (targetPlacedComponent == null) {
+                JOptionPane.showMessageDialog(this, "this.targetPlacedComponent == null");
+                return;
+            }
 
             //En dat component verwijderen
-            D.delPlacComponent(PC);
+            D.deletePlacedComponent(targetPlacedComponent);
             refreshWP();
         }
 

@@ -34,7 +34,8 @@ public class PeachWindow extends ThemedWindow {
 
         addMenuBar();
 
-        this.addComponentListener(new ComponentAdapter() {
+        addComponentListener(new ComponentAdapter() {
+            @Override
             public void componentResized(ComponentEvent e) {
                 // This is only called when the user releases the mouse button.
 //                System.out.println("componentResized");
@@ -43,7 +44,6 @@ public class PeachWindow extends ThemedWindow {
                 double width = screenSize.getWidth();
                 double height = screenSize.getHeight();
                 System.out.println(width + "," + height);
-
             }
         });
 
@@ -54,11 +54,12 @@ public class PeachWindow extends ThemedWindow {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         configuration.load();
 
-        add(currentPage = new StartPage(this));
+        currentPage = new StartPage(this);
+        add(currentPage);
     }
 
     public void run() {
@@ -66,17 +67,18 @@ public class PeachWindow extends ThemedWindow {
     }
 
     public void setPageTitle(@NotNull String pageTitle) {
-        super.setTitle("NerdyGadgets Peach v" + BuildInfo.getVersion() + " - " + pageTitle);
+        setTitle("NerdyGadgets Peach v" + BuildInfo.getVersion() + " - " + pageTitle);
     }
 
     public void openStartPage(@NotNull JPanel originPanel) {
-        super.setTitle("NerdyGadgets Peach v" + BuildInfo.getVersion());
+        setTitle("NerdyGadgets Peach v" + BuildInfo.getVersion());
 
         remove(originPanel);
         startPageMenuBarItem.setEnabled(false);
 
         try {
-            add(currentPage = new StartPage(this));
+            currentPage = new StartPage(this);
+            add(currentPage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -173,9 +175,9 @@ public class PeachWindow extends ThemedWindow {
         menuBar.add(fileMenu);
 
         final var helpMenu = new JMenu("Help");
-        menuItem = new JMenuItem("Auteursrecht");
-        menuItem.addActionListener(ev -> CopyrightWindow.open());
-        helpMenu.add(menuItem);
+        final var copyrightItem = new JMenuItem("Auteursrecht");
+        copyrightItem.addActionListener(ev -> CopyrightWindow.open());
+        helpMenu.add(copyrightItem);
         menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);

@@ -42,7 +42,7 @@ public class DPToevDialog extends JDialog implements ActionListener {
             optionsToChoose[counter] = IC.name();
             counter += 1;
         }
-        options = new JComboBox(optionsToChoose);
+        options = new JComboBox<>(optionsToChoose);
         add(options);
 
         JLabel labelNaam = new JLabel("Naam");

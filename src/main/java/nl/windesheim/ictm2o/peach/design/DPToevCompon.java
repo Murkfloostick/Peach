@@ -1,6 +1,5 @@
 package nl.windesheim.ictm2o.peach.design;
 
-import com.sun.source.tree.TryTree;
 import net.miginfocom.swing.MigLayout;
 import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.Main;
@@ -10,18 +9,12 @@ import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 
 import nl.windesheim.ictm2o.peach.components.Design;
-import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.reflect.Field;
-import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.stream.IntStream;
-import java.util.*;
-import java.util.List;
-import java.util.stream.Stream;
 
 public class DPToevCompon extends JPanel implements ActionListener {
     private final JButton toevoegen;
@@ -34,17 +27,15 @@ public class DPToevCompon extends JPanel implements ActionListener {
     private final PeachWindow m_parent;
     private final JTextField beschikbaarheidField;
 
-    JTable table = null;
-    JScrollPane scrollPane = new JScrollPane();
-
-    Font font1 = new Font("Inter", Font.BOLD, 15);
+    JTable table;
+    private final JScrollPane scrollPane = new JScrollPane();
 
     public DPToevCompon(ComponentRegistry CR, DesignPage mainFrame, PeachWindow m_parent, Design D) {
         this.m_parent = m_parent;
         this.CR = CR;
         this.mainFrame = mainFrame;
         this.D = D;
-        this.setVisible(true);
+        setVisible(true);
         setBackground(Color.gray);
         //OG: 200-550
         setPreferredSize(new Dimension(350, 600));
@@ -73,6 +64,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         add(beschikbaarheidField);
 
         toevoegen = new JButton("Component toevoegen");
+        Font font1 = new Font("Inter", Font.BOLD, 15);
         toevoegen.setFont(font1);
         toevoegen.setContentAreaFilled(true);
         //add(toevoegen);
@@ -118,18 +110,18 @@ public class DPToevCompon extends JPanel implements ActionListener {
         panel.setBackground(Color.gray);
         panel.setLayout(new MigLayout("", "[grow,fill]", "[grow,fill]"));
 
-        var data = new Object[2][1 + stats.getAvailabilityPerCategory().length];
-        var columnNames = new String[1 + stats.getAvailabilityPerCategory().length];
+        var data = new Object[2][1 + stats.availabilityPerCategory().length];
+        var columnNames = new String[1 + stats.availabilityPerCategory().length];
 
         data[0][0] = "Kosten";
         data[1][0] = "Beschikbaarheid";
         columnNames[0] = "";
 
-        for (int i = 0; i < stats.getAvailabilityPerCategory().length; ++i) {
+        for (int i = 0; i < stats.availabilityPerCategory().length; ++i) {
             columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
 
-            data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.getCostsPerCategory()[i]);
-            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.getAvailabilityPerCategory()[i] * 100.0f);
+            data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.costsPerCategory()[i]);
+            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.availabilityPerCategory()[i] * 100.0f);
         }
 
         table = new JTable(data, columnNames);
@@ -151,7 +143,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         labelTmp.setForeground(Color.WHITE);
         totalPanel.add(labelTmp);
 
-        labelTmp = new JLabel(String.format(Main.LOCALE, "€ %.02f", stats.getTotalCosts()));
+        labelTmp = new JLabel(String.format(Main.LOCALE, "€ %.02f", stats.totalCosts()));
         labelTmp.setFont(rightLabelFont);
         labelTmp.setForeground(Color.WHITE);
         totalPanel.add(labelTmp, "wrap");
@@ -164,12 +156,12 @@ public class DPToevCompon extends JPanel implements ActionListener {
         labelTmp.setForeground(Color.WHITE);
         totalPanel.add(labelTmp);
 
-        labelTmp = new JLabel(String.format(Main.LOCALE, "%.2f %%", stats.getTotalAvailability() * 100.0f));
+        labelTmp = new JLabel(String.format(Main.LOCALE, "%.2f %%", stats.totalAvailability() * 100.0f));
         labelTmp.setFont(rightLabelFont);
-        if (stats.getTotalAvailability() * 100.0f < D.getTargetAvailability())
+        if (stats.totalAvailability() * 100.0f < D.getTargetAvailability())
             labelTmp.setForeground(Color.RED);
-        else if (IntStream.range(0, stats.getAvailabilityPerCategory().length)
-                .mapToDouble(i -> stats.getAvailabilityPerCategory()[i])
+        else if (IntStream.range(0, stats.availabilityPerCategory().length)
+                .mapToDouble(i -> stats.availabilityPerCategory()[i])
                 .anyMatch(val -> val * 100.0f < D.getTargetAvailability())) {
             labelTmp.setForeground(Color.ORANGE);
         } else

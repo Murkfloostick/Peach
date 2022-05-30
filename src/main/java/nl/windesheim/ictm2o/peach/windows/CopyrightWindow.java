@@ -2,7 +2,6 @@ package nl.windesheim.ictm2o.peach.windows;
 
 import net.miginfocom.swing.MigLayout;
 import nl.windesheim.ictm2o.peach.BuildInfo;
-import nl.windesheim.ictm2o.peach.StartPage;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -10,49 +9,22 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class CopyrightWindow extends ThemedWindow {
 
     public static void open() {
-        new Thread(() -> {
-            try {
-                new CopyrightWindow().setVisible(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(null, e, "NerdyGadgets Peach - Auteursrecht - Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }).start();
+        new Thread(() -> new CopyrightWindow().setVisible(true)).start();
     }
 
-    private static class Entry {
-
-        @NotNull
-        private final String name;
-
-        @NotNull
-        private final String license;
-
-        public Entry(@NotNull String name, @NotNull String license) {
+    private record Entry(@NotNull String name, @NotNull String license) {
+        private Entry(@NotNull String name, @NotNull String license) {
             this.name = name;
             this.license = license;
         }
-
-        @NotNull
-        public String getName() {
-            return name;
-        }
-
-        @NotNull
-        public String getLicense() {
-            return license;
-        }
     }
 
-    @NotNull
-    private static final ArrayList<Entry> ITEMS = new ArrayList<>();
+    private static final List<Entry> ITEMS = new ArrayList<>();
     static {
         ITEMS.add(new Entry("NerdyGadgets Peach", Licenses.SOFTWARE_PEACH));
         ITEMS.add(new Entry("Annotations (JetBrains)", Licenses.LIBRARY_JETBRAINS_ANNOTATIONS));
@@ -66,7 +38,7 @@ public class CopyrightWindow extends ThemedWindow {
     private final JScrollPane licenseScrollPane;
     private final Font licenseFieldFont = new Font("Inter", Font.PLAIN, 16);
 
-    public CopyrightWindow() throws IOException {
+    public CopyrightWindow() {
         super("NerdyGadgets Peach v" + BuildInfo.getVersion() + " - Auteursrecht");
 
         setSize(800, 600);
@@ -97,12 +69,12 @@ public class CopyrightWindow extends ThemedWindow {
         descriptionText.setBorder(new EmptyBorder(new Insets(0, 0, 18, 0)));
         contentPanel.add(descriptionText, "wrap");
 
-        final var selection = new JComboBox<>(ITEMS.stream().map(Entry::getName).toArray());
+        var selection = new JComboBox<>(ITEMS.stream().map(Entry::name).toArray());
         selection.addItemListener(e -> changeTo(selection.getSelectedIndex()));
         contentPanel.add(selection, "wrap");
 
 
-        licenseScrollPane = new JScrollPane(null, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        licenseScrollPane = new JScrollPane(null, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         licenseScrollPane.setMaximumSize(null);
         contentPanel.add(licenseScrollPane, "pushy, growy");
 
@@ -112,7 +84,7 @@ public class CopyrightWindow extends ThemedWindow {
     private void changeTo(int item) {
         final var licenseField = new JTextArea();
         licenseField.setFont(licenseFieldFont);
-        licenseField.setText(ITEMS.get(item).getLicense());
+        licenseField.setText(ITEMS.get(item).license());
         licenseField.invalidate();
         licenseField.setLineWrap(true);
         licenseField.setWrapStyleWord(true);

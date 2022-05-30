@@ -23,7 +23,7 @@ public class DPComponPanel extends JPanel {
     static class Button extends JLabel {
 
         @NotNull
-        public RegisteredComponent registeredComponent;
+        public final RegisteredComponent registeredComponent;
 
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
             super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
@@ -60,37 +60,32 @@ public class DPComponPanel extends JPanel {
 
         protected static class ValueExportTransferHandler extends TransferHandler {
 
-            public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
+            @NotNull
             private final String value;
             private final RegisteredComponent RC;
 
-            public ValueExportTransferHandler(String value, RegisteredComponent RC) {
+            public ValueExportTransferHandler(@NotNull String value, RegisteredComponent RC) {
                 this.value = value;
                 this.RC = RC;
             }
 
-            public String getValue() {
-                return value;
-            }
-
             @Override
-            public int getSourceActions(JComponent c) {
+            public int getSourceActions(JComponent ignored) {
                 return DnDConstants.ACTION_COPY;
             }
 
             @Override
-            protected Transferable createTransferable(JComponent c) {
-                return new StringSelection(getValue());
+            protected Transferable createTransferable(JComponent ignored) {
+                return new StringSelection(value);
             }
 
             @Override
             protected void exportDone(JComponent source, Transferable data, int action) {
                 super.exportDone(source, data, action);
                 if (DPWorkPanel.isAccept()) {
-                    Position pos = new Position(250, 250);
-                    PlacedComponent PC = new PlacedComponent(RC,
-                            RC.getName(), pos);
-                    D.getPlacedComponents().add(PC);
+                    Position pos = new Position(250L, 250L);
+                    final var placedComponent = new PlacedComponent(RC, RC.getName(), pos);
+                    D.getPlacedComponents().add(placedComponent);
                     DPWP.refreshWP();
                     designPage.setDesignModified();
                     DPWorkPanel.setAccept(false);
@@ -100,8 +95,8 @@ public class DPComponPanel extends JPanel {
 
 
         class PopUp extends JPopupMenu implements ActionListener {
-            JMenuItem anItem;
-            JMenuItem aanpassen;
+            private final JMenuItem anItem;
+            private final JMenuItem aanpassen;
 
             public PopUp() {
                 aanpassen = new JMenuItem("Aanpassen");
@@ -122,9 +117,9 @@ public class DPComponPanel extends JPanel {
 
                 if (e.getSource() == anItem) {
                     //Check of het geplaatst is op het workpanel
-                    for (PlacedComponent PC : D.getPlacedComponents()
-                    ) {
-                        if (PC.getRegisteredComponent().getID() == RC.getID()) {
+                    assert D.getPlacedComponents() != null;
+                    for (@NotNull final var placedComponent : D.getPlacedComponents()) {
+                        if (placedComponent.getRegisteredComponent().getID() == RC.getID()) {
                             JOptionPane.showMessageDialog(null, "Component is geplaatst. Verwijder de geplaatste component eerst voordat je de component zelf verwijderd", "Ho daar: Component kan niet verwijderd worden", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
@@ -137,7 +132,7 @@ public class DPComponPanel extends JPanel {
                 if (e.getSource() == aanpassen) {
                     Window parentWindow = SwingUtilities.windowForComponent(this);
                     JFrame parentFrame = null;
-                    if (parentWindow instanceof Frame) {
+                    if (parentWindow instanceof JFrame) {
                         parentFrame = (JFrame) parentWindow;
                     }
                     button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
@@ -178,7 +173,7 @@ public class DPComponPanel extends JPanel {
         private static DesignPage designPage;
 
         //Dubbelklik om component toe te voegen aan sleeppaneel
-        MouseListener ml = new MouseAdapter() {
+        final MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {//double-click
                     //Voor als het fout gaat
@@ -192,6 +187,8 @@ public class DPComponPanel extends JPanel {
                     Position pos = new Position(250, 250);
                     PlacedComponent PC = new PlacedComponent(button.getRegisteredComponent(),
                             button.getRegisteredComponent().getName(), pos);
+                    if (D.getPlacedComponents() == null)
+                        throw new RuntimeException("PlacedComponents == null");
                     D.getPlacedComponents().add(PC);
                     DPWP.refreshWP();
                     designPage.setDesignModified();
@@ -201,9 +198,9 @@ public class DPComponPanel extends JPanel {
 
         public DPComponPanel(ComponentRegistry CR, Design D, DPWorkPanel DPWP, @NotNull DesignPage designPage) {
             this.CR = CR;
-            this.D = D;
-            this.DPWP = DPWP;
-            this.designPage = designPage;
+            DPComponPanel.D = D;
+            DPComponPanel.DPWP = DPWP;
+            DPComponPanel.designPage = designPage;
 
             setBackground(Color.gray);
             setLayout(new GridLayout(GLrows, 2));

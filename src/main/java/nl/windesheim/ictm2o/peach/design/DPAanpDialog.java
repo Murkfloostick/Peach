@@ -3,6 +3,8 @@ package nl.windesheim.ictm2o.peach.design;
 import nl.windesheim.ictm2o.peach.DesignPage;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,7 @@ import java.util.Objects;
 
 public class DPAanpDialog extends JDialog implements ActionListener {
 
-    private final JComboBox options;
+    private final JComboBox<String> options;
     private final JTextField naam = new JTextField(5);
     private final JTextField prijs = new JTextField(5);
     private final JTextField beschikbaarheid = new JTextField(5);
@@ -34,14 +36,13 @@ public class DPAanpDialog extends JDialog implements ActionListener {
 
         //Haal icoontjes op
         //Options moet worden opgehaald uit iconenlijst?
-        String[] optionsToChoose = new String[ComponentIcon.values().length];
+        final var optionsToChoose = new String[ComponentIcon.values().length];
         int counter = 0;
-        for (ComponentIcon IC : ComponentIcon.values()
-        ) {
-            optionsToChoose[counter] = IC.name();
+        for (@NotNull final var componentIcon : ComponentIcon.values()) {
+            optionsToChoose[counter] = componentIcon.name();
             counter += 1;
         }
-        options = new JComboBox(optionsToChoose);
+        options = new JComboBox<>(optionsToChoose);
         add(options);
 
         JLabel labelNaam = new JLabel("Naam");
@@ -61,17 +62,15 @@ public class DPAanpDialog extends JDialog implements ActionListener {
 
         //Vul gegevens in van component
         int counter2 = 0;
-        for (String IC : optionsToChoose
-        ) {
-            if (RC.getIcon().toString().equals(IC)) {
+        for (@NonNls @NotNull final var option : ComponentIcon.values()) {
+            if (RC.getIcon() == option)
                 break;
-            }
             counter2 += 1;
         }
         options.setSelectedIndex(counter2);
         naam.setText(RC.getName());
         prijs.setText(String.valueOf(RC.getCost()));
-        beschikbaarheid.setText(String.valueOf(RC.getAvailability() * 100));
+        beschikbaarheid.setText(String.valueOf(RC.getAvailability() * 100.0f));
 
         setVisible(true);
     }
@@ -79,10 +78,10 @@ public class DPAanpDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == toevoegen) {
-            ComponentIcon CI = ComponentIcon.valueOf(Objects.requireNonNull(options.getSelectedItem()).toString());
+            final var componentIcon = ComponentIcon.valueOf(Objects.requireNonNull(options.getSelectedItem()).toString());
 
             //Pas component aan
-            RC.editComponent(naam.getText(), CI, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()) / 100);
+            RC.editComponent(naam.getText(), componentIcon, Float.parseFloat(prijs.getText()), Float.parseFloat(beschikbaarheid.getText()) / 100.0f);
 
             mainFrame.getPeachWindow().getConfiguration().save();
             mainFrame.getComponPanel().refreshPanel();
