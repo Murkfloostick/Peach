@@ -17,7 +17,6 @@ public class Main {
 
     public static final Locale LOCALE = Locale.forLanguageTag("nl");
 
-
     public static void main(String[] args) throws Exception {
         MonitorServer.startInBackground();
 

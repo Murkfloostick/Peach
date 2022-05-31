@@ -85,7 +85,6 @@ public class DPComponPanel extends JPanel {
                     DPWorkPanel.setAccept(false);
                 }
             }
-
         }
 
 
@@ -167,7 +166,6 @@ public class DPComponPanel extends JPanel {
         private final DPComponPanel thisReference = this;
         private static DesignPage designPage;
 
-        //TODO Slepen om toe te voegen
         //Dubbelklik om component toe te voegen aan sleeppaneel
         final MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent me) {

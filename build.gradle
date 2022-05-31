@@ -5,7 +5,7 @@ plugins {
 def peachMainClass = 'nl.windesheim.ictm2o.peach.Main'
 
 group 'nl.windesheim.ictm2o'
-version '0.2'
+version '1.0'
 
 repositories {
     mavenCentral()

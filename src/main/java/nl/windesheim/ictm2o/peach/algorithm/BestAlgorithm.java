@@ -5,6 +5,7 @@ import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class BestAlgorithm {
     //Dit genereert alle combinaties
     //De werking zal zo moeten werken:
     //
-    //       ABC    AB     A C
+    //       A      AB     ABC
     //ABC -> ABC -> ABC -> ABC
     //
     //En dan zo door met B en C als de 'hoofd' component in dat loop. (main)
@@ -39,7 +40,6 @@ public class BestAlgorithm {
     //Is misschien niet de volledige uitleg die ik mijn gedachte heeft. Misschien ook niet de goede oplossing.
     //We zullen dit grondig moeten testen!
     //
-    //TODO Backtracking toevoegen. (Is dit een vereiste?)
 
     public void optiMalisatie() {
         //Variabelen initalisatie
@@ -58,39 +58,18 @@ public class BestAlgorithm {
         int maxtemp = 1; // begin hier
 
         //Plaats eerst alle componenten
-        for (PlacedComponent PC : PC
-        ) {
-            ARC.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
-            tempArc.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
-        }
+//        for (PlacedComponent PC : PC
+//        ) {
+//            ARC.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
+//            tempArc.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
+//        }
+//        checkAndAdd(ARC);//Dit is een oplossing
 
-        checkAndAdd(ARC);//Dit is een oplossing
-
-        //BOVEN HIER WERKT ALLES ZOALS HET HOORT
         //Voor elk element in de componenten die zijn geplaatst
         for (int counter = 0; counter <= PC.size() - 1; counter++) {
             //De eerste waar we het mee gaan doen
             main = PC.get(counter);
 
-            //*** MOGELIJK NIET NODIG?
-            //Eerst max keer plaatsen en dan ze allemaal en dan een voor een
-//            for (int maxcount = maxtemp; maxcount <= max; maxcount++) {
-//                ARC.add(new PlacedComponent(main.getRegisteredComponent(), main.getName(), main.getPosition()));
-//            }
-//            checkAndAdd(ARC); //Dit is een oplossing
-//
-//            //En dan de rest 1 keer plaatsen
-//            for (int count = 0; count <= PC.size() - 1; count++) {
-//                if(count != counter){ //Voorkom dat we Main weer plaatsen
-//                    ARC.add(new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition()));
-//                }
-//            }
-//            checkAndAdd(ARC); //Dit is een oplossing
-
-//            //Haal het leeg en terug naar begin
-//            ARC = null;
-//            ARC = new ArrayList<>(tempArc);
-//            //***
 
             //Plaats de main, Begin bij max 2 en dan 3...
             for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
@@ -129,6 +108,11 @@ public class BestAlgorithm {
                         }
                     }
                     maxtemp += 1; //Nu worden de volgende componenten met 1 max verhoogd zodat we elk combinatie vinden
+
+                    //Zodat we maximaal enforcen
+                    if(max == maxtemp){
+                        maxtemp = 1;
+                    }
                 }
             }
 
@@ -175,7 +159,7 @@ public class BestAlgorithm {
 
         float beste = 0;
         boolean firstTime = true;
-        List<PlacedComponent> besteList = new ArrayList<>();
+        List besteList = null;
         float inkomende;
         for (var ARK : masterARC) {
             inkomende = D.getKosten(ARK)[5];
@@ -186,10 +170,14 @@ public class BestAlgorithm {
             }
         }
 
-        //Zet het in Design
-        D.deletePlacComponentList();
-        D.newPlacComponentList(besteList);
+
+
+        if(besteList == null){
+            JOptionPane.showMessageDialog(null, "Het is niet mogelijk om de beste setup te vinden met deze componenten.", "Ho daar: Optimalisatie niet gelukt", JOptionPane.INFORMATION_MESSAGE);
+        } else{
+            //Zet het in Design
+            D.deletePlacComponentList();
+            D.newPlacComponentList(besteList);
+        }
     }
 }
-
-
