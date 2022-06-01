@@ -10,14 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.event.*;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DPWorkPanel extends JPanel {
     private final Design D;
@@ -63,8 +62,7 @@ public class DPWorkPanel extends JPanel {
     }
 
     public void keepComponentsInside() {
-        for (PlacedComponent PC : D.getPlacedComponents()
-        ) {
+        for (PlacedComponent PC : D.getPlacedComponents()) {
             //Haal bounds op van werkpaneel. Moet via andere jpanels omdat deze de bounds van de workpanel niet kloppen.
             bounds = new Rectangle(designPage.getComponPanel().getX(), 0, toevCompon.getX() - toevCompon.getWidth(), toevCompon.getHeight());
 
@@ -88,17 +86,13 @@ public class DPWorkPanel extends JPanel {
         toevCompon.refreshGegevens();
 
         for (PlacedComponent PC : D.getPlacedComponents()) {
-            ImageIcon icon;
+            final JLabel label;
             try {
-                String iconnaam = PC.getRegisteredComponent().getIcon().name();
-                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/" + iconnaam + ".png");
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Ho daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
-                icon = new ImageIcon("src/main/resources/IconPack/IconComponents/GENERIC.png");
+                label = new JLabel(PC.getName(), PC.getRegisteredComponent().getIcon().getImageIcon(), SwingConstants.CENTER);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Hó daar: " + e, JOptionPane.INFORMATION_MESSAGE);
+                continue;
             }
-
-            final var label = new JLabel(PC.getName(), icon, JLabel.CENTER);
-            System.out.println(PC.getName() + ": " + label.hashCode());
             map.put(label, PC);
             add(label);
 
@@ -164,6 +158,9 @@ public class DPWorkPanel extends JPanel {
          */
         @Override
         public void mouseDragged(MouseEvent e) {
+//            System.out.println("MouseDragged");
+//            System.out.println("\t" + e);
+//            System.out.println("\t" + target);
             if (target != null && target != beschikbaarheid) {
                 target.setBounds(e.getX(), e.getY(), target.getWidth(), target.getHeight());
                 e.getComponent().repaint();
@@ -178,6 +175,9 @@ public class DPWorkPanel extends JPanel {
          */
         @Override
         public void mouseReleased(MouseEvent e) {
+//            System.out.println("MouseReleased");
+//            System.out.println("\t" + e);
+//            System.out.println("\t" + target);
             if (target == null)
                 return;
 
@@ -363,7 +363,7 @@ public class DPWorkPanel extends JPanel {
                     Transferable t = support.getTransferable();
                     Object value = t.getTransferData(SUPPORTED_DATE_FLAVOR);
                     if (value instanceof String) { // Ensure no errors
-                        System.out.println(value);
+//                        System.out.println(value);
                         accept = true;
                     }
                 } catch (Exception exp) {

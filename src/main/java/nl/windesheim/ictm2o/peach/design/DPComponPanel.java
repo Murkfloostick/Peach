@@ -27,21 +27,15 @@ public class DPComponPanel extends JPanel {
         public Button(@NotNull RegisteredComponent registeredComponent) throws IOException {
             super("<html><body>" + registeredComponent.getName() + "<br>" + 100 * registeredComponent.getAvailability() + "%<br>" + registeredComponent.getCost() + "</body></html>", SwingConstants.CENTER);
             this.registeredComponent = registeredComponent;
-            ImageIcon image;
-            try {
-                String iconnaam = registeredComponent.getIcon().name();
-                image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/" + iconnaam + ".png")));
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Hó daar: " + ex.getCause(), JOptionPane.INFORMATION_MESSAGE);
-                image = new ImageIcon(ImageIO.read(ResourceManager.load("IconPack/IconComponents/GENERIC.png")));
-            }
-            this.setIcon(image);
+
+            setIcon(registeredComponent.getIcon().getImageIcon());
 
             this.setTransferHandler(new ValueExportTransferHandler("A", registeredComponent));
 
             this.addMouseMotionListener(new MouseAdapter() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
+//                    System.out.println("gaskghjaklhjsklhjasklhmjkh");
                     JLabel lbl = (JLabel) e.getSource();
                     TransferHandler handle = lbl.getTransferHandler();
                     handle.exportAsDrag(lbl, e, TransferHandler.COPY);
@@ -63,6 +57,9 @@ public class DPComponPanel extends JPanel {
         private final String value;
         private final RegisteredComponent RC;
 
+        private transient DropLocation dropLocation = null;
+
+
         public ValueExportTransferHandler(@NotNull String value, RegisteredComponent RC) {
             this.value = value;
             this.RC = RC;
@@ -79,10 +76,19 @@ public class DPComponPanel extends JPanel {
         }
 
         @Override
+        public boolean canImport(TransferSupport support) {
+            dropLocation = support.getDropLocation();
+            return super.canImport(support);
+        }
+
+        @Override
         protected void exportDone(JComponent source, Transferable data, int action) {
             super.exportDone(source, data, action);
             if (DPWorkPanel.isAccept()) {
-                Position pos = new Position(250L, 250L);
+                var pos = new Position(250L, 250L);
+                if (dropLocation != null) {
+                    pos = new Position(dropLocation.getDropPoint().x, dropLocation.getDropPoint().y);
+                }
                 final var placedComponent = new PlacedComponent(RC, RC.getName(), pos);
                 D.getPlacedComponents().add(placedComponent);
                 DPWP.refreshWP();

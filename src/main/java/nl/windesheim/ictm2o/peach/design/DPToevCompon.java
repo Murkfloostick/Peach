@@ -8,6 +8,7 @@ import nl.windesheim.ictm2o.peach.algorithm.BestAlgorithm;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
 import nl.windesheim.ictm2o.peach.components.Design;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +53,11 @@ public class DPToevCompon extends JPanel implements ActionListener {
                     value = value.substring(0, value.length() - 1).trim();
                 value = value.replace(',', '.');
                 try {
-                    D.setTargetAvailability(Float.parseFloat(value));
+                    var floatValue = Float.parseFloat(value);
+                    if (floatValue >= 100.0f)
+                        floatValue = 99.99f;
+
+                    D.setTargetAvailability(floatValue);
                     // Make the value look pretty
                     fillBeschikbaarheidFieldWithValueFromDesign();
                     refreshGegevens();
@@ -122,7 +127,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
 
             data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.costsPerCategory()[i]);
-            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%", stats.availabilityPerCategory()[i] * 100.0f);
+            data[1][1 + i] = formatAvailability(stats.availabilityPerCategory()[i] * 100.0f);
         }
 
         table = new JTable(data, columnNames);
@@ -159,11 +164,11 @@ public class DPToevCompon extends JPanel implements ActionListener {
 
         labelTmp = new JLabel(String.format(Main.LOCALE, "%.2f %%", stats.totalAvailability() * 100.0f));
         labelTmp.setFont(rightLabelFont);
-        if (stats.totalAvailability() * 100.0f < D.getTargetAvailability())
+        if (!formatAvailability(stats.totalAvailability() * 100.0f).equals(formatAvailability(D.getTargetAvailability())))
             labelTmp.setForeground(Color.RED);
         else if (IntStream.range(0, stats.availabilityPerCategory().length)
                 .mapToDouble(i -> stats.availabilityPerCategory()[i])
-                .anyMatch(val -> val * 100.0f < D.getTargetAvailability())) {
+                .anyMatch(val -> !formatAvailability((float)val * 100.0f).equals(formatAvailability(D.getTargetAvailability())))) {
             labelTmp.setForeground(Color.ORANGE);
         } else
             labelTmp.setForeground(Color.GREEN);
@@ -200,8 +205,17 @@ public class DPToevCompon extends JPanel implements ActionListener {
 
     }
 
+    @NotNull
+    private static String formatAvailability(final float availability) {
+        var text = String.format(Locale.getDefault(), "%.02f", availability)
+                .replace('.', ',');
+        if (text.startsWith("100"))
+            text = "99,99";
+        return text + " %";
+    }
+
     private void fillBeschikbaarheidFieldWithValueFromDesign() {
-        beschikbaarheidField.setText(String.format(Locale.getDefault(), "%.02f %%", D.getTargetAvailability()));
+        beschikbaarheidField.setText(formatAvailability(D.getTargetAvailability()));
         System.out.println(Locale.getDefault());
     }
 

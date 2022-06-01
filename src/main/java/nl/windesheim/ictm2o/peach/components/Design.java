@@ -11,7 +11,7 @@ public class Design {
     @Nullable
     private String filePath;
 
-    private float targetAvailability = 20.00f;
+    private float targetAvailability = 99.99f;
 
     @Nullable
     private List<PlacedComponent> placedComponents;
@@ -88,7 +88,7 @@ public class Design {
             if (placedComponent.getRegisteredComponent().getIcon() != category)
                 continue;
 
-            System.out.println(placedComponent.getRegisteredComponent().getAvailability());
+//            System.out.println(placedComponent.getRegisteredComponent().getAvailability());
             availability *= 1 - placedComponent.getRegisteredComponent().getAvailability();
             costs += placedComponent.getRegisteredComponent().getCost();
         }
