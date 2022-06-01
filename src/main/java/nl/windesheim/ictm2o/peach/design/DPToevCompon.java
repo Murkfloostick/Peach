@@ -190,7 +190,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             System.exit(0);
         } else if (e.getSource() == optimaliseren) {
             //Algorithm hieronder
-            BestAlgorithm BA = new BestAlgorithm(D);
+            BestAlgorithm BA = new BestAlgorithm(D, CR);
             BA.optiMalisatie();
             //Update alles
             refreshGegevens();
