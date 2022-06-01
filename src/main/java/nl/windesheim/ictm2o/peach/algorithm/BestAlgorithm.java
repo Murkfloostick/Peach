@@ -1,9 +1,7 @@
 package nl.windesheim.ictm2o.peach.algorithm;
 
 import nl.windesheim.ictm2o.peach.Main;
-import nl.windesheim.ictm2o.peach.components.ComponentIcon;
-import nl.windesheim.ictm2o.peach.components.Design;
-import nl.windesheim.ictm2o.peach.components.PlacedComponent;
+import nl.windesheim.ictm2o.peach.components.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -11,17 +9,19 @@ import java.util.List;
 
 public class BestAlgorithm {
     private final Design D;
+    ComponentRegistry CR;
 
-    public BestAlgorithm(Design d) {
+    public BestAlgorithm(Design d, ComponentRegistry CR) {
         D = d;
+        this.CR = CR;
     }
 
     float CA; //Current availbility
     float TA; //Target availbility
-
     List<PlacedComponent> ARC; //Nieuwe components
     ArrayList<List<PlacedComponent>> masterARC; //Meesterlijst met lijsten die voldoet aan target avail.
     List<PlacedComponent> PC; //Components waar we het mee moeten doen
+
 
     //Dit genereert alle combinaties
     //De werking zal zo moeten werken:
@@ -43,6 +43,20 @@ public class BestAlgorithm {
         CA = 0;
         TA = D.getTargetAvailability();
         PC = D.getPlacedComponents();
+        
+        //Als het leeg is, proberen we met alle componenten
+        if(PC.size() == 0){
+            for (RegisteredComponent RC: CR.getRegisteredComponents()
+                 ) {
+                Position pos = new Position(250, 250);
+                PlacedComponent PC = new PlacedComponent(RC,
+                        RC.getName(), pos);
+                if (D.getPlacedComponents() == null)
+                    throw new RuntimeException("PlacedComponents == null");
+                D.getPlacedComponents().add(PC);
+            }
+            PC = D.getPlacedComponents();
+        }
 
         ARC = new ArrayList<>();
         List<PlacedComponent> tempArc = new ArrayList<>();
@@ -51,7 +65,7 @@ public class BestAlgorithm {
         PlacedComponent main;
         PlacedComponent main2;//De tweede die wordt gebruikt
 
-        int max = 20; //Max aantal componenten van dezelfde RegisterdeComponent
+        int max = 3; //Max aantal componenten van dezelfde RegisterdeComponent
         int maxtemp = 1; // begin hier
 
         //Voor elk element in de componenten die zijn geplaatst
