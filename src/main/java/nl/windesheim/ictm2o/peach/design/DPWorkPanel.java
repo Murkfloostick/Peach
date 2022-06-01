@@ -184,9 +184,9 @@ public class DPWorkPanel extends JPanel {
          */
         @Override
         public void mouseDragged(MouseEvent e) {
-            System.out.println("MouseDragged");
-            System.out.println("\t" + e);
-            System.out.println("\t" + target);
+//            System.out.println("MouseDragged");
+//            System.out.println("\t" + e);
+//            System.out.println("\t" + target);
             if (target != null && target != beschikbaarheid) {
                 target.setBounds(e.getX(), e.getY(), target.getWidth(), target.getHeight());
                 e.getComponent().repaint();
@@ -201,9 +201,9 @@ public class DPWorkPanel extends JPanel {
          */
         @Override
         public void mouseReleased(MouseEvent e) {
-            System.out.println("MouseReleased");
-            System.out.println("\t" + e);
-            System.out.println("\t" + target);
+//            System.out.println("MouseReleased");
+//            System.out.println("\t" + e);
+//            System.out.println("\t" + target);
             if (target == null)
                 return;
 
@@ -393,7 +393,7 @@ public class DPWorkPanel extends JPanel {
                     Transferable t = support.getTransferable();
                     Object value = t.getTransferData(SUPPORTED_DATE_FLAVOR);
                     if (value instanceof String) { // Ensure no errors
-                        System.out.println(value);
+//                        System.out.println(value);
                         accept = true;
                     }
                 } catch (Exception exp) {

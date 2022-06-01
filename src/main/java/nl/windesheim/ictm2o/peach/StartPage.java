@@ -69,7 +69,7 @@ public class StartPage extends JPanel implements ActionListener, MouseListener {
     public StartPage(PeachWindow parent) throws IOException {
         m_parent = parent;
 
-        System.out.println("StartPage: " + parent.getSize());
+//        System.out.println("StartPage: " + parent.getSize());
 
         setLayout(new MigLayout("insets 0 10% 0 10%", "[grow,fill]"));
 

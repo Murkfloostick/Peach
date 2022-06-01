@@ -44,7 +44,7 @@ public class PeachWindow extends ThemedWindow {
                 Dimension screenSize = getSize();
                 double width = screenSize.getWidth();
                 double height = screenSize.getHeight();
-                System.out.println(width + "," + height);
+//                System.out.println(width + "," + height);
             }
         });
 

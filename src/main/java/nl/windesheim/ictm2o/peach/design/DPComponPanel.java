@@ -37,7 +37,7 @@ public class DPComponPanel extends JPanel {
             this.addMouseMotionListener(new MouseAdapter() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
-                    System.out.println("gaskghjaklhjsklhjasklhmjkh");
+//                    System.out.println("gaskghjaklhjsklhjasklhmjkh");
                     JLabel lbl = (JLabel) e.getSource();
                     TransferHandler handle = lbl.getTransferHandler();
                     handle.exportAsDrag(lbl, e, TransferHandler.COPY);
@@ -88,7 +88,7 @@ public class DPComponPanel extends JPanel {
                     var pos = new Position(250L, 250L);
 
                     if (dropLocation != null) {
-                        System.out.println(dropLocation);
+//                        System.out.println(dropLocation);
                         pos = new Position(dropLocation.getDropPoint().x, dropLocation.getDropPoint().y);
                     }
 
