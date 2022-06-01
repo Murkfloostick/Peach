@@ -105,7 +105,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
     }
 
     public void refreshGegevens() {
-        final var stats = D.getStatistics();
+        final var stats = D.getStatistics(D.getPlacedComponents());
 
         JPanel panel = new JPanel();
         panel.setBackground(Color.gray);

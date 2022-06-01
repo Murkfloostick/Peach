@@ -51,7 +51,7 @@ public class BestAlgorithm {
         PlacedComponent main;
         PlacedComponent main2;//De tweede die wordt gebruikt
 
-        int max = 3; //Max aantal componenten van dezelfde RegisterdeComponent
+        int max = 20; //Max aantal componenten van dezelfde RegisterdeComponent
         int maxtemp = 1; // begin hier
 
         //Voor elk element in de componenten die zijn geplaatst
@@ -120,7 +120,7 @@ public class BestAlgorithm {
 
     //Checkt of de ARC die wordt meegegeven voldoet aan target availbility en dan toevoegen aan masterArc.
     private void checkAndAdd(List<PlacedComponent> ARC) {
-        final var stats = D.getStatistics();
+        final var stats = D.getStatistics(ARC);
 
         var data = new Object[2][1 + stats.availabilityPerCategory().length];
         var columnNames = new String[1 + stats.availabilityPerCategory().length];
