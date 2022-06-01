@@ -43,4 +43,5 @@ public enum ComponentIcon {
 
         return imageIcon;
     }
+
 }

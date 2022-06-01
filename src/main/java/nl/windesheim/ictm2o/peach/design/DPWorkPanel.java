@@ -5,14 +5,9 @@ import nl.windesheim.ictm2o.peach.components.Design;
 import nl.windesheim.ictm2o.peach.components.PlacedComponent;
 import nl.windesheim.ictm2o.peach.components.Position;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import javax.swing.*;
-import java.awt.Component;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
@@ -44,7 +39,6 @@ public class DPWorkPanel extends JPanel {
     Rectangle bounds;
 
     public DPWorkPanel(Design D, @NotNull DesignPage designPage, DPToevCompon toevCompon) {
-        //TODO In selectie modus alle andere input uit
         this.D = D;
         this.designPage = designPage;
         this.toevCompon = toevCompon;
@@ -52,9 +46,7 @@ public class DPWorkPanel extends JPanel {
 
 
         //Slepen aanzetten
-
         setLayout(null);
-
         ComponentDragger dragger = new ComponentDragger();
         addMouseListener(dragger);
         addMouseMotionListener(dragger);
@@ -64,15 +56,6 @@ public class DPWorkPanel extends JPanel {
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-//                // This is only called when the user releases the mouse button.
-//                System.out.println("componentResized");
-//
-//                Dimension screenSize = getSize();
-//                double width = screenSize.getWidth();
-//                double height = screenSize.getHeight();
-//                System.out.println(width + "," + height);
-                //^Wtf is deze size van?
-
                 keepComponentsInside();
             }
         });
@@ -85,7 +68,6 @@ public class DPWorkPanel extends JPanel {
 
             //Check of placed component binnen NIET binnen zit
             if (!bounds.contains(PC.getPosition().x(), PC.getPosition().y())) {
-                //TODO plaats op outer border
                 PC.setPosition(new Position(bounds.width / 2, bounds.height / 2));
             }
         }
@@ -148,14 +130,6 @@ public class DPWorkPanel extends JPanel {
                 g.drawLine(Math.toIntExact(k.getPosition().x()) + 30, Math.toIntExact(k.getPosition().y()) + 30, Math.toIntExact(pc.getPosition().x()) + 30, Math.toIntExact(pc.getPosition().y() + 30));
             }
         });
-
-        //Gebruik dit code om de border te laten zien
-//        try{
-//            //Voor debug.
-//            g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-//        } catch (Exception E){
-//            //fuck
-//        }
     }
 
     private class ComponentDragger extends MouseAdapter {
@@ -212,7 +186,6 @@ public class DPWorkPanel extends JPanel {
 
             PC = map.get(target);
 
-            //Memory leak?
             Position pos = new Position(jl.getX(), jl.getY());
             PC.setPosition(pos);
             repaint();
@@ -225,7 +198,6 @@ public class DPWorkPanel extends JPanel {
         }
 
         private void doPop(MouseEvent e) {
-            //TODO functie van maken
             //Haal Jlabel op die is geklikt
             Container container = (Container) e.getComponent();
             for (Component c : container.getComponents()) {
@@ -324,7 +296,7 @@ public class DPWorkPanel extends JPanel {
                             lijnGevonden.set(true);
                         }
                     });
-                    //Anders werkt break niet, optimalisatie
+                    //Anders werkt break niet
                     if (lijnGevonden.get()) {
                         add(verwijderLijn);
                         verwijderLijn.addActionListener(ev -> {
@@ -352,7 +324,6 @@ public class DPWorkPanel extends JPanel {
         }
 
         public void selectieModusAan() {
-            //this.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 30)); werkt niet
             target.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
             selectieModus = true;
             firstSelection = map.get(target);
@@ -362,7 +333,6 @@ public class DPWorkPanel extends JPanel {
         public void verwijderenAan() {
             verwijderModus = true;
             ArrayList<PlacedComponent> v = lineMap.get(firstSelection);
-            //TODO Functie van maken
             for (PlacedComponent pc : v) {
                 map.forEach((key, value) -> {
                     if (value.equals(pc)) {

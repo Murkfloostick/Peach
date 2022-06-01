@@ -1,27 +1,27 @@
 package nl.windesheim.ictm2o.peach.algorithm;
 
 import nl.windesheim.ictm2o.peach.Main;
-import nl.windesheim.ictm2o.peach.components.ComponentIcon;
-import nl.windesheim.ictm2o.peach.components.Design;
-import nl.windesheim.ictm2o.peach.components.PlacedComponent;
+import nl.windesheim.ictm2o.peach.components.*;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BestAlgorithm {
     private final Design D;
+    ComponentRegistry CR;
 
-    public BestAlgorithm(Design d) {
+    public BestAlgorithm(Design d, ComponentRegistry CR) {
         D = d;
+        this.CR = CR;
     }
 
     float CA; //Current availbility
     float TA; //Target availbility
-
     List<PlacedComponent> ARC; //Nieuwe components
     ArrayList<List<PlacedComponent>> masterARC; //Meesterlijst met lijsten die voldoet aan target avail.
     List<PlacedComponent> PC; //Components waar we het mee moeten doen
+
 
     //Dit genereert alle combinaties
     //De werking zal zo moeten werken:
@@ -37,15 +37,26 @@ public class BestAlgorithm {
     //ABC -> ABC -> ABC -> ABC
     //
     //Dan is C de volgende die maximaal alles heeft (main2)
-    //Is misschien niet de volledige uitleg die ik mijn gedachte heeft. Misschien ook niet de goede oplossing.
-    //We zullen dit grondig moeten testen!
-    //
 
     public void optiMalisatie() {
         //Variabelen initalisatie
         CA = 0;
         TA = D.getTargetAvailability();
         PC = D.getPlacedComponents();
+        
+        //Als het leeg is, proberen we met alle componenten
+        if(PC.size() == 0){
+            for (RegisteredComponent RC: CR.getRegisteredComponents()
+                 ) {
+                Position pos = new Position(250, 250);
+                PlacedComponent PC = new PlacedComponent(RC,
+                        RC.getName(), pos);
+                if (D.getPlacedComponents() == null)
+                    throw new RuntimeException("PlacedComponents == null");
+                D.getPlacedComponents().add(PC);
+            }
+            PC = D.getPlacedComponents();
+        }
 
         ARC = new ArrayList<>();
         List<PlacedComponent> tempArc = new ArrayList<>();
@@ -56,14 +67,6 @@ public class BestAlgorithm {
 
         int max = 3; //Max aantal componenten van dezelfde RegisterdeComponent
         int maxtemp = 1; // begin hier
-
-        //Plaats eerst alle componenten
-//        for (PlacedComponent PC : PC
-//        ) {
-//            ARC.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
-//            tempArc.add(new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition()));
-//        }
-//        checkAndAdd(ARC);//Dit is een oplossing
 
         //Voor elk element in de componenten die zijn geplaatst
         for (int counter = 0; counter <= PC.size() - 1; counter++) {
@@ -83,7 +86,7 @@ public class BestAlgorithm {
 
                     //Plaats max keer, dan minder tot er maar 1 is en dan volgende component die main2 wordt
                     //MAX begint bij 2 tot de echte max
-                    if(main != main2){//Main is al maximaal geplaatst
+                    if (main != main2) {//Main is al maximaal geplaatst
                         for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
                             PlacedComponent plaats = new PlacedComponent(PC.get(count).getRegisteredComponent(), PC.get(count).getName(), PC.get(count).getPosition());
                             ARC.add(plaats);
@@ -92,9 +95,9 @@ public class BestAlgorithm {
                     }
 
                     //Nu de volgende component steeds tot max en dan verwijderen
-                    for (PlacedComponent PC:PC
-                         ) {
-                        if(PC != main && PC != main2){
+                    for (PlacedComponent PC : PC
+                    ) {
+                        if (PC != main && PC != main2) {
                             for (int maxcount = 1; maxcount <= maxtemp; maxcount++) {
                                 //dan for elk ander component dat niet main en main2 is plaatsen
                                 PlacedComponent plaats = new PlacedComponent(PC.getRegisteredComponent(), PC.getName(), PC.getPosition());
@@ -110,7 +113,7 @@ public class BestAlgorithm {
                     maxtemp += 1; //Nu worden de volgende componenten met 1 max verhoogd zodat we elk combinatie vinden
 
                     //Zodat we maximaal enforcen
-                    if(max == maxtemp){
+                    if (max == maxtemp) {
                         maxtemp = 1;
                     }
                 }
@@ -120,7 +123,7 @@ public class BestAlgorithm {
             ARC = null;
             ARC = new ArrayList<>(tempArc);
 
-            if(maxtemp > max){
+            if (maxtemp > max) {
                 break;
             }
         }
@@ -130,8 +133,8 @@ public class BestAlgorithm {
     }
 
     //Checkt of de ARC die wordt meegegeven voldoet aan target availbility en dan toevoegen aan masterArc.
-    private void checkAndAdd(List<PlacedComponent> ARC){
-        final var stats = D.getStatistics();
+    private void checkAndAdd(List<PlacedComponent> ARC) {
+        final var stats = D.getStatistics(ARC);
 
         var data = new Object[2][1 + stats.availabilityPerCategory().length];
         var columnNames = new String[1 + stats.availabilityPerCategory().length];
@@ -144,11 +147,11 @@ public class BestAlgorithm {
             columnNames[1 + i] = ComponentIcon.values()[i].getDisplayName();
 
             data[0][1 + i] = String.format(Main.LOCALE, "€ %.02f", stats.costsPerCategory()[i]);
-            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%",stats.availabilityPerCategory()[i] * 100.0f);
+            data[1][1 + i] = String.format(Main.LOCALE, "%.2f %%", stats.availabilityPerCategory()[i] * 100.0f);
         }
 
         CA = stats.totalAvailability() * 100.0f;
-        if(CA >= TA){
+        if (CA >= TA) {
             masterARC.add(ARC);
         }
     }
@@ -163,7 +166,7 @@ public class BestAlgorithm {
         float inkomende;
         for (var ARK : masterARC) {
             inkomende = D.getKosten(ARK)[5];
-            if(inkomende < beste || firstTime){
+            if (inkomende < beste || firstTime) {
                 beste = inkomende;
                 besteList = ARK;
                 firstTime = false;
@@ -171,10 +174,9 @@ public class BestAlgorithm {
         }
 
 
-
-        if(besteList == null){
+        if (besteList == null) {
             JOptionPane.showMessageDialog(null, "Het is niet mogelijk om de beste setup te vinden met deze componenten.", "Ho daar: Optimalisatie niet gelukt", JOptionPane.INFORMATION_MESSAGE);
-        } else{
+        } else {
             //Zet het in Design
             D.deletePlacComponentList();
             D.newPlacComponentList(besteList);

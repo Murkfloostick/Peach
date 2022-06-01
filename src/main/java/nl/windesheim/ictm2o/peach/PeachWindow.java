@@ -11,7 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class PeachWindow extends ThemedWindow {
@@ -34,19 +36,6 @@ public class PeachWindow extends ThemedWindow {
         setThemeToSystem();
 
         addMenuBar();
-
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                // This is only called when the user releases the mouse button.
-//                System.out.println("componentResized");
-//
-                Dimension screenSize = getSize();
-                double width = screenSize.getWidth();
-                double height = screenSize.getHeight();
-//                System.out.println(width + "," + height);
-            }
-        });
 
         //OG:
         //setSize(1280, 720);
@@ -114,7 +103,6 @@ public class PeachWindow extends ThemedWindow {
 
         JMenu fileMenu = new JMenu("Bestand");
 
-//    fileMenu.setMnemonic(KeyEvent.VK_S);
         fileMenu.getAccessibleContext().setAccessibleDescription("Het menu waarmee de bestanden kunnen worden opgeslagen enzo");
         menuBar.add(fileMenu);
 
@@ -145,7 +133,6 @@ public class PeachWindow extends ThemedWindow {
         menuItem = new JMenuItem("Opslaan", KeyEvent.VK_S);
         saveMenuBarItem = menuItem;
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-//    menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
         menuItem.addActionListener(ev -> {
             if (currentPage instanceof DesignPage designPage)
                 designPage.saveDesign(false);

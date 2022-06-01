@@ -3,7 +3,8 @@ package nl.windesheim.ictm2o.peach.components;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Design {
 
@@ -96,7 +97,7 @@ public class Design {
     }
 
     @NotNull
-    public ComponentsStatistics getStatistics() {
+    public ComponentsStatistics getStatistics(List<PlacedComponent> placedComponents2) {
         float[] availabilities = new float[ComponentIcon.values().length];
         Float totalAvailability = null;
 
@@ -104,7 +105,7 @@ public class Design {
         float totalCosts = 0;
 
         for (ComponentIcon componentIcon : ComponentIcon.values()) {
-            final var categoryStats = calculateStatisticsPerCategory(placedComponents, componentIcon);
+            final var categoryStats = calculateStatisticsPerCategory(placedComponents2, componentIcon);
 
             availabilities[componentIcon.ordinal()] = categoryStats[0];
             if (categoryStats[0] != 0.0f) {

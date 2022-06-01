@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,19 +43,9 @@ public class CopyrightWindow extends ThemedWindow {
         setSize(800, 600);
 
         final var contentPanel = this;
-//        final var contentPanel = new JPanel();
-//        contentPanel.
         setLayout(new MigLayout("insets 10%", "[grow,fill]"));
-
-//        final var scrollPane = new JScrollPane(contentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//        scrollPane.setMaximumSize(new Dimension(600, 400));
-//        setContentPane(scrollPane);
-
         JPanel logoPanel = new JPanel();
         logoPanel.setBorder(new EmptyBorder(new Insets(0, 0, 18, 0)));
-
-        //JLabel logoImageLabel = new JLabel(StartPage.loadIcon(60));
-        //logoPanel.add(logoImageLabel);
 
         JLabel logoTextLabel = new JLabel("Peach - Auteursrecht");
         logoTextLabel.setFont(new Font("Inter", Font.BOLD, 50));

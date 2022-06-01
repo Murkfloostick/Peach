@@ -7,13 +7,15 @@ import nl.windesheim.ictm2o.peach.PeachWindow;
 import nl.windesheim.ictm2o.peach.algorithm.BestAlgorithm;
 import nl.windesheim.ictm2o.peach.components.ComponentIcon;
 import nl.windesheim.ictm2o.peach.components.ComponentRegistry;
-
 import nl.windesheim.ictm2o.peach.components.Design;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.Locale;
 import java.util.stream.IntStream;
 
@@ -93,7 +95,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
         refreshGegevens();
 
         JPanel paneel1 = new JPanel();
-        paneel1.setLayout(new GridLayout(2,2));
+        paneel1.setLayout(new GridLayout(2, 2));
         paneel1.add(toevoegen);
         paneel1.add(optimaliseren);
         paneel1.add(terugKnop);
@@ -103,13 +105,12 @@ public class DPToevCompon extends JPanel implements ActionListener {
         add(paneel1);
 
         scrollPane.setViewportView(table);
-//        scrollPane.setPreferredSize(new Dimension(400,100));
         scrollPane.setBackground(null);
         add(scrollPane);
     }
 
     public void refreshGegevens() {
-        final var stats = D.getStatistics();
+        final var stats = D.getStatistics(D.getPlacedComponents());
 
         JPanel panel = new JPanel();
         panel.setBackground(Color.gray);
@@ -179,9 +180,6 @@ public class DPToevCompon extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == toevoegen) {
-            //DPToevDialog dialoog = new DPToevDialog(this, true);
-            //Anders werkt hij niet, dialoog moet op parent frame worden attached
-
             Window parentWindow = SwingUtilities.windowForComponent(this);
             JFrame parentFrame = null;
             if (parentWindow instanceof Frame) {
@@ -197,10 +195,7 @@ public class DPToevCompon extends JPanel implements ActionListener {
             System.exit(0);
         } else if (e.getSource() == optimaliseren) {
             //Algorithm hieronder
-            //Zie nieuwe aangemaakte class voor toekomstige uitwerking
-            BestAlgorithm BA = new BestAlgorithm(D);
-            //BA.vindAv(); OUD ALGORITME
-            //D.setTargetAvailability(Float.parseFloat(beschikbaarheidField.getText()));
+            BestAlgorithm BA = new BestAlgorithm(D, CR);
             BA.optiMalisatie();
             //Update alles
             refreshGegevens();

@@ -1,7 +1,8 @@
 package nl.windesheim.ictm2o.peach.storage;
 
 import nl.windesheim.ictm2o.peach.PeachWindow;
-import nl.windesheim.ictm2o.peach.components.*;
+import nl.windesheim.ictm2o.peach.components.ComponentIcon;
+import nl.windesheim.ictm2o.peach.components.RegisteredComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -71,13 +72,6 @@ public class Configuration {
                         placedComponentJSON.getFloat("availability")
                 ));
             }
-
-//            JSONArray recentFilesJSON = object.getJSONArray("recentFiles");
-//            if (recentFilesJSON != null) {
-//                for (int i = 0; i < recentFilesJSON.length(); ++i) {
-//                    recentFiles.push(recentFilesJSON.getString(i));
-//                }
-//            }
 
             inputStream.close();
         } catch (Exception exception) {
