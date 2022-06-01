@@ -58,6 +58,8 @@ public class DPComponPanel extends JPanel {
             private final String value;
             private final RegisteredComponent RC;
 
+            private transient DropLocation dropLocation = null;
+
             public ValueExportTransferHandler(@NotNull String value, RegisteredComponent RC) {
                 this.value = value;
                 this.RC = RC;
@@ -74,10 +76,22 @@ public class DPComponPanel extends JPanel {
             }
 
             @Override
+            public boolean canImport(TransferSupport support) {
+                dropLocation = support.getDropLocation();
+                return super.canImport(support);
+            }
+
+            @Override
             protected void exportDone(JComponent source, Transferable data, int action) {
                 super.exportDone(source, data, action);
                 if (DPWorkPanel.isAccept()) {
-                    Position pos = new Position(250L, 250L);
+                    var pos = new Position(250L, 250L);
+
+                    if (dropLocation != null) {
+                        System.out.println(dropLocation);
+                        pos = new Position(dropLocation.getDropPoint().x, dropLocation.getDropPoint().y);
+                    }
+
                     final var placedComponent = new PlacedComponent(RC, RC.getName(), pos);
                     D.getPlacedComponents().add(placedComponent);
                     DPWP.refreshWP();
