@@ -50,11 +50,11 @@ public class Main extends JPanel {
         }
     }
 
+    public static final Locale LOCALE = Locale.forLanguageTag("nl");
+
     public void updateBar(int newValue) {
         progressBar.setValue(newValue);
     }
-
-    public static final Locale LOCALE = Locale.forLanguageTag("nl");
 
     public static void main(String[] args) throws Exception {
         final Splashscreen j = new Splashscreen();
