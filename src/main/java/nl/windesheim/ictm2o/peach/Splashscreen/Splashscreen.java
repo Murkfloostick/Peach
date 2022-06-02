@@ -34,7 +34,7 @@ public class Splashscreen extends JPanel {
             progressBar.setStringPainted(true);
             progressBar.setFont(new Font("Inter", Font.BOLD, 15)); //Font percentage
 
-            logo = new JLabel(new ImageIcon("src/main/resources/Peach.png"));
+            logo = new JLabel(new ImageIcon(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage()));
             JLabel tekst = new JLabel("PeachOS V" + BuildInfo.getVersion());
             tekst.setFont(new Font("Inter", Font.BOLD, 25));
 
