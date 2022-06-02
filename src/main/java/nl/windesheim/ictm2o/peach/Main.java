@@ -18,7 +18,7 @@ public class Main extends JPanel {
     static JLabel logo;
     static JProgressBar progressBar;
 
-    static ImageIcon logoVenster;
+    static Image logoVenster;
 
     static final int MY_MINIMUM = 0;
     static final int MY_MAXIMUM = 100;
@@ -38,7 +38,10 @@ public class Main extends JPanel {
             progressBar.setStringPainted(true);
             progressBar.setFont(new Font("Inter", Font.BOLD, 15)); //Font percentage
 
-            logo = new JLabel((Icon) new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
+            //logo = new JLabel((Icon) new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
+            //logo = new JLabel(new ImageIcon("resources/Terry.png"));
+
+            //logo = new JLabel((Icon) new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Terry.png"))).getImage());
             JLabel tekst = new JLabel("PeachOS V" + BuildInfo.getVersion());
             tekst.setFont(new Font("Inter", Font.BOLD, 25));
 
@@ -69,8 +72,9 @@ public class Main extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        logoVenster = new ImageIcon("src/main/resources/Peach.png");
-        frame.setIconImage(logoVenster.getImage());
+        //logoVenster = new ImageIcon("src/main/resources/Terry.png");
+        //logoVenster = new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Terry.png"))).getImage();
+        frame.setIconImage(logoVenster);
 
         for (int i = MY_MINIMUM; i <= MY_MAXIMUM; i++) {
             final int percent = i;

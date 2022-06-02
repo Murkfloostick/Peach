@@ -6,6 +6,7 @@ import nl.windesheim.ictm2o.peach.PeachWindow;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 
 
 public class Splashscreen extends JPanel {
@@ -40,6 +41,7 @@ public class Splashscreen extends JPanel {
             add(tekst);
             add(logo);
             add(progressBar);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,9 +53,9 @@ public class Splashscreen extends JPanel {
 
     public static void main(String[] args) {
 
-        //final Splashscreen j = new Splashscreen();
-
-//        JFrame frame = new JFrame("Launching PeachOS V" + BuildInfo.getVersion());
+//        final Splashscreen j = new Splashscreen();
+//
+         JFrame frame = new JFrame("Launching PeachOS V" + BuildInfo.getVersion());
 //        frame.setFont(new Font("Inter", Font.BOLD, 25));
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        frame.setContentPane(j);
@@ -61,10 +63,10 @@ public class Splashscreen extends JPanel {
 //        frame.setSize(350, 450);
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
-//
-//        logoVenster = new ImageIcon("src/main/resources/Peach.png");
-//        frame.setIconImage(logoVenster.getImage());
-//
+
+        logoVenster = new ImageIcon("resources/Peach.png");
+        frame.setIconImage(logoVenster.getImage());
+
 //        for (int i = MY_MINIMUM; i <= MY_MAXIMUM; i++) {
 //            final int percent = i;
 //            try {
