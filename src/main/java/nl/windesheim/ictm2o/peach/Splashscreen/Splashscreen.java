@@ -64,7 +64,7 @@ public class Splashscreen extends JPanel {
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
 
-        logoVenster = new ImageIcon("resources/Peach.png");
+        logoVenster = new ImageIcon(new ImageIcon(Objects.requireNonNull(PeachWindow.class.getResource("/Peach.png"))).getImage());
         frame.setIconImage(logoVenster.getImage());
 
 //        for (int i = MY_MINIMUM; i <= MY_MAXIMUM; i++) {
